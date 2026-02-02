@@ -9,8 +9,8 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=Zth3g7mHbp0&t=305s",
         translatedUrl: "https://space.bilibili.com/12621850/lists/4882608",
         description: "海上小岛怪谈故事，小町是女主角。",
-        thumbnail: "https://i2.hdslb.com/bfs/archive/59bc4c65382b294eaf43dc123fae76fdfc64a303.jpg@672w_378h_1c.webp",
-        dateAdded: "2026-02-2"
+        thumbnail: "images/1.jpg",
+        dateAdded: "2026-02-02"
     },
     // {
     //     id: 2,
