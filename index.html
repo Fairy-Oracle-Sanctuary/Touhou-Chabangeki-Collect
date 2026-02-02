@@ -1,98 +1,296 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>东方 Project 茶番剧收藏</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M20 20 H80 V30 H70 V80 H80 V90 H20 V80 H30 V30 H20 Z' fill='%23E60012'/><rect x='10' y='10' width='80' height='10' fill='%23E60012'/><rect x='15' y='35' width='70' height='8' fill='%23E60012'/></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Alpine.js for interactive components -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Noto Sans SC', 'sans-serif'],
+                    },
+                    colors: {
+                        // 东方红 (Reimu Red)
+                        touhou: {
+                            red: '#E60012',
+                            dark: '#1a1a1a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        body {
-            font-family: 'Noto Sans SC', sans-serif;
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
         }
-        .gradient-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        ::-webkit-scrollbar-track {
+            background: transparent;
         }
-        .card-hover:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        ::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 3px;
         }
-        .tag-translated {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        .dark ::-webkit-scrollbar-thumb {
+            background: #4b5563;
         }
-        .tag-untranslated {
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        
+        /* Subtle pattern background */
+        .bg-pattern {
+            background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
+            background-size: 20px 20px;
         }
+        .dark .bg-pattern {
+            background-image: radial-gradient(#374151 1px, transparent 1px);
+        }
+        
+        [x-cloak] { display: none !important; }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
-    <header class="gradient-bg text-white shadow-lg">
-        <div class="container mx-auto px-4 py-8">
-            <div class="text-center">
-                <h1 class="text-4xl md:text-5xl font-bold mb-2">东方 Project 茶番剧收藏</h1>
-                <p class="text-lg opacity-90">收集与分享东方 Project 的精彩二次创作</p>
+<body class="bg-gray-50 dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 transition-colors duration-200 min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 w-full bg-white/90 dark:bg-zinc-900/90 border-b border-gray-200 dark:border-zinc-800 backdrop-blur-sm">
+        <div class="container mx-auto px-4 h-14 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" class="w-full h-full text-red-600 fill-current">
+                        <!-- Top Bar -->
+                        <path d="M5 20 L95 20 L95 30 L85 30 L85 35 L90 35 L90 45 L85 45 L85 90 L75 90 L75 45 L25 45 L25 90 L15 90 L15 45 L10 45 L10 35 L15 35 L15 30 L5 30 Z" />
+                    </svg>
+                </div>
+                <span class="font-bold text-base tracking-tight text-zinc-900 dark:text-white">
+                    Touhou<span class="text-red-600">Collect</span>
+                </span>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <button id="themeToggle" class="p-1.5 rounded-md text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors" aria-label="切换主题">
+                    <!-- Sun Icon -->
+                    <svg id="sunIcon" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                    <!-- Moon Icon -->
+                    <svg id="moonIcon" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                    </svg>
+                </button>
+                <a href="https://github.com/Fairy-Oracle-Sanctuary/Touhou-Chabangeki-Collect" target="_blank" rel="noopener noreferrer" aria-label="GitHub Repository" class="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="bg-white dark:bg-zinc-900 border-b border-gray-200 dark:border-zinc-800 bg-pattern">
+        <div class="container mx-auto px-4 py-8 md:py-12">
+            <div class="max-w-3xl">
+                <h1 class="text-2xl md:text-3xl font-bold text-zinc-900 dark:text-white mb-3 tracking-tight">
+                    东方 Project 茶番剧收藏
+                </h1>
+                <p class="text-sm md:text-base text-zinc-600 dark:text-zinc-400 mb-6 leading-relaxed">
+                    收集整理高质量的东方 Project 二次创作茶番剧。
+                </p>
+
+                <!-- Search & Filter -->
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <div class="flex-grow relative group">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-4 w-4 text-zinc-400 group-focus-within:text-red-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </div>
+                        <input 
+                            type="text" 
+                            id="searchInput" 
+                            class="block w-full pl-9 pr-10 py-2.5 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md text-sm text-zinc-900 dark:text-white placeholder-zinc-500 focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-colors" 
+                            placeholder="搜索标题、作者、标签..."
+                        >
+                        <!-- Clear Button -->
+                        <button id="clearSearch" class="absolute inset-y-0 right-0 pr-3 flex items-center text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 hidden">
+                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <div class="flex gap-2" x-data="{ 
+                        status: 'all', 
+                        sort: 'date-desc',
+                        statusOpen: false,
+                        sortOpen: false,
+                        statusOptions: [
+                            { value: 'all', label: '全部状态' },
+                            { value: 'translated', label: '已汉化' },
+                            { value: 'untranslated', label: '未汉化' }
+                        ],
+                        sortOptions: [
+                            { value: 'date-desc', label: '最新添加' },
+                            { value: 'date-asc', label: '最早添加' },
+                            { value: 'name-asc', label: '名称 A-Z' },
+                            { value: 'name-desc', label: '名称 Z-A' }
+                        ],
+                        updateFilters() {
+                            // Dispatch custom event for app.js to listen
+                            window.dispatchEvent(new CustomEvent('filter-change', { 
+                                detail: { status: this.status, sort: this.sort } 
+                            }));
+                        }
+                    }">
+                        <!-- Hidden Inputs for app.js compatibility -->
+                        <input type="hidden" id="statusFilter" x-model="status">
+                        <input type="hidden" id="sortBy" x-model="sort">
+
+                        <!-- Custom Status Dropdown -->
+                        <div class="relative">
+                            <button @click="statusOpen = !statusOpen" @click.outside="statusOpen = false" aria-label="选择状态"
+                                    class="flex items-center justify-between w-32 px-3 py-2.5 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md text-sm text-zinc-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-750 focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-colors">
+                                <span x-text="statusOptions.find(o => o.value === status).label"></span>
+                                <svg class="w-4 h-4 ml-2 text-zinc-400 transition-transform duration-200" :class="{'rotate-180': statusOpen}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            <div x-show="statusOpen" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" 
+                                 class="absolute z-10 w-full mt-1 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-md shadow-lg" x-cloak>
+                                <ul class="py-1">
+                                    <template x-for="option in statusOptions" :key="option.value">
+                                        <li>
+                                            <button @click="status = option.value; statusOpen = false; updateFilters()" 
+                                                    class="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors"
+                                                    :class="{'text-red-600 dark:text-red-400 font-medium': status === option.value, 'text-zinc-700 dark:text-zinc-300': status !== option.value}"
+                                                    x-text="option.label">
+                                            </button>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <!-- Custom Sort Dropdown -->
+                        <div class="relative">
+                            <button @click="sortOpen = !sortOpen" @click.outside="sortOpen = false" aria-label="选择排序方式"
+                                    class="flex items-center justify-between w-32 px-3 py-2.5 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md text-sm text-zinc-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-750 focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-colors">
+                                <span x-text="sortOptions.find(o => o.value === sort).label"></span>
+                                <svg class="w-4 h-4 ml-2 text-zinc-400 transition-transform duration-200" :class="{'rotate-180': sortOpen}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            <div x-show="sortOpen" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" 
+                                 class="absolute z-10 w-full mt-1 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-md shadow-lg" x-cloak>
+                                <ul class="py-1">
+                                    <template x-for="option in sortOptions" :key="option.value">
+                                        <li>
+                                            <button @click="sort = option.value; sortOpen = false; updateFilters()" 
+                                                    class="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors"
+                                                    :class="{'text-red-600 dark:text-red-400 font-medium': sort === option.value, 'text-zinc-700 dark:text-zinc-300': sort !== option.value}"
+                                                    x-text="option.label">
+                                            </button>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
 
-    <main class="container mx-auto px-4 py-8">
-        <div class="mb-8 bg-white rounded-xl shadow-md p-6">
-            <div class="flex flex-col md:flex-row gap-4">
-                <div class="flex-1">
-                    <input 
-                        type="text" 
-                        id="searchInput" 
-                        placeholder="搜索茶番剧名称、作者或标签..." 
-                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                    >
+    <!-- Main Content Area -->
+    <div class="container mx-auto px-4 py-8 flex-grow flex flex-col lg:flex-row gap-8">
+        
+        <!-- Sidebar (Filters) -->
+        <aside class="w-full lg:w-64 flex-shrink-0 space-y-8">
+            <!-- Stats -->
+            <div class="bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-zinc-800 p-4">
+                <h3 class="text-sm font-bold text-zinc-900 dark:text-white mb-3 flex items-center gap-2">
+                    <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                    统计信息
+                </h3>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-zinc-500 dark:text-zinc-400">收录总数</span>
+                        <span class="font-medium text-zinc-900 dark:text-white" id="totalCount">0</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-zinc-500 dark:text-zinc-400">已汉化</span>
+                        <span class="font-medium text-emerald-600 dark:text-emerald-500" id="translatedCount">0</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-zinc-500 dark:text-zinc-400">未汉化</span>
+                        <span class="font-medium text-amber-600 dark:text-amber-500" id="untranslatedCount">0</span>
+                    </div>
                 </div>
-                <div class="flex gap-2">
-                    <select id="statusFilter" class="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
-                        <option value="all">全部状态</option>
-                        <option value="translated">已汉化</option>
-                        <option value="untranslated">未汉化</option>
-                    </select>
-                    <select id="sortBy" class="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
-                        <option value="date-desc">最新添加</option>
-                        <option value="date-asc">最早添加</option>
-                        <option value="name-asc">名称 A-Z</option>
-                        <option value="name-desc">名称 Z-A</option>
-                    </select>
+            </div>
+
+            <!-- Popular Tags -->
+            <div>
+                <h3 class="text-sm font-bold text-zinc-900 dark:text-white mb-3 flex items-center gap-2">
+                    <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
+                    热门标签
+                </h3>
+                <div id="tagCloud" class="flex flex-wrap gap-2">
+                    <!-- Tags injected by JS -->
                 </div>
             </div>
-        </div>
 
-        <div id="stats" class="mb-6 flex flex-wrap gap-4 justify-center">
-            <div class="bg-white rounded-lg shadow px-6 py-4 text-center">
-                <div class="text-3xl font-bold text-purple-600" id="totalCount">0</div>
-                <div class="text-gray-600 text-sm">总计</div>
+            <!-- Active Authors -->
+            <div>
+                <h3 class="text-sm font-bold text-zinc-900 dark:text-white mb-3 flex items-center gap-2">
+                    <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                    活跃作者
+                </h3>
+                <div id="authorList" class="space-y-1">
+                    <!-- Authors injected by JS -->
+                </div>
             </div>
-            <div class="bg-white rounded-lg shadow px-6 py-4 text-center">
-                <div class="text-3xl font-bold text-green-600" id="translatedCount">0</div>
-                <div class="text-gray-600 text-sm">已汉化</div>
+        </aside>
+
+        <!-- Main Grid -->
+        <main class="flex-grow">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-bold text-zinc-900 dark:text-white">
+                    浏览列表
+                </h2>
+                <div id="resultsCount" class="text-zinc-500 dark:text-zinc-400 text-xs"></div>
             </div>
-            <div class="bg-white rounded-lg shadow px-6 py-4 text-center">
-                <div class="text-3xl font-bold text-orange-600" id="untranslatedCount">0</div>
-                <div class="text-gray-600 text-sm">未汉化</div>
+
+            <div id="dramaGrid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                <!-- Cards will be injected here -->
             </div>
-        </div>
 
-        <div id="resultsCount" class="mb-4 text-gray-600"></div>
+            <!-- Empty State -->
+            <div id="noResults" class="hidden text-center py-16">
+                <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 dark:bg-zinc-800 mb-3">
+                    <svg class="w-6 h-6 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </div>
+                <h3 class="text-base font-medium text-zinc-900 dark:text-white mb-1">无搜索结果</h3>
+                <p class="text-sm text-zinc-500 dark:text-zinc-400">请尝试调整关键词</p>
+            </div>
+        </main>
+    </div>
 
-        <div id="dramaGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        </div>
-
-        <div id="noResults" class="hidden text-center py-12">
-            <div class="text-6xl mb-4">🔍</div>
-            <p class="text-xl text-gray-600">没有找到匹配的茶番剧</p>
-            <p class="text-gray-500 mt-2">尝试调整搜索条件或筛选器</p>
-        </div>
-    </main>
-
-    <footer class="bg-gray-800 text-white py-8 mt-12">
-        <div class="container mx-auto px-4 text-center">
-            <p class="text-gray-400">© 2026 东方 Project 茶番剧收藏 | 仅供学习交流使用</p>
-            <p class="text-gray-500 text-sm mt-2">所有内容版权归原作者所有</p>
+    <!-- Footer -->
+    <footer class="border-t border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 py-8 mt-auto">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-2">
+                <span class="text-sm font-semibold text-zinc-900 dark:text-white">TouhouCollect</span>
+                <span class="text-xs text-zinc-500 dark:text-zinc-500">© 2026</span>
+            </div>
+            <div class="flex gap-6 text-sm text-zinc-500 dark:text-zinc-400">
+                <a href="#" class="hover:text-red-600 transition-colors">关于</a>
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="hover:text-red-600 transition-colors">GitHub</a>
+            </div>
         </div>
     </footer>
 
