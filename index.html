@@ -308,11 +308,18 @@
                         <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
                         统计信息
                     </h3>
-                    <button onclick="showChartsModal()" 
-                            class="text-xs px-2 py-1 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors"
-                            title="查看统计图表">
-                        图表
-                    </button>
+                    <div class="flex gap-2">
+                        <button onclick="showTimelineModal()" 
+                                class="text-xs px-2 py-1 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 rounded hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors"
+                                title="时间轴">
+                            时间轴
+                        </button>
+                        <button onclick="showChartsModal()" 
+                                class="text-xs px-2 py-1 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors"
+                                title="查看统计图表">
+                            图表
+                        </button>
+                    </div>
                 </div>
                 <div class="space-y-2 text-sm">
                     <div class="flex justify-between">
@@ -436,13 +443,21 @@
                 </div>
                 
                 <!-- Detail Links -->
-                <div class="flex gap-3">
+                <div class="flex gap-3 mb-6">
                     <a id="detailTranslatedLink" href="" target="_blank" rel="noopener noreferrer" class="flex-1 flex items-center justify-center gap-1.5 py-2 rounded bg-red-600 hover:bg-red-700 text-white text-sm font-medium transition-colors hidden">
                         <span>观看汉化</span>
                     </a>
                     <a id="detailOriginalLink" href="" target="_blank" rel="noopener noreferrer" class="flex-1 flex items-center justify-center gap-1.5 py-2 rounded border border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-sm font-medium transition-colors">
                         <span>查看原版</span>
                     </a>
+                </div>
+                
+                <!-- Related Works -->
+                <div>
+                    <h3 class="text-sm font-bold text-zinc-900 dark:text-white mb-3">相关推荐</h3>
+                    <div id="relatedWorks" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <!-- Related works will be dynamically generated -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -635,6 +650,26 @@
                 
                 <div class="text-xs text-zinc-500 dark:text-zinc-400 pt-2 border-t border-gray-200 dark:border-zinc-800">
                     批量操作将影响当前筛选结果中的所有作品
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Timeline Modal -->
+    <div id="timelineModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-zinc-800 max-w-5xl w-full max-h-[90vh] overflow-y-auto">
+            <!-- Timeline Modal Header -->
+            <div class="flex items-center justify-between border-b border-gray-200 dark:border-zinc-800 px-6 py-4">
+                <h2 class="text-lg font-bold text-zinc-900 dark:text-white">作品发布时间轴</h2>
+                <button id="closeTimelineModal" class="p-1.5 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            
+            <!-- Timeline Modal Content -->
+            <div class="p-6">
+                <div id="timelineContent" class="space-y-6">
+                    <!-- Timeline items will be dynamically generated here -->
                 </div>
             </div>
         </div>
