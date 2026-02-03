@@ -391,6 +391,51 @@ window.selectAutocompleteSuggestion = function(type, value) {
     document.getElementById('autocompleteDropdown').classList.add('hidden');
 };
 
+// 处理图片加载失败
+function handleImageError(img, title) {
+    // 尝试从YouTube链接提取缩略图
+    if (img.src.includes('youtube.com')) {
+        const videoIdMatch = img.src.match(/[?&]v=([^&]+)/);
+        if (videoIdMatch && videoIdMatch[1]) {
+            const videoId = videoIdMatch[1];
+            const thumbnailUrl = `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`;
+            img.src = thumbnailUrl;
+            // 再次失败则使用默认图片
+            img.onerror = function() {
+                setDefaultImage(img, title);
+            };
+            return;
+        }
+    }
+    
+    // 使用默认图片
+    setDefaultImage(img, title);
+}
+
+// 设置默认图片
+function setDefaultImage(img, title) {
+    // 检查是否处于深色模式
+    const isDarkMode = document.documentElement.classList.contains('dark');
+    const bgColor = isDarkMode ? '374151' : 'f3f4f6';
+    const textColor = isDarkMode ? '9ca3af' : '6b7280';
+    const titleText = title.length > 20 ? title.substring(0, 20) + '...' : title;
+    
+    // 使用text2image API生成自定义占位图
+    const prompt = encodeURIComponent(`东方Project风格的抽象背景，${titleText}，简约设计`);
+    const imageUrl = `https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=${prompt}&image_size=landscape_16_9`;
+    
+    img.src = imageUrl;
+    img.alt = title;
+    
+    // 添加加载状态样式
+    img.classList.add('opacity-70');
+    
+    // 再次失败则使用纯色背景
+    img.onerror = function() {
+        img.src = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='225' viewBox='0 0 400 225'%3E%3Crect width='400' height='225' fill='%23${bgColor}'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='14' fill='%23${textColor}' text-anchor='middle' dominant-baseline='middle'%3E${encodeURIComponent(titleText)}%3C/text%3E%3C/svg%3E`;
+    };
+}
+
 function renderSidebar() {
     const { sortedTags, sortedAuthors, sortedTranslators } = getStats();
     const tagCloud = document.getElementById('tagCloud');
@@ -620,7 +665,7 @@ function renderDramas() {
     grid.innerHTML = filteredDramas.map(drama => `
         <div class="group bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-zinc-800 hover:border-red-500/30 dark:hover:border-red-500/30 transition-colors duration-200 flex flex-col overflow-hidden cursor-pointer" onclick="openDetail(${JSON.stringify(drama).replace(/"/g, '&quot;')})"><!-- Thumbnail Container -->
             <div class="relative aspect-video overflow-hidden bg-gray-100 dark:bg-zinc-800">
-                <img src="${drama.thumbnail}" alt="${drama.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.src='https://via.placeholder.com/400x225/1e293b/475569?text=No+Image'">
+                <img src="${drama.thumbnail}" alt="${drama.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="handleImageError(this, '${drama.title}')">
                 
                 <!-- Status Badge -->
                 <div class="absolute top-2 right-2">
@@ -916,6 +961,52 @@ function setupSubmitForm() {
         const formData = new FormData(submitForm);
         const formValues = Object.fromEntries(formData);
 
+        // Validate form data
+        const errors = [];
+
+        // Required fields
+        if (!formValues.title || formValues.title.trim() === '') {
+            errors.push('请输入标题');
+        }
+
+        if (!formValues.author || formValues.author.trim() === '') {
+            errors.push('请输入作者');
+        }
+
+        if (!formValues.originalUrl || formValues.originalUrl.trim() === '') {
+            errors.push('请输入原版链接');
+        }
+
+        // URL validation
+        const urlPattern = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
+        if (formValues.originalUrl && !urlPattern.test(formValues.originalUrl)) {
+            errors.push('原版链接格式不正确');
+        }
+
+        if (formValues.translatedUrl && !urlPattern.test(formValues.translatedUrl)) {
+            errors.push('汉化链接格式不正确');
+        }
+
+        if (formValues.thumbnail && !urlPattern.test(formValues.thumbnail)) {
+            errors.push('封面图链接格式不正确');
+        }
+
+        // Date validation
+        if (!formValues.dateAdded) {
+            errors.push('请选择添加日期');
+        } else {
+            const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+            if (!datePattern.test(formValues.dateAdded)) {
+                errors.push('日期格式不正确，请使用 YYYY-MM-DD 格式');
+            }
+        }
+
+        // Show errors if any
+        if (errors.length > 0) {
+            alert('请修正以下错误：\n' + errors.join('\n'));
+            return;
+        }
+
         // Process tags
         const tags = formValues.tags
             ? formValues.tags.split(',').map(tag => tag.trim()).filter(tag => tag)
@@ -924,25 +1015,31 @@ function setupSubmitForm() {
         // Create drama object
         const newDrama = {
             id: dramas.length + 1, // Auto-increment ID
-            title: formValues.title,
-            author: formValues.author,
-            translator: formValues.translator || '',
+            title: formValues.title.trim(),
+            author: formValues.author.trim(),
+            translator: formValues.translator ? formValues.translator.trim() : '',
             tags: tags,
             isTranslated: formValues.isTranslated === 'true',
-            originalUrl: formValues.originalUrl,
-            translatedUrl: formValues.translatedUrl || '',
-            description: formValues.description || '',
-            thumbnail: formValues.thumbnail || 'https://via.placeholder.com/400x225/1e293b/475569?text=No+Image',
+            originalUrl: formValues.originalUrl.trim(),
+            translatedUrl: formValues.translatedUrl ? formValues.translatedUrl.trim() : '',
+            description: formValues.description ? formValues.description.trim() : '',
+            thumbnail: formValues.thumbnail ? formValues.thumbnail.trim() : '',
             dateAdded: formValues.dateAdded
         };
 
-        // Generate JSON
-        const jsonString = JSON.stringify(newDrama, null, 2);
-        jsonCode.textContent = jsonString;
-        jsonOutput.classList.remove('hidden');
+        // Validate JSON generation
+        try {
+            // Generate JSON
+            const jsonString = JSON.stringify(newDrama, null, 2);
+            jsonCode.textContent = jsonString;
+            jsonOutput.classList.remove('hidden');
 
-        // Scroll to JSON output
-        jsonOutput.scrollIntoView({ behavior: 'smooth' });
+            // Scroll to JSON output
+            jsonOutput.scrollIntoView({ behavior: 'smooth' });
+        } catch (error) {
+            alert('生成JSON时出错：' + error.message);
+            return;
+        }
     });
 
     // Copy JSON to clipboard

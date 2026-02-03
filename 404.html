@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - 页面不存在</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#ef4444',
+                    },
+                },
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .bg-pattern {
+                background-image: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ef4444" fill-opacity="0.05"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-zinc-900 min-h-screen flex flex-col">
+    <!-- Theme Toggle -->
+    <script>
+        // Check for saved theme preference or system preference
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+
+    <!-- Header -->
+    <header class="bg-white dark:bg-zinc-900 border-b border-gray-200 dark:border-zinc-800 bg-pattern">
+        <div class="container mx-auto px-4 py-8">
+            <div class="max-w-3xl">
+                <h1 class="text-2xl font-bold text-zinc-900 dark:text-white mb-3 tracking-tight">
+                    东方 Project 茶番剧收藏
+                </h1>
+                <p class="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                    收集整理东方 Project 二次创作茶番剧。
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex items-center justify-center px-4 py-16">
+        <div class="text-center max-w-md">
+            <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-red-100 dark:bg-red-900/30 mb-6">
+                <svg class="w-12 h-12 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-.77-2.694-.77-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+            </div>
+            <h2 class="text-3xl font-bold text-zinc-900 dark:text-white mb-4">
+                404
+            </h2>
+            <h3 class="text-xl font-semibold text-zinc-800 dark:text-zinc-200 mb-4">
+                页面不存在
+            </h3>
+            <p class="text-zinc-600 dark:text-zinc-400 mb-8 leading-relaxed">
+                抱歉，您访问的页面不存在或已被移除。
+            </p>
+            <a href="/" class="inline-flex items-center px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded-md transition-colors">
+                返回首页
+                <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+            </a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-zinc-900 border-t border-gray-200 dark:border-zinc-800 py-8">
+        <div class="container mx-auto px-4">
+            <div class="text-center text-sm text-zinc-500 dark:text-zinc-400">
+                <p>© 2026 东方 Project 茶番剧收藏</p>
+                <p class="mt-2">本网站仅用于分享和交流，所有内容版权归原作者所有。</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
