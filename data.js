@@ -89,5 +89,83 @@ const dramas = [
         description: "与铃仙在酒吧的小故事",
         thumbnail: "https://free.picui.cn/free/2026/02/03/6981d4bbb3958.jpg",
         dateAdded: "2025-06-20"
+    },
+    {
+        id: 8,
+        title: "幻想怪異録",
+        author: "ラングリィ",
+        translator: "就是很一般",
+        tags: ["十六夜咲夜", "蕾米莉亚", "芙兰朵露", "博丽灵梦", "雾雨魔理沙", "水桥帕露西", "藤原妹红"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PLiZP5uzNOuqyLnTRnyb4ZT5LuoVlBxnyE",
+        translatedUrl: "https://space.bilibili.com/12621850/lists/5251532",
+        description: "",
+        thumbnail: "https://free.picui.cn/free/2026/02/03/69821120d59cb.jpg",
+        dateAdded: "2021-03-24"
+    },
+    {
+        id: 9,
+        title: "东方海龟汤",
+        author: "みつば【mituba】",
+        translator: "就是很一般",
+        tags: ["博丽灵梦", "雾雨魔理沙", "东风谷早苗", "十六夜咲夜", "魂魄妖梦"],
+        isTranslated: false,
+        originalUrl: "https://www.youtube.com/playlist?list=PLmc6eO_qCE4najTjdUCtXDa0Agx8tzDON",
+        translatedUrl: "https://space.bilibili.com/12621850/lists/6172948",
+        description: "大家听说过水平思考谜题吗？\n也被称为\"海龟汤\"呢。",
+        thumbnail: "https://free.picui.cn/free/2026/02/03/69821120e2371.jpg",
+        dateAdded: "2026-02-03"
+    },
+    {
+        id: 10,
+        title: "欠了100亿的我被蕾米莉亚用100元买下了",
+        author: "まったりさん",
+        translator: "就是很一般",
+        tags: ["蕾米莉亚", "芙兰朵露", "十六夜咲夜"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PLeIWlGzrNsQUtLMAjpHAw4AN2U9j6-xwn",
+        translatedUrl: "https://space.bilibili.com/12621850/lists/5962069",
+        description: "你听说过百元行的故事吗？",
+        thumbnail: "https://free.picui.cn/free/2026/02/03/698211211d834.jpg",
+        dateAdded: "2024-07-25"
+    },
+    {
+        id: 11,
+        title: "那些年我与小石头的恋爱攻防战",
+        author: "まったりさん",
+        translator: "就是很一般",
+        tags: ["古明地恋"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PL15bNp6jPcclvKXISMZ2fy8POHkEd3sSA",
+        translatedUrl: "https://space.bilibili.com/12621850/lists/5264242",
+        description: "短篇故事，大概100集",
+        thumbnail: "https://free.picui.cn/free/2026/02/03/6982161b1d56a.jpg",
+        dateAdded: "2024-07-31"
+    },
+    {
+        id: 12,
+        title: "创世神似乎在自己的世界挑战强者的样子",
+        author: "DAIゆっくり",
+        translator: "就是很一般",
+        tags: ["八云紫", "蕾米莉亚", "芙兰朵露", "博丽灵梦", "古明地恋", "十六夜咲夜", "犬走椛", "雾雨魔理沙", "洩矢诹访子", "西行寺幽幽子", "魂魄妖梦", "上白泽慧音", "秦心"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PL2h240ZAgAYEaeVipLKlDJaK-FswRZMuu",
+        translatedUrl: "https://space.bilibili.com/12621850/lists/5697073",
+        description: "非常有意思的战斗向茶剧",
+        thumbnail: "https://free.picui.cn/free/2026/02/03/6982161b519de.jpg",
+        dateAdded: "2024-03-07"
+    },
+    {
+        id: 13,
+        title: "冷漠读心男幻想入",
+        author: "白熱の親指",
+        translator: "就是很一般",
+        tags: ["博丽灵梦", "雾雨魔理沙", "露米娅", "东风谷早苗", "古明地恋", "八云紫"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/watch?v=boGrjUJpBVo",
+        translatedUrl: "https://space.bilibili.com/12621850/lists/5116051",
+        description: "一个在油管上比较有趣的幻想入系列，但有着原创主人公、角色暴力表现。觉得不OK的慎入",
+        thumbnail: "https://free.picui.cn/free/2026/02/03/6982161ba71d8.jpg",
+        dateAdded: "2024-12-06"
     }
 ];
