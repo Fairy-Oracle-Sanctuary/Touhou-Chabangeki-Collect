@@ -412,6 +412,249 @@ function init() {
     renderSidebar(); // Initial render of sidebar
     filterAndSortDramas();
     setupEventListeners();
+    setupSubmitForm();
+}
+
+function setupSubmitForm() {
+    const submitBtn = document.getElementById('submitBtn');
+    const submitModal = document.getElementById('submitModal');
+    const closeSubmitModal = document.getElementById('closeSubmitModal');
+    const cancelSubmit = document.getElementById('cancelSubmit');
+    const submitForm = document.getElementById('submitForm');
+    const jsonOutput = document.getElementById('jsonOutput');
+    const jsonCode = document.getElementById('jsonCode');
+    const copyJson = document.getElementById('copyJson');
+    const copySuccess = document.getElementById('copySuccess');
+
+    // Dropdown elements
+    const authorInput = document.getElementById('author');
+    const authorDropdownBtn = document.getElementById('authorDropdownBtn');
+    const authorDropdown = document.getElementById('authorDropdown');
+    const submitAuthorList = document.getElementById('submitAuthorList');
+    
+    const translatorInput = document.getElementById('translator');
+    const translatorDropdownBtn = document.getElementById('translatorDropdownBtn');
+    const translatorDropdown = document.getElementById('translatorDropdown');
+    const submitTranslatorList = document.getElementById('submitTranslatorList');
+    
+    const tagInput = document.getElementById('tags');
+    const tagDropdownBtn = document.getElementById('tagDropdownBtn');
+    const tagDropdown = document.getElementById('tagDropdown');
+    const submitTagList = document.getElementById('submitTagList');
+
+    // Extract unique authors, translators, and tags from existing dramas
+    function extractUniqueData() {
+        const authors = new Set();
+        const translators = new Set();
+        const tags = new Set();
+
+        dramas.forEach(drama => {
+            authors.add(drama.author);
+            if (drama.translator) {
+                translators.add(drama.translator);
+            }
+            drama.tags.forEach(tag => {
+                tags.add(tag);
+            });
+        });
+
+        return {
+            authors: Array.from(authors).sort(),
+            translators: Array.from(translators).sort(),
+            tags: Array.from(tags).sort()
+        };
+    }
+
+    // Populate dropdowns
+    function populateDropdowns() {
+        const { authors, translators, tags } = extractUniqueData();
+
+        // Populate authors
+        submitAuthorList.innerHTML = authors.map(author => `
+            <li>
+                <button type="button" class="w-full text-left px-3 py-1.5 text-xs hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors" data-author="${author}">
+                    ${author}
+                </button>
+            </li>
+        `).join('');
+
+        // Populate translators
+        submitTranslatorList.innerHTML = translators.map(translator => `
+            <li>
+                <button type="button" class="w-full text-left px-3 py-1.5 text-xs hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors" data-translator="${translator}">
+                    ${translator}
+                </button>
+            </li>
+        `).join('');
+
+        // Populate tags
+        submitTagList.innerHTML = tags.map(tag => `
+            <button type="button" class="px-2 py-1 text-xs rounded bg-gray-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-red-100 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 transition-colors" data-tag="${tag}">
+                #${tag}
+            </button>
+        `).join('');
+    }
+
+    // Toggle dropdown
+    function toggleDropdown(dropdown) {
+        dropdown.classList.toggle('hidden');
+    }
+
+    // Close all dropdowns
+    function closeAllDropdowns() {
+        authorDropdown.classList.add('hidden');
+        translatorDropdown.classList.add('hidden');
+        tagDropdown.classList.add('hidden');
+    }
+
+    // Open submit modal
+    submitBtn.addEventListener('click', () => {
+        submitModal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        // Populate dropdowns when modal opens
+        populateDropdowns();
+    });
+
+    // Close submit modal
+    function closeSubmitModalFunc() {
+        submitModal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+        // Reset form and JSON output
+        submitForm.reset();
+        jsonOutput.classList.add('hidden');
+        closeAllDropdowns();
+    }
+
+    closeSubmitModal.addEventListener('click', closeSubmitModalFunc);
+    cancelSubmit.addEventListener('click', closeSubmitModalFunc);
+
+    // Close submit modal when clicking outside
+    submitModal.addEventListener('click', (e) => {
+        if (e.target === submitModal) {
+            closeSubmitModalFunc();
+        }
+    });
+
+    // Author dropdown
+    authorDropdownBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleDropdown(authorDropdown);
+        translatorDropdown.classList.add('hidden');
+        tagDropdown.classList.add('hidden');
+    });
+
+    // Translator dropdown
+    translatorDropdownBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleDropdown(translatorDropdown);
+        authorDropdown.classList.add('hidden');
+        tagDropdown.classList.add('hidden');
+    });
+
+    // Tag dropdown
+    tagDropdownBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleDropdown(tagDropdown);
+        authorDropdown.classList.add('hidden');
+        translatorDropdown.classList.add('hidden');
+    });
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!authorDropdown.contains(e.target) && !authorDropdownBtn.contains(e.target)) {
+            authorDropdown.classList.add('hidden');
+        }
+        if (!translatorDropdown.contains(e.target) && !translatorDropdownBtn.contains(e.target)) {
+            translatorDropdown.classList.add('hidden');
+        }
+        if (!tagDropdown.contains(e.target) && !tagDropdownBtn.contains(e.target)) {
+            tagDropdown.classList.add('hidden');
+        }
+    });
+
+    // Handle author selection
+    submitAuthorList.addEventListener('click', (e) => {
+        if (e.target.tagName === 'BUTTON') {
+            const author = e.target.dataset.author;
+            authorInput.value = author;
+            authorDropdown.classList.add('hidden');
+        }
+    });
+
+    // Handle translator selection
+    submitTranslatorList.addEventListener('click', (e) => {
+        if (e.target.tagName === 'BUTTON') {
+            const translator = e.target.dataset.translator;
+            translatorInput.value = translator;
+            translatorDropdown.classList.add('hidden');
+        }
+    });
+
+    // Handle tag selection
+    submitTagList.addEventListener('click', (e) => {
+        if (e.target.tagName === 'BUTTON') {
+            const tag = e.target.dataset.tag;
+            const currentTags = tagInput.value
+                ? tagInput.value.split(',').map(t => t.trim()).filter(t => t)
+                : [];
+            
+            if (!currentTags.includes(tag)) {
+                currentTags.push(tag);
+                tagInput.value = currentTags.join(', ');
+            }
+        }
+    });
+
+    // Handle form submission
+    submitForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        // Get form data
+        const formData = new FormData(submitForm);
+        const formValues = Object.fromEntries(formData);
+
+        // Process tags
+        const tags = formValues.tags
+            ? formValues.tags.split(',').map(tag => tag.trim()).filter(tag => tag)
+            : [];
+
+        // Create drama object
+        const newDrama = {
+            id: dramas.length + 1, // Auto-increment ID
+            title: formValues.title,
+            author: formValues.author,
+            translator: formValues.translator || '',
+            tags: tags,
+            isTranslated: formValues.isTranslated === 'true',
+            originalUrl: formValues.originalUrl,
+            translatedUrl: formValues.translatedUrl || '',
+            description: formValues.description || '',
+            thumbnail: formValues.thumbnail || 'https://via.placeholder.com/400x225/1e293b/475569?text=No+Image',
+            dateAdded: formValues.dateAdded
+        };
+
+        // Generate JSON
+        const jsonString = JSON.stringify(newDrama, null, 2);
+        jsonCode.textContent = jsonString;
+        jsonOutput.classList.remove('hidden');
+
+        // Scroll to JSON output
+        jsonOutput.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // Copy JSON to clipboard
+    copyJson.addEventListener('click', () => {
+        const textToCopy = jsonCode.textContent;
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            // Show success message
+            copySuccess.classList.remove('hidden');
+            setTimeout(() => {
+                copySuccess.classList.add('hidden');
+            }, 2000);
+        }).catch(err => {
+            console.error('Failed to copy JSON:', err);
+        });
+    });
 }
 
 document.addEventListener('DOMContentLoaded', init);
