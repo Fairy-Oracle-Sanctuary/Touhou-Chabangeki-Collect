@@ -162,7 +162,9 @@ function generateTimeline() {
                         <h3 class="text-lg font-bold text-zinc-900 dark:text-white mb-3">${period}</h3>
                         <div class="space-y-3">
                             ${periodDramas.map(drama => `
-                                <div class="bg-gray-50 dark:bg-zinc-800 rounded-lg p-3 hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors cursor-pointer" onclick="openDetail(${JSON.stringify(drama).replace(/"/g, '&quot;')})">
+                                <div class="bg-gray-50 dark:bg-zinc-800 rounded-lg p-3 hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors cursor-pointer" 
+                                     data-drama="${btoa(unescape(encodeURIComponent(JSON.stringify(drama))))}"
+                                     onclick="openDetailFromData(this)">
                                     <div class="flex items-start gap-3">
                                         <img src="${drama.thumbnail}" alt="${drama.title}" class="w-16 h-12 object-cover rounded">
                                         <div class="flex-1">
@@ -234,7 +236,9 @@ function renderRelatedWorks(currentDrama) {
     }
     
     relatedWorksContainer.innerHTML = relatedWorks.map(drama => `
-        <div class="bg-gray-50 dark:bg-zinc-800 rounded-lg p-3 hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors cursor-pointer" onclick="openDetail(${JSON.stringify(drama).replace(/"/g, '&quot;')})">
+        <div class="bg-gray-50 dark:bg-zinc-800 rounded-lg p-3 hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors cursor-pointer" 
+             data-drama="${btoa(unescape(encodeURIComponent(JSON.stringify(drama))))}"
+             onclick="openDetailFromData(this)">
             <div class="flex items-start gap-2">
                 <img src="${drama.thumbnail}" alt="${drama.title}" class="w-12 h-9 object-cover rounded">
                 <div class="flex-1 min-w-0">
@@ -1136,19 +1140,28 @@ function setDefaultImage(img, title) {
     const textColor = isDarkMode ? '9ca3af' : '6b7280';
     const titleText = title.length > 20 ? title.substring(0, 20) + '...' : title;
     
-    // 使用text2image API生成自定义占位图
-    const prompt = encodeURIComponent(`东方Project风格的抽象背景，${titleText}，简约设计`);
-    const imageUrl = `https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=${prompt}&image_size=landscape_16_9`;
+    // 防止无限循环
+    if (img.dataset.fallbackAttempted) {
+        img.onerror = null; // 清除错误处理器
+        img.src = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='225' viewBox='0 0 400 225'%3E%3Crect width='400' height='225' fill='%23${bgColor}'/%3E%3Ctext x='50%25' y='50%25' font-family='system-ui,-apple-system,sans-serif' font-size='16' font-weight='500' fill='%23${textColor}' text-anchor='middle' dominant-baseline='middle'%3E${encodeURIComponent(titleText)}%3C/text%3E%3C/svg%3E`;
+        return;
+    }
     
-    img.src = imageUrl;
+    img.dataset.fallbackAttempted = 'true';
+    
+    // 第一层fallback：尝试使用通用的占位图服务
+    const fallbackUrl = `https://picsum.photos/seed/${encodeURIComponent(title)}/400/225.jpg`;
+    img.src = fallbackUrl;
     img.alt = title;
     
     // 添加加载状态样式
     img.classList.add('opacity-70');
     
-    // 再次失败则使用纯色背景
+    // 第二层fallback：如果通用服务也失败，使用SVG占位图
     img.onerror = function() {
-        img.src = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='225' viewBox='0 0 400 225'%3E%3Crect width='400' height='225' fill='%23${bgColor}'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='14' fill='%23${textColor}' text-anchor='middle' dominant-baseline='middle'%3E${encodeURIComponent(titleText)}%3C/text%3E%3C/svg%3E`;
+        img.onerror = null; // 防止无限循环
+        img.classList.remove('opacity-70');
+        img.src = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='225' viewBox='0 0 400 225'%3E%3Crect width='400' height='225' fill='%23${bgColor}'/%3E%3Ctext x='50%25' y='50%25' font-family='system-ui,-apple-system,sans-serif' font-size='16' font-weight='500' fill='%23${textColor}' text-anchor='middle' dominant-baseline='middle'%3E${encodeURIComponent(titleText)}%3C/text%3E%3C/svg%3E`;
     };
 }
 
@@ -1359,15 +1372,47 @@ function openDetail(drama) {
     detailOriginalLink.href = drama.originalUrl;
     
     // Add favorite button to detail links
-    // Remove any existing favorite button first
+    // Remove any existing favorite buttons first (more thorough cleanup)
     const detailLinksContainer = detailTranslatedLink.parentElement;
-    const existingFavoriteButton = detailLinksContainer.querySelector('button[onclick*="toggleFavorite"]');
-    if (existingFavoriteButton) {
-        existingFavoriteButton.remove();
-    }
+    
+    // Remove all buttons that contain "收藏" text or have favorite functionality
+    const existingButtons = detailLinksContainer.querySelectorAll('button');
+    existingButtons.forEach(button => {
+        const buttonText = button.textContent || button.innerText;
+        if (buttonText && (buttonText.includes('收藏') || buttonText.includes('添加') || buttonText.includes('取消'))) {
+            button.remove();
+        }
+    });
+    
+    // Also remove any elements with data-favorite attribute (if we add it in future)
+    const favoriteElements = detailLinksContainer.querySelectorAll('[data-favorite]');
+    favoriteElements.forEach(element => element.remove());
     
     const favoriteButton = document.createElement('button');
-    favoriteButton.onclick = () => toggleFavorite(drama.id);
+    favoriteButton.setAttribute('data-favorite', 'true'); // Add marker for future cleanup
+    favoriteButton.onclick = (e) => {
+        e.stopPropagation(); // Prevent event bubbling
+        toggleFavorite(drama.id);
+        
+        // Update button UI after toggle
+        const isNowFavorite = isFavorite(drama.id);
+        favoriteButton.className = `flex items-center justify-center gap-1.5 py-2 px-4 rounded border transition-colors ${
+            isNowFavorite 
+            ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30' 
+            : 'border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-red-600 dark:hover:text-red-400'
+        }`;
+        favoriteButton.innerHTML = `
+            <svg class="w-4 h-4 ${isNowFavorite ? 'fill-current' : ''}" fill="${isNowFavorite ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+            </svg>
+            <span>${isNowFavorite ? '取消收藏' : '添加收藏'}</span>
+        `;
+        favoriteButton.title = isNowFavorite ? '取消收藏' : '添加收藏';
+        
+        // Update stats and sidebar
+        updateStats();
+        renderSidebar();
+    };
     favoriteButton.className = `flex items-center justify-center gap-1.5 py-2 px-4 rounded border transition-colors ${
         isFavorite(drama.id) 
         ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30' 
@@ -1395,6 +1440,22 @@ function closeDetail() {
     const detailPage = document.getElementById('detailPage');
     detailPage.classList.add('hidden');
     document.body.style.overflow = 'auto';
+}
+
+// Safe function to open detail from data attribute
+function openDetailFromData(element) {
+    try {
+        const dramaData = element.dataset.drama;
+        if (!dramaData) {
+            console.error('No drama data found');
+            return;
+        }
+        
+        const drama = JSON.parse(decodeURIComponent(escape(atob(dramaData))));
+        openDetail(drama);
+    } catch (error) {
+        console.error('Error parsing drama data:', error);
+    }
 }
 
 function renderDramas() {
@@ -1433,7 +1494,8 @@ function renderDramas() {
         grid.innerHTML = filteredDramas.map((drama, index) => `
             <div class="drama-card group bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-zinc-800 hover:border-red-500/30 dark:hover:border-red-500/30 transition-colors duration-200 flex flex-col overflow-hidden cursor-pointer fade-in" 
                  style="animation-delay: ${index * 50}ms"
-                 onclick="openDetail(${JSON.stringify(drama).replace(/"/g, '&quot;')})">
+                 data-drama="${btoa(unescape(encodeURIComponent(JSON.stringify(drama))))}"
+                 onclick="openDetailFromData(this)">
                 <!-- Thumbnail Container -->
                 <div class="relative aspect-video overflow-hidden bg-gray-100 dark:bg-zinc-800">
                     <img src="${drama.thumbnail}" alt="${drama.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="handleImageError(this, '${drama.title}')">
