@@ -9,7 +9,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLxioisTzjlBa1NoKDTH1nkAHgOwAHzhma",
         translatedUrl: "https://space.bilibili.com/12621850/lists/4882608",
         description: "你是我活过的证明。",
-        thumbnail: "https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEQpZZpgG2plLStQynYfxcTrlOQywABP24AAgUdAAKqLghUpepPPzAbNbs4BA.jpg",
+        thumbnail: "https://free.picui.cn/free/2026/02/02/69806ad0158cd.jpg",
         dateAdded: "2023-06-18"
     },
     {
