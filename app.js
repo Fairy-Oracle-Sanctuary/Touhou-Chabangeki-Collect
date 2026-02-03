@@ -107,12 +107,22 @@ window.toggleFilter = function(type, value) {
     // We need a robust check to avoid partial matches
     const regex = new RegExp(`${type}="${value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`, 'i');
     
-    if (regex.test(currentInput)) {
-        // Remove filter
-        currentInput = currentInput.replace(regex, '').replace(/\s+/g, ' ').trim();
-    } else {
-        // Add filter
+    // For artists, ensure only one is selected at a time
+    if (type === 'artist') {
+        // Remove all existing artist filters
+        currentInput = currentInput.replace(/artist="[^"]+"/gi, '').replace(/\s+/g, ' ').trim();
+        
+        // Add the new artist filter
         currentInput = `${currentInput} ${filterString}`.trim();
+    } else {
+        // For other filter types (tags), keep the existing toggle behavior
+        if (regex.test(currentInput)) {
+            // Remove filter
+            currentInput = currentInput.replace(regex, '').replace(/\s+/g, ' ').trim();
+        } else {
+            // Add filter
+            currentInput = `${currentInput} ${filterString}`.trim();
+        }
     }
 
     searchInput.value = currentInput;
@@ -306,18 +316,13 @@ function renderDramas() {
     resultsCount.textContent = `显示 ${filteredDramas.length} 个结果`;
 
     grid.innerHTML = filteredDramas.map(drama => `
-        <div class="group bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-zinc-800 hover:border-red-500/30 dark:hover:border-red-500/30 transition-colors duration-200 flex flex-col overflow-hidden cursor-pointer" onclick="openDetail(${JSON.stringify(drama).replace(/"/g, '&quot;')})">
-            <!-- Thumbnail Container -->
+        <div class="group bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-zinc-800 hover:border-red-500/30 dark:hover:border-red-500/30 transition-colors duration-200 flex flex-col overflow-hidden cursor-pointer" onclick="openDetail(${JSON.stringify(drama).replace(/"/g, '&quot;')})"><!-- Thumbnail Container -->
             <div class="relative aspect-video overflow-hidden bg-gray-100 dark:bg-zinc-800">
                 <img src="${drama.thumbnail}" alt="${drama.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.src='https://via.placeholder.com/400x225/1e293b/475569?text=No+Image'">
                 
                 <!-- Status Badge -->
                 <div class="absolute top-2 right-2">
-                    <span class="px-2 py-0.5 rounded text-[10px] font-medium shadow-sm ${
-                        drama.isTranslated 
-                        ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800' 
-                        : 'bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-400 border border-amber-200 dark:border-amber-800'
-                    }">
+                    <span class="px-2 py-0.5 rounded text-[10px] font-medium shadow-sm ${drama.isTranslated ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-400 border border-amber-200 dark:border-amber-800'}">
                         ${drama.isTranslated ? '已汉化' : '未汉化'}
                     </span>
                 </div>
