@@ -115,6 +115,401 @@ window.showFavoritesOnly = function() {
     document.getElementById('dramaGrid').scrollIntoView({ behavior: 'smooth' });
 };
 
+// --- Batch Operations ---
+// Show batch actions modal
+window.showBatchActionsModal = function() {
+    const batchActionsModal = document.getElementById('batchActionsModal');
+    batchActionsModal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+};
+
+// Batch favorite all filtered items
+function batchFavoriteAll() {
+    const favorites = getFavorites();
+    const newFavorites = new Set(favorites);
+    
+    filteredDramas.forEach(drama => {
+        newFavorites.add(drama.id);
+    });
+    
+    const updatedFavorites = Array.from(newFavorites);
+    saveFavorites(updatedFavorites);
+    updateStats();
+    renderDramas();
+    renderSidebar();
+    
+    // Show success message
+    showBatchOperationMessage(`已收藏 ${filteredDramas.length} 个作品`);
+}
+
+// Batch unfavorite all filtered items
+function batchUnfavoriteAll() {
+    const favorites = getFavorites();
+    const filteredIds = new Set(filteredDramas.map(d => d.id));
+    const updatedFavorites = favorites.filter(id => !filteredIds.has(id));
+    
+    saveFavorites(updatedFavorites);
+    updateStats();
+    renderDramas();
+    renderSidebar();
+    
+    // Show success message
+    showBatchOperationMessage(`已取消收藏 ${filteredDramas.length} 个作品`);
+}
+
+// Export favorites as JSON
+function exportFavorites() {
+    const favorites = getFavorites();
+    const favoriteDramas = dramas.filter(drama => favorites.includes(drama.id));
+    
+    const exportData = {
+        exportDate: new Date().toISOString(),
+        totalCount: favoriteDramas.length,
+        favorites: favoriteDramas
+    };
+    
+    const jsonString = JSON.stringify(exportData, null, 2);
+    
+    // Create download link
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `touhou-favorites-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    showBatchOperationMessage(`已导出 ${favoriteDramas.length} 个收藏作品`);
+}
+
+// Show batch operation message
+function showBatchOperationMessage(message) {
+    const msgDiv = document.createElement('div');
+    msgDiv.className = 'fixed top-4 right-4 bg-emerald-500 text-white px-4 py-2 rounded-md shadow-lg z-50 fade-in';
+    msgDiv.textContent = message;
+    document.body.appendChild(msgDiv);
+    
+    setTimeout(() => {
+        msgDiv.remove();
+    }, 3000);
+}
+
+// --- Personal Settings ---
+let userSettings = {
+    cardLayout: 'grid',
+    itemsPerPage: 'all',
+    defaultSort: 'date-desc',
+    enableAnimations: true
+};
+
+// Load user settings
+function loadUserSettings() {
+    try {
+        const saved = localStorage.getItem('touhou-settings');
+        if (saved) {
+            userSettings = { ...userSettings, ...JSON.parse(saved) };
+        }
+        applySettings();
+    } catch (error) {
+        console.error('Error loading settings:', error);
+    }
+}
+
+// Save user settings
+function saveUserSettings() {
+    try {
+        localStorage.setItem('touhou-settings', JSON.stringify(userSettings));
+    } catch (error) {
+        console.error('Error saving settings:', error);
+        alert('无法保存设置，可能是存储空间不足。');
+    }
+}
+
+// Apply settings to UI
+function applySettings() {
+    // Apply card layout
+    const grid = document.getElementById('dramaGrid');
+    if (grid) {
+        if (userSettings.cardLayout === 'list') {
+            grid.className = 'space-y-4';
+        } else {
+            grid.className = 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6';
+        }
+    }
+    
+    // Apply animations
+    if (!userSettings.enableAnimations) {
+        document.body.classList.add('no-animations');
+    } else {
+        document.body.classList.remove('no-animations');
+    }
+    
+    // Apply default sort
+    const sortBy = document.getElementById('sortBy');
+    if (sortBy && userSettings.defaultSort) {
+        sortBy.value = userSettings.defaultSort;
+    }
+}
+
+// Show settings modal
+window.showSettingsModal = function() {
+    const settingsModal = document.getElementById('settingsModal');
+    settingsModal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    
+    // Load current settings into form
+    document.querySelector(`input[name="cardLayout"][value="${userSettings.cardLayout}"]`).checked = true;
+    document.getElementById('itemsPerPage').value = userSettings.itemsPerPage;
+    document.getElementById('defaultSort').value = userSettings.defaultSort;
+    document.getElementById('enableAnimations').checked = userSettings.enableAnimations;
+};
+
+// --- Statistics Charts ---
+let translationChartInstance = null;
+let monthlyChartInstance = null;
+let authorsChartInstance = null;
+let translatorsChartInstance = null;
+
+// Show charts modal
+window.showChartsModal = function() {
+    const chartsModal = document.getElementById('chartsModal');
+    chartsModal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    
+    // Initialize charts after modal is visible
+    setTimeout(() => {
+        initializeCharts();
+    }, 100);
+};
+
+// Initialize all charts
+function initializeCharts() {
+    const isDarkMode = document.documentElement.classList.contains('dark');
+    const textColor = isDarkMode ? '#e5e7eb' : '#374151';
+    const gridColor = isDarkMode ? '#374151' : '#e5e7eb';
+    
+    // Destroy existing charts
+    if (translationChartInstance) translationChartInstance.destroy();
+    if (monthlyChartInstance) monthlyChartInstance.destroy();
+    if (authorsChartInstance) authorsChartInstance.destroy();
+    if (translatorsChartInstance) translatorsChartInstance.destroy();
+    
+    // Translation Progress Pie Chart
+    const translationCtx = document.getElementById('translationChart').getContext('2d');
+    const translatedCount = dramas.filter(d => d.isTranslated).length;
+    const untranslatedCount = dramas.length - translatedCount;
+    const percentage = Math.round((translatedCount / dramas.length) * 100);
+    
+    document.getElementById('translationPercentage').textContent = percentage + '%';
+    
+    translationChartInstance = new Chart(translationCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['已汉化', '未汉化'],
+            datasets: [{
+                data: [translatedCount, untranslatedCount],
+                backgroundColor: ['#10b981', '#f59e0b'],
+                borderColor: isDarkMode ? '#1f2937' : '#ffffff',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: { color: textColor }
+                }
+            }
+        }
+    });
+    
+    // Monthly Trend Line Chart
+    const monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
+    const monthlyData = getMonthlyData();
+    
+    monthlyChartInstance = new Chart(monthlyCtx, {
+        type: 'line',
+        data: {
+            labels: monthlyData.labels,
+            datasets: [{
+                label: '发布作品',
+                data: monthlyData.data,
+                borderColor: '#ef4444',
+                backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                tension: 0.4,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: textColor },
+                    grid: { color: gridColor }
+                },
+                y: {
+                    ticks: { color: textColor, stepSize: 1 },
+                    grid: { color: gridColor },
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    
+    // Top Authors Bar Chart
+    const authorsCtx = document.getElementById('authorsChart').getContext('2d');
+    const authorData = getTopAuthorsData();
+    
+    authorsChartInstance = new Chart(authorsCtx, {
+        type: 'bar',
+        data: {
+            labels: authorData.labels,
+            datasets: [{
+                label: '作品数量',
+                data: authorData.data,
+                backgroundColor: '#3b82f6',
+                borderColor: isDarkMode ? '#1e40af' : '#1d4ed8',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'y',
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: textColor, stepSize: 1 },
+                    grid: { color: gridColor },
+                    beginAtZero: true
+                },
+                y: {
+                    ticks: { color: textColor },
+                    grid: { display: false }
+                }
+            }
+        }
+    });
+    
+    // Top Translators Bar Chart
+    const translatorsCtx = document.getElementById('translatorsChart').getContext('2d');
+    const translatorData = getTopTranslatorsData();
+    
+    translatorsChartInstance = new Chart(translatorsCtx, {
+        type: 'bar',
+        data: {
+            labels: translatorData.labels,
+            datasets: [{
+                label: '汉化作品数量',
+                data: translatorData.data,
+                backgroundColor: '#8b5cf6',
+                borderColor: isDarkMode ? '#6d28d9' : '#7c3aed',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'y',
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: textColor, stepSize: 1 },
+                    grid: { color: gridColor },
+                    beginAtZero: true
+                },
+                y: {
+                    ticks: { color: textColor },
+                    grid: { display: false }
+                }
+            }
+        }
+    });
+}
+
+// Get monthly data for trend chart
+function getMonthlyData() {
+    const monthlyCount = {};
+    const currentYear = new Date().getFullYear();
+    
+    dramas.forEach(drama => {
+        const date = new Date(drama.dateAdded);
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1;
+        const key = `${year}-${month.toString().padStart(2, '0')}`;
+        
+        if (!monthlyCount[key]) {
+            monthlyCount[key] = 0;
+        }
+        monthlyCount[key]++;
+    });
+    
+    // Sort by date and get last 6 months
+    const sortedMonths = Object.keys(monthlyCount).sort();
+    const lastSixMonths = sortedMonths.slice(-6);
+    
+    return {
+        labels: lastSixMonths,
+        data: lastSixMonths.map(month => monthlyCount[month] || 0)
+    };
+}
+
+// Get top authors data
+function getTopAuthorsData() {
+    const authorCounts = {};
+    
+    dramas.forEach(drama => {
+        authorCounts[drama.author] = (authorCounts[drama.author] || 0) + 1;
+    });
+    
+    const sortedAuthors = Object.entries(authorCounts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 8); // Top 8 authors
+    
+    return {
+        labels: sortedAuthors.map(([author]) => author),
+        data: sortedAuthors.map(([, count]) => count)
+    };
+}
+
+// Get top translators data
+function getTopTranslatorsData() {
+    const translatorCounts = {};
+    
+    dramas.forEach(drama => {
+        if (drama.isTranslated && drama.translator) {
+            translatorCounts[drama.translator] = (translatorCounts[drama.translator] || 0) + 1;
+        }
+    });
+    
+    const sortedTranslators = Object.entries(translatorCounts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 8); // Top 8 translators
+    
+    return {
+        labels: sortedTranslators.map(([translator]) => translator),
+        data: sortedTranslators.map(([, count]) => count)
+    };
+}
+
 // --- Keyboard Shortcuts ---
 function setupKeyboardShortcuts() {
     document.addEventListener('keydown', (e) => {
@@ -1008,6 +1403,112 @@ function setupEventListeners() {
         observer.observe(sortBy, { attributes: true, attributeFilter: ['value'] });
     }
     
+    // Batch actions modal events
+    const batchActionsBtn = document.getElementById('batchActionsBtn');
+    const batchActionsModal = document.getElementById('batchActionsModal');
+    const closeBatchActionsModal = document.getElementById('closeBatchActionsModal');
+    const batchFavoriteBtn = document.getElementById('batchFavoriteBtn');
+    const batchUnfavoriteBtn = document.getElementById('batchUnfavoriteBtn');
+    const exportFavoritesBtn = document.getElementById('exportFavoritesBtn');
+    
+    batchActionsBtn.addEventListener('click', showBatchActionsModal);
+    
+    closeBatchActionsModal.addEventListener('click', () => {
+        batchActionsModal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    });
+    
+    batchActionsModal.addEventListener('click', (e) => {
+        if (e.target === batchActionsModal) {
+            batchActionsModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+    });
+    
+    batchFavoriteBtn.addEventListener('click', () => {
+        batchActionsModal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+        batchFavoriteAll();
+    });
+    
+    batchUnfavoriteBtn.addEventListener('click', () => {
+        batchActionsModal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+        batchUnfavoriteAll();
+    });
+    
+    exportFavoritesBtn.addEventListener('click', () => {
+        batchActionsModal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+        exportFavorites();
+    });
+    
+    // Settings modal events
+    const settingsBtn = document.getElementById('settingsBtn');
+    const settingsModal = document.getElementById('settingsModal');
+    const closeSettingsModal = document.getElementById('closeSettingsModal');
+    const saveSettingsBtn = document.getElementById('saveSettings');
+    const resetSettingsBtn = document.getElementById('resetSettings');
+    
+    settingsBtn.addEventListener('click', showSettingsModal);
+    
+    closeSettingsModal.addEventListener('click', () => {
+        settingsModal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    });
+    
+    settingsModal.addEventListener('click', (e) => {
+        if (e.target === settingsModal) {
+            settingsModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+    });
+    
+    saveSettingsBtn.addEventListener('click', () => {
+        // Get form values
+        userSettings.cardLayout = document.querySelector('input[name="cardLayout"]:checked').value;
+        userSettings.itemsPerPage = document.getElementById('itemsPerPage').value;
+        userSettings.defaultSort = document.getElementById('defaultSort').value;
+        userSettings.enableAnimations = document.getElementById('enableAnimations').checked;
+        
+        // Save and apply settings
+        saveUserSettings();
+        applySettings();
+        
+        // Close modal and show success message
+        settingsModal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+        
+        // Show success feedback
+        const successMsg = document.createElement('div');
+        successMsg.className = 'fixed top-4 right-4 bg-emerald-500 text-white px-4 py-2 rounded-md shadow-lg z-50 fade-in';
+        successMsg.textContent = '设置已保存';
+        document.body.appendChild(successMsg);
+        
+        setTimeout(() => {
+            successMsg.remove();
+        }, 3000);
+    });
+    
+    resetSettingsBtn.addEventListener('click', () => {
+        // Reset to defaults
+        userSettings = {
+            cardLayout: 'grid',
+            itemsPerPage: 'all',
+            defaultSort: 'date-desc',
+            enableAnimations: true
+        };
+        
+        // Update form
+        document.querySelector('input[name="cardLayout"][value="grid"]').checked = true;
+        document.getElementById('itemsPerPage').value = 'all';
+        document.getElementById('defaultSort').value = 'date-desc';
+        document.getElementById('enableAnimations').checked = true;
+        
+        // Apply defaults
+        applySettings();
+    });
+    
     // Shortcuts modal events
     const shortcutsBtn = document.getElementById('shortcutsBtn');
     const shortcutsModal = document.getElementById('shortcutsModal');
@@ -1026,6 +1527,22 @@ function setupEventListeners() {
     shortcutsModal.addEventListener('click', (e) => {
         if (e.target === shortcutsModal) {
             shortcutsModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+    });
+    
+    // Charts modal events
+    const chartsModal = document.getElementById('chartsModal');
+    const closeChartsModal = document.getElementById('closeChartsModal');
+    
+    closeChartsModal.addEventListener('click', () => {
+        chartsModal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    });
+    
+    chartsModal.addEventListener('click', (e) => {
+        if (e.target === chartsModal) {
+            chartsModal.classList.add('hidden');
             document.body.style.overflow = 'auto';
         }
     });
@@ -1054,6 +1571,9 @@ function init() {
         // Add fade-in animation to body
         document.body.classList.add('fade-in');
         document.body.style.opacity = '1';
+        
+        // Load user settings first
+        loadUserSettings();
         
         initTheme();
         updateStats();
