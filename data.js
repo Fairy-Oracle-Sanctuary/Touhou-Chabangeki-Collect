@@ -22,7 +22,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLxioisTzjlBZ63LCFxhe0uDIma4lgCMfC",
         translatedUrl: "https://space.bilibili.com/12621850/lists/5066012",
         description: "死而未绝，络续不绝之缘。",
-        thumbnail: "https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEQqOlpgXfhLwyRXfUQpXQ4KX38jKPCyAACaR0AAqouEFSZ0O7DS7DlHzgE.jpg",
+        thumbnail: "https://free.picui.cn/free/2026/02/03/6981d3f9b3b3c.jpg",
         dateAdded: "2024-08-24"
     },
     {
@@ -35,7 +35,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLxioisTzjlBaXcAkHQes8-dkINhSlG-Aj",
         translatedUrl: "https://space.bilibili.com/12621850/lists/6561665",
         description: "一群变态似乎在拯救世界。",
-        thumbnail: "https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEQqOppgXgeKPti5matgwUJFx2qzjWj0wACax0AAqouEFRIAzAUCiA6MTgE.jpg",
+        thumbnail: "https://free.picui.cn/free/2026/02/03/6981d3f9c7f83.jpg",
         dateAdded: "2025-08-17"
     },
     {
@@ -48,7 +48,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLxioisTzjlBYrCViDpMBfFOEy1R4xNi1t",
         translatedUrl: "",
         description: "夜明けまでに、呪いを解く方法を思い出せ。",
-        thumbnail: "https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEQqjVpgbADH0ON8HTfSEPGyRRj2ywCbwACzBgAAuvVCVT_p9UdGZn8STgE.jpg",
+        thumbnail: "https://free.picui.cn/free/2026/02/03/6981d3f9f2bff.jpg",
         dateAdded: "2022-08-10"
     },
     {
@@ -61,7 +61,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL4PMLGSCaH8AF_vC-FcV9DTDU5XPCatxG",
         translatedUrl: "https://space.bilibili.com/499929312/lists/6267690",
         description: "莫名其妙就要和吸血鬼同居了！？",
-        thumbnail: "https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEQqjdpgbAJhsBWKvWeeFKfoCMF5HYtcwACzhgAAuvVCVSelJtzyzJS_zgE.jpg",
+        thumbnail: "https://free.picui.cn/free/2026/02/03/6981d3f9ea961.jpg",
         dateAdded: "2020-05-29"
     },
     {
@@ -74,7 +74,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLFU-QWGTBq-4SsfGQuJBNzmvZtTzN3FoJ",
         translatedUrl: "https://space.bilibili.com/499929312/lists/6324095",
         description: "学校的优等生竟和吸血鬼夜游！？",
-        thumbnail: "https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEQqjppgbBZcmRS7kWmX0KNYMBdNwSkMwAC0hgAAuvVCVTQZqn3EzbrxjgE.jpg",
+        thumbnail: "https://free.picui.cn/free/2026/02/03/6981d3f9caf1f.jpg",
         dateAdded: "2022-09-09"
     },
     {
@@ -87,7 +87,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=ienoNid46dM&list=PLPIDlOi7aH3EiGs9HnU3Rg52r4j587qsI&index=6",
         translatedUrl: "https://www.bilibili.com/video/BV16A6QBCEqD/?vd_source=29215d7e01e2e3b79461f647961a787f",
         description: "与铃仙在酒吧的小故事",
-        thumbnail: "https://i.ytimg.com/vi/ienoNid46dM/maxresdefault.jpg",
+        thumbnail: "https://free.picui.cn/free/2026/02/03/6981d4bbb3958.jpg",
         dateAdded: "2025-06-20"
     }
 ];
