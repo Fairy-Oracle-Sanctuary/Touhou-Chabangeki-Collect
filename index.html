@@ -74,6 +74,12 @@
             </div>
             
             <div class="flex items-center gap-3">
+                <button id="submitBtn" class="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-md transition-colors flex items-center gap-1.5">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    提交
+                </button>
                 <button id="themeToggle" class="p-1.5 rounded-md text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors" aria-label="切换主题">
                     <!-- Sun Icon -->
                     <svg id="sunIcon" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -322,6 +328,151 @@
                     <a id="detailOriginalLink" href="" target="_blank" rel="noopener noreferrer" class="flex-1 flex items-center justify-center gap-1.5 py-2 rounded border border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-sm font-medium transition-colors">
                         <span>查看原版</span>
                     </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Submit Form Modal -->
+    <div id="submitModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-zinc-800 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <!-- Submit Form Header -->
+            <div class="flex items-center justify-between border-b border-gray-200 dark:border-zinc-800 px-6 py-4">
+                <h2 class="text-lg font-bold text-zinc-900 dark:text-white">提交茶番剧</h2>
+                <button id="closeSubmitModal" class="p-1.5 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            
+            <!-- Submit Form Content -->
+            <div class="p-6">
+                <form id="submitForm" class="space-y-6">
+                    <!-- Basic Info -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="title" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">标题 *</label>
+                            <input type="text" id="title" name="title" required class="w-full px-3 py-2 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md text-sm text-zinc-900 dark:text-white placeholder-zinc-500 focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-colors">
+                        </div>
+                        <div>
+                            <label for="author" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">作者 *</label>
+                            <div class="relative">
+                                <input type="text" id="author" name="author" required class="w-full px-3 py-2 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md text-sm text-zinc-900 dark:text-white placeholder-zinc-500 focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-colors">
+                                <button type="button" id="authorDropdownBtn" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                                <div id="authorDropdown" class="absolute left-0 right-0 top-full mt-1 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-md shadow-lg z-10 hidden max-h-48 overflow-y-auto">
+                                    <ul class="py-1" id="submitAuthorList">
+                                        <!-- Authors will be populated by JS -->
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="translator" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">汉化者</label>
+                            <div class="relative">
+                                <input type="text" id="translator" name="translator" class="w-full px-3 py-2 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md text-sm text-zinc-900 dark:text-white placeholder-zinc-500 focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-colors">
+                                <button type="button" id="translatorDropdownBtn" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                                <div id="translatorDropdown" class="absolute left-0 right-0 top-full mt-1 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-md shadow-lg z-10 hidden max-h-48 overflow-y-auto">
+                                    <ul class="py-1" id="submitTranslatorList">
+                                        <!-- Translators will be populated by JS -->
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="dateAdded" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">添加日期 *</label>
+                            <input type="date" id="dateAdded" name="dateAdded" required class="w-full px-3 py-2 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md text-sm text-zinc-900 dark:text-white placeholder-zinc-500 focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-colors">
+                        </div>
+                    </div>
+                    
+                    <!-- URLs -->
+                    <div class="space-y-4">
+                        <div>
+                            <label for="originalUrl" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">原版链接 *</label>
+                            <input type="url" id="originalUrl" name="originalUrl" required class="w-full px-3 py-2 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md text-sm text-zinc-900 dark:text-white placeholder-zinc-500 focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-colors">
+                        </div>
+                        <div>
+                            <label for="translatedUrl" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">汉化链接</label>
+                            <input type="url" id="translatedUrl" name="translatedUrl" class="w-full px-3 py-2 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md text-sm text-zinc-900 dark:text-white placeholder-zinc-500 focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-colors">
+                        </div>
+                    </div>
+                    
+                    <!-- Description & Thumbnail -->
+                    <div class="space-y-4">
+                        <div>
+                            <label for="description" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">简介</label>
+                            <textarea id="description" name="description" rows="3" class="w-full px-3 py-2 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md text-sm text-zinc-900 dark:text-white placeholder-zinc-500 focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-colors"></textarea>
+                        </div>
+                        <div>
+                            <label for="thumbnail" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">缩略图链接</label>
+                            <input type="url" id="thumbnail" name="thumbnail" class="w-full px-3 py-2 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md text-sm text-zinc-900 dark:text-white placeholder-zinc-500 focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-colors">
+                        </div>
+                    </div>
+                    
+                    <!-- Tags -->
+                    <div>
+                        <label for="tags" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">标签（用逗号分隔）</label>
+                        <input type="text" id="tags" name="tags" class="w-full px-3 py-2 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md text-sm text-zinc-900 dark:text-white placeholder-zinc-500 focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-colors">
+                        <div class="mt-2">
+                            <button type="button" id="tagDropdownBtn" class="text-xs text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300">
+                                选择已有标签
+                            </button>
+                            <div id="tagDropdown" class="mt-2 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-md shadow-lg p-3 hidden max-h-64 overflow-y-auto">
+                                <div class="flex flex-wrap gap-1.5" id="submitTagList">
+                                    <!-- Tags will be populated by JS -->
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">示例：博丽灵梦, 雾雨魔理沙, 东方Project</p>
+                    </div>
+                    
+                    <!-- Translation Status -->
+                    <div>
+                        <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">汉化状态 *</label>
+                        <div class="flex gap-4">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="radio" name="isTranslated" value="true" required class="text-red-600 focus:ring-red-500">
+                                <span class="text-sm text-zinc-700 dark:text-zinc-300">已汉化</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="radio" name="isTranslated" value="false" required class="text-red-600 focus:ring-red-500">
+                                <span class="text-sm text-zinc-700 dark:text-zinc-300">未汉化</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <div class="flex justify-end gap-3">
+                        <button type="button" id="cancelSubmit" class="px-4 py-2 border border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-sm font-medium rounded-md transition-colors">
+                            取消
+                        </button>
+                        <button type="submit" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-md transition-colors">
+                            生成 JSON
+                        </button>
+                    </div>
+                </form>
+                
+                <!-- JSON Output -->
+                <div id="jsonOutput" class="mt-8 hidden">
+                    <h3 class="text-sm font-bold text-zinc-900 dark:text-white mb-3">生成的 JSON 代码</h3>
+                    <div class="relative">
+                        <pre id="jsonCode" class="bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-md p-4 text-xs overflow-auto max-h-64"></pre>
+                        <button id="copyJson" class="absolute top-3 right-3 px-2 py-1 bg-white dark:bg-zinc-700 border border-gray-200 dark:border-zinc-600 rounded text-xs text-zinc-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-600 transition-colors">
+                            复制
+                        </button>
+                    </div>
+                    <div id="copySuccess" class="mt-2 text-sm text-emerald-600 dark:text-emerald-500 hidden">
+                        JSON 代码已复制到剪贴板！
+                    </div>
                 </div>
             </div>
         </div>
