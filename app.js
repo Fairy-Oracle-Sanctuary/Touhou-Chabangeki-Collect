@@ -237,6 +237,59 @@ function filterAndSortDramas() {
     renderSidebar(); // Re-render sidebar to update active states
 }
 
+function openDetail(drama) {
+    const detailPage = document.getElementById('detailPage');
+    const detailThumbnail = document.getElementById('detailThumbnail');
+    const detailStatus = document.getElementById('detailStatus');
+    const detailTitle = document.getElementById('detailTitle');
+    const detailAuthor = document.getElementById('detailAuthor');
+    const detailDate = document.getElementById('detailDate');
+    const detailTranslator = document.getElementById('detailTranslator');
+    const detailDescription = document.getElementById('detailDescription');
+    const detailTags = document.getElementById('detailTags');
+    const detailTranslatedLink = document.getElementById('detailTranslatedLink');
+    const detailOriginalLink = document.getElementById('detailOriginalLink');
+    
+    // Fill data
+    detailThumbnail.src = drama.thumbnail;
+    detailThumbnail.alt = drama.title;
+    
+    detailStatus.className = `px-2 py-0.5 rounded text-[10px] font-medium shadow-sm ${drama.isTranslated ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-400 border border-amber-200 dark:border-amber-800'}`;
+    detailStatus.textContent = drama.isTranslated ? '已汉化' : '未汉化';
+    
+    detailTitle.textContent = drama.title;
+    detailAuthor.innerHTML = `<button onclick="toggleFilter('artist', '${drama.author}')" class="hover:text-red-600 dark:hover:text-red-400 transition-colors hover:underline">${drama.author}</button>`;
+    detailDate.textContent = drama.dateAdded;
+    detailTranslator.textContent = drama.translator || '无';
+    detailDescription.textContent = drama.description;
+    
+    // Fill tags
+    detailTags.innerHTML = drama.tags.map(tag => `
+        <button onclick="toggleFilter('tag', '${tag}')" class="px-2 py-0.5 text-xs rounded bg-gray-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-gray-200 dark:border-zinc-700 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 hover:border-red-200 dark:hover:border-red-800 transition-all">
+            #${tag}
+        </button>
+    `).join('');
+    
+    // Fill links
+    if (drama.isTranslated && drama.translatedUrl) {
+        detailTranslatedLink.href = drama.translatedUrl;
+        detailTranslatedLink.classList.remove('hidden');
+    } else {
+        detailTranslatedLink.classList.add('hidden');
+    }
+    detailOriginalLink.href = drama.originalUrl;
+    
+    // Show detail page
+    detailPage.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeDetail() {
+    const detailPage = document.getElementById('detailPage');
+    detailPage.classList.add('hidden');
+    document.body.style.overflow = 'auto';
+}
+
 function renderDramas() {
     const grid = document.getElementById('dramaGrid');
     const noResults = document.getElementById('noResults');
@@ -253,7 +306,7 @@ function renderDramas() {
     resultsCount.textContent = `显示 ${filteredDramas.length} 个结果`;
 
     grid.innerHTML = filteredDramas.map(drama => `
-        <div class="group bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-zinc-800 hover:border-red-500/30 dark:hover:border-red-500/30 transition-colors duration-200 flex flex-col overflow-hidden">
+        <div class="group bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-zinc-800 hover:border-red-500/30 dark:hover:border-red-500/30 transition-colors duration-200 flex flex-col overflow-hidden cursor-pointer" onclick="openDetail(${JSON.stringify(drama).replace(/"/g, '&quot;')})">
             <!-- Thumbnail Container -->
             <div class="relative aspect-video overflow-hidden bg-gray-100 dark:bg-zinc-800">
                 <img src="${drama.thumbnail}" alt="${drama.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.src='https://via.placeholder.com/400x225/1e293b/475569?text=No+Image'">
@@ -277,11 +330,12 @@ function renderDramas() {
                         ${drama.title}
                     </h3>
                     <div class="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-500">
-                        <button onclick="toggleFilter('artist', '${drama.author}')" class="hover:text-red-600 dark:hover:text-red-400 transition-colors hover:underline">
+                        <button onclick="toggleFilter('artist', '${drama.author}'); event.stopPropagation();" class="hover:text-red-600 dark:hover:text-red-400 transition-colors hover:underline">
                             ${drama.author}
                         </button>
                         <span>•</span>
                         <span>${drama.dateAdded}</span>
+                        ${drama.translator ? `<span>•</span><span>${drama.translator}</span>` : ''}
                     </div>
                 </div>
 
@@ -292,7 +346,7 @@ function renderDramas() {
                 <!-- Tags -->
                 <div class="flex flex-wrap gap-1.5 mb-4">
                     ${drama.tags.slice(0, 3).map(tag => `
-                        <button onclick="toggleFilter('tag', '${tag}')" class="px-1.5 py-0.5 text-[10px] rounded bg-gray-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-gray-200 dark:border-zinc-700 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 hover:border-red-200 dark:hover:border-red-800 transition-all">
+                        <button onclick="toggleFilter('tag', '${tag}'); event.stopPropagation();" class="px-1.5 py-0.5 text-[10px] rounded bg-gray-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-gray-200 dark:border-zinc-700 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 hover:border-red-200 dark:hover:border-red-800 transition-all">
                             #${tag}
                         </button>
                     `).join('')}
@@ -302,13 +356,13 @@ function renderDramas() {
                 <!-- Actions -->
                 <div class="flex gap-2 mt-auto pt-3 border-t border-gray-100 dark:border-zinc-800">
                     ${drama.isTranslated && drama.translatedUrl ? `
-                        <a href="${drama.translatedUrl}" target="_blank" rel="noopener noreferrer" 
+                        <a href="${drama.translatedUrl}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();"
                            class="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded bg-red-600 hover:bg-red-700 text-white text-xs font-medium transition-colors">
                             <span>观看汉化</span>
                         </a>
                     ` : ''}
                     
-                    <a href="${drama.originalUrl}" target="_blank" rel="noopener noreferrer" 
+                    <a href="${drama.originalUrl}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();"
                        class="${drama.isTranslated ? 'px-2.5' : 'flex-1'} flex items-center justify-center gap-1.5 py-1.5 rounded border border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-xs font-medium transition-colors"
                        title="查看原版">
                         ${!drama.isTranslated ? '<span>查看原版</span>' : ''}
@@ -334,6 +388,16 @@ function setupEventListeners() {
         const searchInput = document.getElementById('searchInput');
         searchInput.value = '';
         searchInput.dispatchEvent(new Event('input'));
+    });
+    
+    // Detail Page Events
+    document.getElementById('closeDetail').addEventListener('click', closeDetail);
+    
+    // Close detail page when clicking outside
+    document.getElementById('detailPage').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('detailPage')) {
+            closeDetail();
+        }
     });
 }
 
