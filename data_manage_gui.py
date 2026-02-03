@@ -48,6 +48,9 @@ class DataManagerGUI:
         ttk.Button(btn_bar, text="添加新条目", command=self.add_item).pack(
             side=tk.LEFT, padx=2
         )
+        ttk.Button(btn_bar, text="从 JSON 添加", command=self.add_from_json).pack(
+            side=tk.LEFT, padx=2
+        )
         ttk.Button(btn_bar, text="修改选中项", command=self.edit_item).pack(
             side=tk.LEFT, padx=2
         )
@@ -236,6 +239,130 @@ class DataManagerGUI:
         if messagebox.askyesno("确认", "确定要永久删除此条目吗？"):
             self.data.pop(self.tree.index(sel[0]))
             self._update_ids_and_refresh(silent=True)
+
+    def add_from_json(self):
+        d = JsonImportDialog(self.root)
+        if d.result:
+            # 清理JSON数据，去除首尾空白和可能的反引号
+            import json
+
+            try:
+                # 去除首尾空白
+                json_str = d.result.strip()
+                # 去除URL中的反引号
+                json_str = json_str.replace("`https://", "https://").replace("`", "")
+                # 解析JSON
+                item = json.loads(json_str)
+                # 处理标签格式
+                if item.get("tags"):
+                    # 如果标签是单个字符串，按逗号分割
+                    if (
+                        isinstance(item["tags"], list)
+                        and len(item["tags"]) > 0
+                        and isinstance(item["tags"][0], str)
+                    ):
+                        # 处理每个标签字符串，按逗号分割
+                        all_tags = []
+                        for tag_str in item["tags"]:
+                            all_tags.extend(
+                                [t.strip() for t in tag_str.split("，") if t.strip()]
+                            )
+                        item["tags"] = all_tags
+                    elif isinstance(item["tags"], str):
+                        item["tags"] = [
+                            t.strip() for t in item["tags"].split("，") if t.strip()
+                        ]
+                # 添加到数据中
+                self.data.append(item)
+                self._update_ids_and_refresh(silent=True)
+                messagebox.showinfo("成功", "从JSON导入条目成功")
+            except Exception as e:
+                messagebox.showerror("错误", f"JSON解析失败: {e}")
+
+
+class JsonImportDialog(tk.Toplevel):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.title("从 JSON 导入条目")
+        self.geometry("600x450")
+        self.result = None
+
+        # 整体布局
+        main_frame = ttk.Frame(self, padding=20)
+        main_frame.pack(fill=tk.BOTH, expand=True)
+
+        # JSON输入区域
+        ttk.Label(
+            main_frame, text="请粘贴JSON代码:", font=("Microsoft YaHei", 10, "bold")
+        ).pack(anchor=tk.W, pady=(0, 10))
+
+        text_frame = ttk.Frame(main_frame)
+        text_frame.pack(fill=tk.BOTH, expand=True)
+
+        self.json_text = tk.Text(text_frame, height=12, wrap=tk.WORD, bg="#f8f9fa")
+        self.json_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+        scrollbar = ttk.Scrollbar(
+            text_frame, orient=tk.VERTICAL, command=self.json_text.yview
+        )
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        self.json_text.configure(yscrollcommand=scrollbar.set)
+
+        # 示例提示
+        example_frame = ttk.Frame(main_frame, padding=10, relief=tk.GROOVE)
+        example_frame.pack(fill=tk.X, pady=(10, 0))
+        ttk.Label(
+            example_frame,
+            text="示例JSON格式:",
+            font=("Microsoft YaHei", 9, "bold"),
+            foreground="#666",
+        ).pack(anchor=tk.W, pady=(0, 5))
+        example_text = tk.Text(
+            example_frame, height=3, wrap=tk.WORD, bg="#f8f9fa", state=tk.DISABLED
+        )
+        example_text.pack(fill=tk.BOTH, expand=True)
+        example_text.configure(state=tk.NORMAL)
+        example_text.insert(
+            tk.END,
+            """{
+  "title": "作品标题",
+  "author": "作者",
+  "translator": "汉化者",
+  "tags": ["标签1", "标签2"],
+  "isTranslated": true,
+  "originalUrl": "原版链接",
+  "translatedUrl": "汉化链接",
+  "description": "简介",
+  "thumbnail": "封面图链接",
+  "dateAdded": "2026-02-03"
+}""",
+        )
+        example_text.configure(state=tk.DISABLED)
+
+        # 底部按钮
+        bottom_bar = ttk.Frame(self, padding=10)
+        bottom_bar.pack(fill=tk.X, side=tk.BOTTOM)
+        # 添加一个占位框架，确保按钮靠右显示
+        spacer = ttk.Frame(bottom_bar)
+        spacer.pack(side=tk.LEFT, expand=True)
+        # 按钮
+        ttk.Button(bottom_bar, text="导入", command=self.on_import, width=10).pack(
+            side=tk.RIGHT, padx=5
+        )
+        ttk.Button(bottom_bar, text="取消", command=self.destroy, width=10).pack(
+            side=tk.RIGHT
+        )
+
+        # 等待窗口关闭
+        self.wait_window()
+
+    def on_import(self):
+        json_str = self.json_text.get(1.0, tk.END)
+        if not json_str.strip():
+            messagebox.showwarning("提示", "请粘贴JSON代码")
+            return
+        self.result = json_str
+        self.destroy()
 
 
 class AddEditDialog(tk.Toplevel):
@@ -430,7 +557,7 @@ if __name__ == "__main__":
     root = tk.Tk()
     try:
         ttk.Style().theme_use("clam")
-    except:
+    except Exception:
         pass
     app = DataManagerGUI(root)
     root.mainloop()
