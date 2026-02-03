@@ -8,7 +8,7 @@ const dramas = [
         isTranslated: true,
         originalUrl: "https://www.youtube.com/playlist?list=PLxioisTzjlBa1NoKDTH1nkAHgOwAHzhma",
         translatedUrl: "https://space.bilibili.com/12621850/lists/4882608",
-        description: "你是我活过的证明",
+        description: "你是我活过的证明。",
         thumbnail: "https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEQpZZpgG2plLStQynYfxcTrlOQywABP24AAgUdAAKqLghUpepPPzAbNbs4BA.jpg",
         dateAdded: "2023-06-18"
     },
@@ -76,5 +76,18 @@ const dramas = [
         description: "学校的优等生竟和吸血鬼夜游！？",
         thumbnail: "https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEQqjppgbBZcmRS7kWmX0KNYMBdNwSkMwAC0hgAAuvVCVTQZqn3EzbrxjgE.jpg",
         dateAdded: "2022-09-09"
+    },
+    {
+        id: 7,
+        title: "Bunny girl",
+        author: "MISAKI 3518",
+        translator: "寄遗忘之物于流年",
+        tags: ["铃仙"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/watch?v=ienoNid46dM&list=PLPIDlOi7aH3EiGs9HnU3Rg52r4j587qsI&index=6",
+        translatedUrl: "https://www.bilibili.com/video/BV16A6QBCEqD/?vd_source=29215d7e01e2e3b79461f647961a787f",
+        description: "与铃仙在酒吧的小故事",
+        thumbnail: "https://i.ytimg.com/vi/ienoNid46dM/maxresdefault.jpg",
+        dateAdded: "2025-06-20"
     }
 ];
