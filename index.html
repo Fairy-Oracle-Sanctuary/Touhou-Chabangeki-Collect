@@ -280,6 +280,53 @@
         </main>
     </div>
 
+    <!-- Detail Page -->
+    <div id="detailPage" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-zinc-800 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <!-- Detail Header -->
+            <div class="relative">
+                <div class="aspect-video overflow-hidden bg-gray-100 dark:bg-zinc-800">
+                    <img id="detailThumbnail" src="" alt="Thumbnail" class="w-full h-full object-cover">
+                </div>
+                <button id="closeDetail" class="absolute top-4 right-4 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                    <span id="detailStatus" class="px-2 py-0.5 rounded text-[10px] font-medium shadow-sm"></span>
+                </div>
+            </div>
+            
+            <!-- Detail Content -->
+            <div class="p-6">
+                <h1 id="detailTitle" class="text-2xl font-bold text-zinc-900 dark:text-white mb-3"></h1>
+                <div class="flex flex-wrap gap-2 text-xs text-zinc-500 dark:text-zinc-500 mb-4">
+                    <span id="detailAuthor"></span>
+                    <span>•</span>
+                    <span id="detailDate"></span>
+                    <span>•</span>
+                    <span id="detailTranslator"></span>
+                </div>
+                <p id="detailDescription" class="text-sm text-zinc-600 dark:text-zinc-400 mb-6 leading-relaxed"></p>
+                
+                <!-- Detail Tags -->
+                <div class="mb-6">
+                    <h3 class="text-sm font-bold text-zinc-900 dark:text-white mb-2">标签</h3>
+                    <div id="detailTags" class="flex flex-wrap gap-1.5"></div>
+                </div>
+                
+                <!-- Detail Links -->
+                <div class="flex gap-3">
+                    <a id="detailTranslatedLink" href="" target="_blank" rel="noopener noreferrer" class="flex-1 flex items-center justify-center gap-1.5 py-2 rounded bg-red-600 hover:bg-red-700 text-white text-sm font-medium transition-colors hidden">
+                        <span>观看汉化</span>
+                    </a>
+                    <a id="detailOriginalLink" href="" target="_blank" rel="noopener noreferrer" class="flex-1 flex items-center justify-center gap-1.5 py-2 rounded border border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-sm font-medium transition-colors">
+                        <span>查看原版</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="border-t border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 py-8 mt-auto">
         <div class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
