@@ -47,6 +47,7 @@ function updateStats() {
 function getStats() {
     const tagCounts = {};
     const authorCounts = {};
+    const translatorCounts = {};
 
     dramas.forEach(drama => {
         // Count Tags
@@ -56,6 +57,11 @@ function getStats() {
 
         // Count Authors
         authorCounts[drama.author] = (authorCounts[drama.author] || 0) + 1;
+        
+        // Count Translators
+        if (drama.translator) {
+            translatorCounts[drama.translator] = (translatorCounts[drama.translator] || 0) + 1;
+        }
     });
 
     // Convert to array and sort by count (descending)
@@ -67,13 +73,18 @@ function getStats() {
         .map(([name, count]) => ({ name, count }))
         .sort((a, b) => b.count - a.count);
 
-    return { sortedTags, sortedAuthors };
+    const sortedTranslators = Object.entries(translatorCounts)
+        .map(([name, count]) => ({ name, count }))
+        .sort((a, b) => b.count - a.count);
+
+    return { sortedTags, sortedAuthors, sortedTranslators };
 }
 
-// --- Search Parser ---
+// --- Search Parser --- 
 function parseSearchInput(input) {
     const tags = [];
     const artists = [];
+    const translators = [];
     let fuzzyTerm = input;
 
     // Extract tags: tag="value"
@@ -91,13 +102,20 @@ function parseSearchInput(input) {
     }
     fuzzyTerm = fuzzyTerm.replace(artistRegex, '');
 
+    // Extract translators: translator="value"
+    const translatorRegex = /translator="([^"]+)"/gi;
+    while ((match = translatorRegex.exec(input)) !== null) {
+        translators.push(match[1].toLowerCase());
+    }
+    fuzzyTerm = fuzzyTerm.replace(translatorRegex, '');
+
     // Clean up fuzzy term
     fuzzyTerm = fuzzyTerm.replace(/\s+/g, ' ').trim().toLowerCase();
 
-    return { tags, artists, fuzzyTerm };
+    return { tags, artists, translators, fuzzyTerm };
 }
 
-// --- Toggle Filter Helper ---
+// --- Toggle Filter Helper --- 
 window.toggleFilter = function(type, value) {
     const searchInput = document.getElementById('searchInput');
     let currentInput = searchInput.value;
@@ -107,12 +125,18 @@ window.toggleFilter = function(type, value) {
     // We need a robust check to avoid partial matches
     const regex = new RegExp(`${type}="${value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`, 'i');
     
-    // For artists, ensure only one is selected at a time
+    // For artists and translators, ensure only one is selected at a time
     if (type === 'artist') {
         // Remove all existing artist filters
         currentInput = currentInput.replace(/artist="[^"]+"/gi, '').replace(/\s+/g, ' ').trim();
         
         // Add the new artist filter
+        currentInput = `${currentInput} ${filterString}`.trim();
+    } else if (type === 'translator') {
+        // Remove all existing translator filters
+        currentInput = currentInput.replace(/translator="[^"]+"/gi, '').replace(/\s+/g, ' ').trim();
+        
+        // Add the new translator filter
         currentInput = `${currentInput} ${filterString}`.trim();
     } else {
         // For other filter types (tags), keep the existing toggle behavior
@@ -135,13 +159,14 @@ window.toggleFilter = function(type, value) {
 };
 
 function renderSidebar() {
-    const { sortedTags, sortedAuthors } = getStats();
+    const { sortedTags, sortedAuthors, sortedTranslators } = getStats();
     const tagCloud = document.getElementById('tagCloud');
     const authorList = document.getElementById('authorList');
+    const translatorList = document.getElementById('translatorList');
     
     // Get current active filters to highlight them
     const searchInput = document.getElementById('searchInput');
-    const { tags: activeTags, artists: activeArtists } = parseSearchInput(searchInput.value);
+    const { tags: activeTags, artists: activeArtists, translators: activeTranslators } = parseSearchInput(searchInput.value);
 
     // Render Tags (Top 20)
     tagCloud.innerHTML = sortedTags.slice(0, 20).map(tag => {
@@ -173,6 +198,24 @@ function renderSidebar() {
             </button>
         `;
     }).join('');
+
+    // Render Translators (Top 10)
+    if (translatorList) {
+        translatorList.innerHTML = sortedTranslators.slice(0, 10).map(translator => {
+            const isActive = activeTranslators.includes(translator.name.toLowerCase());
+            const activeClass = isActive
+                ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 font-medium'
+                : 'hover:bg-gray-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-red-600 dark:hover:text-red-400';
+                
+            return `
+                <button onclick="toggleFilter('translator', '${translator.name}')" 
+                        class="w-full text-left px-2 py-1.5 text-xs rounded transition-colors flex justify-between items-center group ${activeClass}">
+                    <span class="truncate">${translator.name}</span>
+                    <span class="text-[10px] bg-gray-100 dark:bg-zinc-800 group-hover:bg-white dark:group-hover:bg-zinc-700 px-1.5 py-0.5 rounded-full transition-colors">${translator.count}</span>
+                </button>
+            `;
+        }).join('');
+    }
 }
 
 function filterAndSortDramas() {
@@ -190,7 +233,7 @@ function filterAndSortDramas() {
     }
 
     // Parse Search Input
-    const { tags: searchTags, artists: searchArtists, fuzzyTerm } = parseSearchInput(rawInput);
+    const { tags: searchTags, artists: searchArtists, translators: searchTranslators, fuzzyTerm } = parseSearchInput(rawInput);
 
     filteredDramas = dramas.filter(drama => {
         // 1. Check Status
@@ -215,7 +258,15 @@ function filterAndSortDramas() {
             if (!hasAllArtists) return false;
         }
 
-        // 4. Check Fuzzy Term (if exists)
+        // 4. Check Translators (AND logic: must match ALL searched translators - usually implies only one translator can be selected effectively unless data changes)
+        if (searchTranslators.length > 0) {
+            const hasAllTranslators = searchTranslators.every(searchTranslator => 
+                drama.translator && drama.translator.toLowerCase() === searchTranslator
+            );
+            if (!hasAllTranslators) return false;
+        }
+
+        // 5. Check Fuzzy Term (if exists)
         if (fuzzyTerm) {
             const matchesFuzzy = drama.title.toLowerCase().includes(fuzzyTerm) ||
                                  drama.author.toLowerCase().includes(fuzzyTerm) ||
@@ -270,7 +321,7 @@ function openDetail(drama) {
     detailTitle.textContent = drama.title;
     detailAuthor.innerHTML = `<button onclick="toggleFilter('artist', '${drama.author}')" class="hover:text-red-600 dark:hover:text-red-400 transition-colors hover:underline">${drama.author}</button>`;
     detailDate.textContent = drama.dateAdded;
-    detailTranslator.textContent = drama.translator || '无';
+    detailTranslator.innerHTML = drama.translator ? `<button onclick="toggleFilter('translator', '${drama.translator}')" class="hover:text-red-600 dark:hover:text-red-400 transition-colors hover:underline">${drama.translator}</button>` : '无';
     detailDescription.textContent = drama.description;
     
     // Fill tags
