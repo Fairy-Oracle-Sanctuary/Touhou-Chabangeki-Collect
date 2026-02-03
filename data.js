@@ -4,11 +4,11 @@ const dramas = [
         title: "死神与少年",
         author: "ささきの茶釜",
         translator: "就是很一般",
-        tags: ["小町","圣白莲","命莲","八意永琳","射命丸文","琪露诺","大妖精","多多良小伞"],
+        tags: ["小野塚小町", "圣白莲", "命莲", "八意永琳", "射命丸文", "琪露诺", "大妖精", "多多良小伞", "娜兹玲", "村纱水蜜", "云居一轮", "幽谷响子", "河城荷取", "水桥帕露西", "封兽鵺", "若鹭姬", "露米娅", "上白泽慧音", "星熊勇仪", "伊吹萃香", "铃仙", "博丽灵梦", "魂魄妖梦", "芙兰朵露"],
         isTranslated: true,
         originalUrl: "https://www.youtube.com/playlist?list=PLxioisTzjlBa1NoKDTH1nkAHgOwAHzhma",
         translatedUrl: "https://space.bilibili.com/12621850/lists/4882608",
-        description: "你是我活过的证明。",
+        description: "你是我活过的证明",
         thumbnail: "https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEQpZZpgG2plLStQynYfxcTrlOQywABP24AAgUdAAKqLghUpepPPzAbNbs4BA.jpg",
         dateAdded: "2023-06-18"
     },
@@ -38,5 +38,43 @@ const dramas = [
         thumbnail: "https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEQqOppgXgeKPti5matgwUJFx2qzjWj0wACax0AAqouEFRIAzAUCiA6MTgE.jpg",
         dateAdded: "2025-08-17"
     },
-
+    {
+        id: 4,
+        title: "騒がしすぎて怖くない夜廻三",
+        author: "ささきの茶釜",
+        translator: "",
+        tags: [],
+        isTranslated: false,
+        originalUrl: "https://www.youtube.com/playlist?list=PLxioisTzjlBYrCViDpMBfFOEy1R4xNi1t",
+        translatedUrl: "",
+        description: "夜明けまでに、呪いを解く方法を思い出せ。",
+        thumbnail: "https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEQqjVpgbADH0ON8HTfSEPGyRRj2ywCbwACzBgAAuvVCVT_p9UdGZn8STgE.jpg",
+        dateAdded: "2022-08-10"
+    },
+    {
+        id: 5,
+        title: "吸血鬼と同棲⁉",
+        author: "ねんねまるゆっくり",
+        translator: "Baby_2016",
+        tags: ["蕾米莉亚", "博丽灵梦", "芙兰朵露"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PL4PMLGSCaH8AF_vC-FcV9DTDU5XPCatxG",
+        translatedUrl: "https://space.bilibili.com/499929312/lists/6267690",
+        description: "莫名其妙就要和吸血鬼同居了！？",
+        thumbnail: "https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEQqjdpgbAJhsBWKvWeeFKfoCMF5HYtcwACzhgAAuvVCVSelJtzyzJS_zgE.jpg",
+        dateAdded: "2020-05-29"
+    },
+    {
+        id: 6,
+        title: "红月夜的契约——与蕾米莉亚的彻夜醉迷",
+        author: "不知火桃",
+        translator: "Baby_2016",
+        tags: [],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PLFU-QWGTBq-4SsfGQuJBNzmvZtTzN3FoJ",
+        translatedUrl: "https://space.bilibili.com/499929312/lists/6324095",
+        description: "学校的优等生竟和吸血鬼夜游！？",
+        thumbnail: "https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEQqjppgbBZcmRS7kWmX0KNYMBdNwSkMwAC0hgAAuvVCVTQZqn3EzbrxjgE.jpg",
+        dateAdded: "2022-09-09"
+    }
 ];
