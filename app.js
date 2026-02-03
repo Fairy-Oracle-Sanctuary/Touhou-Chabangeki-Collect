@@ -1,13 +1,180 @@
 let filteredDramas = [...dramas];
 
-// Theme Management
+// --- Favorites Management ---
+function getFavorites() {
+    try {
+        const favorites = localStorage.getItem('touhou-favorites');
+        return favorites ? JSON.parse(favorites) : [];
+    } catch (error) {
+        console.error('Error reading favorites from localStorage:', error);
+        // Reset corrupted data
+        try {
+            localStorage.removeItem('touhou-favorites');
+        } catch (clearError) {
+            console.error('Error clearing corrupted favorites:', clearError);
+        }
+        return [];
+    }
+}
+
+function saveFavorites(favorites) {
+    try {
+        localStorage.setItem('touhou-favorites', JSON.stringify(favorites));
+    } catch (error) {
+        console.error('Error saving favorites to localStorage:', error);
+        // Show user-friendly error message
+        alert('无法保存收藏数据，可能是存储空间不足或浏览器设置限制了本地存储。');
+    }
+}
+
+function isFavorite(dramaId) {
+    const favorites = getFavorites();
+    return favorites.includes(dramaId);
+}
+
+function toggleFavorite(dramaId) {
+    const favorites = getFavorites();
+    const index = favorites.indexOf(dramaId);
+    const wasAdded = index === -1;
+    
+    if (wasAdded) {
+        favorites.push(dramaId);
+    } else {
+        favorites.splice(index, 1);
+    }
+    
+    saveFavorites(favorites);
+    
+    // Update stats first (less expensive)
+    updateStats();
+    
+    // Only re-render if the favorite status actually changed
+    // and update specific elements instead of full re-render
+    const favoriteButtons = document.querySelectorAll(`[onclick*="toggleFavorite(${dramaId})"]`);
+    favoriteButtons.forEach(button => {
+        const svg = button.querySelector('svg');
+        const span = button.querySelector('span');
+        
+        if (wasAdded) {
+            button.className = button.className.replace('border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-red-600 dark:hover:text-red-400', 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30');
+            svg.setAttribute('fill', 'currentColor');
+            svg.classList.add('fill-current');
+            span.textContent = '已收藏';
+            button.title = '取消收藏';
+        } else {
+            button.className = button.className.replace('bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30', 'border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-red-600 dark:hover:text-red-400');
+            svg.setAttribute('fill', 'none');
+            svg.classList.remove('fill-current');
+            span.textContent = '收藏';
+            button.title = '添加收藏';
+        }
+    });
+    
+    // Only re-render sidebar if stats changed significantly
+    renderSidebar();
+    
+    // Re-render dramas only if currently filtering by favorites
+    const statusFilter = document.getElementById('statusFilter');
+    if (statusFilter && statusFilter.value === 'favorites') {
+        renderDramas();
+    }
+}
+
+function getFavoriteDramas() {
+    const favorites = getFavorites();
+    return dramas.filter(drama => favorites.includes(drama.id));
+}
+
+// Show favorites only
+window.showFavoritesOnly = function() {
+    const statusFilter = document.getElementById('statusFilter');
+    
+    // Set status filter to favorites
+    if (statusFilter) {
+        statusFilter.value = 'favorites';
+        statusFilter.dispatchEvent(new Event('input', { bubbles: true }));
+        statusFilter.dispatchEvent(new Event('change', { bubbles: true }));
+        
+        // Try to find and update Alpine.js component directly
+        const filterComponent = document.querySelector('[x-id*="filterComponent"]');
+        if (filterComponent && filterComponent.__x) {
+            filterComponent.__x.$data.status = 'favorites';
+            filterComponent.__x.$data.updateFilters();
+        }
+        
+        // Fallback: trigger custom event
+        window.dispatchEvent(new CustomEvent('filter-change', { 
+            detail: { status: 'favorites', sort: document.getElementById('sortBy')?.value || 'date-desc' } 
+        }));
+    }
+    
+    // Trigger filter update
+    filterAndSortDramas();
+    
+    // Scroll to results
+    document.getElementById('dramaGrid').scrollIntoView({ behavior: 'smooth' });
+};
+
+// --- Keyboard Shortcuts ---
+function setupKeyboardShortcuts() {
+    document.addEventListener('keydown', (e) => {
+        // Ctrl+K or Cmd+K to focus search
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+            e.preventDefault();
+            const searchInput = document.getElementById('searchInput');
+            searchInput.focus();
+            searchInput.select();
+        }
+        
+        // Ctrl+Shift+F or Cmd+Shift+F to show favorites (avoid browser search conflict)
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'F') {
+            e.preventDefault();
+            showFavoritesOnly();
+        }
+        
+        // Escape to close detail page or clear search
+        if (e.key === 'Escape') {
+            const detailPage = document.getElementById('detailPage');
+            const submitModal = document.getElementById('submitModal');
+            const searchInput = document.getElementById('searchInput');
+            
+            if (!detailPage.classList.contains('hidden')) {
+                closeDetail();
+            } else if (!submitModal.classList.contains('hidden')) {
+                closeSubmitModalFunc();
+            } else if (searchInput.value.trim()) {
+                searchInput.value = '';
+                searchInput.dispatchEvent(new Event('input'));
+            }
+        }
+        
+        // Ctrl+Enter to submit form when modal is open
+        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+            const submitModal = document.getElementById('submitModal');
+            const submitForm = document.getElementById('submitForm');
+            
+            if (!submitModal.classList.contains('hidden')) {
+                e.preventDefault();
+                submitForm.dispatchEvent(new Event('submit'));
+            }
+        }
+    });
+}
 function initTheme() {
     const themeToggleBtn = document.getElementById('themeToggle');
     const sunIcon = document.getElementById('sunIcon');
     const moonIcon = document.getElementById('moonIcon');
     
     // Check for saved theme preference or system preference
-    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    let savedTheme;
+    try {
+        savedTheme = localStorage.theme;
+    } catch (error) {
+        console.error('Error reading theme from localStorage:', error);
+        savedTheme = null;
+    }
+    
+    if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
         document.documentElement.classList.add('dark');
         sunIcon.classList.remove('hidden');
         moonIcon.classList.add('hidden');
@@ -19,16 +186,21 @@ function initTheme() {
 
     // Toggle theme
     themeToggleBtn.addEventListener('click', () => {
-        if (document.documentElement.classList.contains('dark')) {
-            document.documentElement.classList.remove('dark');
-            localStorage.theme = 'light';
-            sunIcon.classList.add('hidden');
-            moonIcon.classList.remove('hidden');
-        } else {
-            document.documentElement.classList.add('dark');
-            localStorage.theme = 'dark';
-            sunIcon.classList.remove('hidden');
-            moonIcon.classList.add('hidden');
+        try {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.theme = 'light';
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.theme = 'dark';
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            }
+        } catch (error) {
+            console.error('Error saving theme to localStorage:', error);
+            // Continue without saving - theme will still work for this session
         }
     });
 }
@@ -37,10 +209,17 @@ function updateStats() {
     const total = dramas.length;
     const translated = dramas.filter(d => d.isTranslated).length;
     const untranslated = total - translated;
+    const favorites = getFavorites().length;
 
     document.getElementById('totalCount').textContent = total;
     document.getElementById('translatedCount').textContent = translated;
     document.getElementById('untranslatedCount').textContent = untranslated;
+    
+    // Add favorites count if element exists
+    const favoritesElement = document.getElementById('favoritesCount');
+    if (favoritesElement) {
+        favoritesElement.textContent = favorites;
+    }
 }
 
 // --- Statistics Logic ---
@@ -393,23 +572,28 @@ window.selectAutocompleteSuggestion = function(type, value) {
 
 // 处理图片加载失败
 function handleImageError(img, title) {
-    // 尝试从YouTube链接提取缩略图
-    if (img.src.includes('youtube.com')) {
-        const videoIdMatch = img.src.match(/[?&]v=([^&]+)/);
-        if (videoIdMatch && videoIdMatch[1]) {
-            const videoId = videoIdMatch[1];
-            const thumbnailUrl = `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`;
-            img.src = thumbnailUrl;
-            // 再次失败则使用默认图片
-            img.onerror = function() {
-                setDefaultImage(img, title);
-            };
-            return;
+    try {
+        // 尝试从YouTube链接提取缩略图
+        if (img.src && img.src.includes('youtube.com')) {
+            const videoIdMatch = img.src.match(/[?&]v=([^&]+)/);
+            if (videoIdMatch && videoIdMatch[1]) {
+                const videoId = videoIdMatch[1];
+                const thumbnailUrl = `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`;
+                img.src = thumbnailUrl;
+                // 再次失败则使用默认图片
+                img.onerror = function() {
+                    setDefaultImage(img, title);
+                };
+                return;
+            }
         }
+        
+        // 使用默认图片
+        setDefaultImage(img, title);
+    } catch (error) {
+        console.error('Error handling image error:', error);
+        setDefaultImage(img, title);
     }
-    
-    // 使用默认图片
-    setDefaultImage(img, title);
 }
 
 // 设置默认图片
@@ -540,7 +724,8 @@ function filterAndSortDramas() {
         // 1. Check Status
         const matchesStatus = statusFilter === 'all' ||
                              (statusFilter === 'translated' && drama.isTranslated) ||
-                             (statusFilter === 'untranslated' && !drama.isTranslated);
+                             (statusFilter === 'untranslated' && !drama.isTranslated) ||
+                             (statusFilter === 'favorites' && isFavorite(drama.id));
         if (!matchesStatus) return false;
 
         // 2. Check Tags (AND logic: must contain ALL searched tags)
@@ -641,6 +826,25 @@ function openDetail(drama) {
     }
     detailOriginalLink.href = drama.originalUrl;
     
+    // Add favorite button to detail links
+    const favoriteButton = document.createElement('button');
+    favoriteButton.onclick = () => toggleFavorite(drama.id);
+    favoriteButton.className = `flex items-center justify-center gap-1.5 py-2 rounded border transition-colors ${
+        isFavorite(drama.id) 
+        ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30' 
+        : 'border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-red-600 dark:hover:text-red-400'
+    }`;
+    favoriteButton.innerHTML = `
+        <svg class="w-4 h-4 ${isFavorite(drama.id) ? 'fill-current' : ''}" fill="${isFavorite(drama.id) ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+        </svg>
+        <span>${isFavorite(drama.id) ? '取消收藏' : '添加收藏'}</span>
+    `;
+    
+    // Insert favorite button before the links
+    const detailLinksContainer = detailTranslatedLink.parentElement;
+    detailLinksContainer.insertBefore(favoriteButton, detailTranslatedLink);
+    
     // Show detail page
     detailPage.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
@@ -656,79 +860,115 @@ function renderDramas() {
     const grid = document.getElementById('dramaGrid');
     const noResults = document.getElementById('noResults');
     const resultsCount = document.getElementById('resultsCount');
+    const statusFilter = document.getElementById('statusFilter');
 
     if (filteredDramas.length === 0) {
         grid.innerHTML = '';
         noResults.classList.remove('hidden');
         resultsCount.textContent = '';
+        
+        // Update no results message based on filter
+        const noResultsTitle = noResults.querySelector('h3');
+        const noResultsText = noResults.querySelector('p');
+        
+        if (statusFilter && statusFilter.value === 'favorites') {
+            noResultsTitle.textContent = '暂无收藏作品';
+            noResultsText.textContent = '点击作品卡片上的收藏按钮来添加收藏';
+        } else {
+            noResultsTitle.textContent = '无搜索结果';
+            noResultsText.textContent = '请尝试调整关键词';
+        }
+        
         return;
     }
 
     noResults.classList.add('hidden');
     resultsCount.textContent = `显示 ${filteredDramas.length} 个结果`;
 
-    grid.innerHTML = filteredDramas.map(drama => `
-        <div class="group bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-zinc-800 hover:border-red-500/30 dark:hover:border-red-500/30 transition-colors duration-200 flex flex-col overflow-hidden cursor-pointer" onclick="openDetail(${JSON.stringify(drama).replace(/"/g, '&quot;')})"><!-- Thumbnail Container -->
-            <div class="relative aspect-video overflow-hidden bg-gray-100 dark:bg-zinc-800">
-                <img src="${drama.thumbnail}" alt="${drama.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="handleImageError(this, '${drama.title}')">
-                
-                <!-- Status Badge -->
-                <div class="absolute top-2 right-2">
-                    <span class="px-2 py-0.5 rounded text-[10px] font-medium shadow-sm ${drama.isTranslated ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-400 border border-amber-200 dark:border-amber-800'}">
-                        ${drama.isTranslated ? '已汉化' : '未汉化'}
-                    </span>
-                </div>
-            </div>
-
-            <!-- Content -->
-            <div class="p-4 flex-1 flex flex-col">
-                <div class="mb-2">
-                    <h3 class="text-base font-bold text-zinc-900 dark:text-white mb-1 line-clamp-1 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
-                        ${drama.title}
-                    </h3>
-                    <div class="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-500">
-                        <button onclick="toggleFilter('artist', '${drama.author}'); event.stopPropagation();" class="hover:text-red-600 dark:hover:text-red-400 transition-colors hover:underline">
-                            ${drama.author}
-                        </button>
-                        <span>•</span>
-                        <span>${drama.dateAdded}</span>
-                        ${drama.translator ? `<span>•</span><span>${drama.translator}</span>` : ''}
+    // Add loading state briefly for better UX
+    grid.innerHTML = '<div class="col-span-full flex justify-center py-8"><div class="spinner"></div></div>';
+    
+    setTimeout(() => {
+        grid.innerHTML = filteredDramas.map((drama, index) => `
+            <div class="drama-card group bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-zinc-800 hover:border-red-500/30 dark:hover:border-red-500/30 transition-colors duration-200 flex flex-col overflow-hidden cursor-pointer fade-in" 
+                 style="animation-delay: ${index * 50}ms"
+                 onclick="openDetail(${JSON.stringify(drama).replace(/"/g, '&quot;')})">
+                <!-- Thumbnail Container -->
+                <div class="relative aspect-video overflow-hidden bg-gray-100 dark:bg-zinc-800">
+                    <img src="${drama.thumbnail}" alt="${drama.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="handleImageError(this, '${drama.title}')">
+                    
+                    <!-- Status Badge -->
+                    <div class="absolute top-2 right-2">
+                        <span class="px-2 py-0.5 rounded text-[10px] font-medium shadow-sm ${drama.isTranslated ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-400 border border-amber-200 dark:border-amber-800'}">
+                            ${drama.isTranslated ? '已汉化' : '未汉化'}
+                        </span>
                     </div>
                 </div>
 
-                <p class="text-xs text-zinc-600 dark:text-zinc-400 mb-3 line-clamp-2 flex-grow leading-relaxed">
-                    ${drama.description}
-                </p>
+                <!-- Content -->
+                <div class="p-4 flex-1 flex flex-col">
+                    <div class="mb-2">
+                        <h3 class="text-base font-bold text-zinc-900 dark:text-white mb-1 line-clamp-1 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
+                            ${drama.title}
+                        </h3>
+                        <div class="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-500">
+                            <button onclick="toggleFilter('artist', '${drama.author}'); event.stopPropagation();" class="hover:text-red-600 dark:hover:text-red-400 transition-colors hover:underline">
+                                ${drama.author}
+                            </button>
+                            <span>•</span>
+                            <span>${drama.dateAdded}</span>
+                            ${drama.translator ? `<span>•</span><span>${drama.translator}</span>` : ''}
+                        </div>
+                    </div>
 
-                <!-- Tags -->
-                <div class="flex flex-wrap gap-1.5 mb-4">
-                    ${drama.tags.slice(0, 3).map(tag => `
-                        <button onclick="toggleFilter('tag', '${tag}'); event.stopPropagation();" class="px-1.5 py-0.5 text-[10px] rounded bg-gray-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-gray-200 dark:border-zinc-700 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 hover:border-red-200 dark:hover:border-red-800 transition-all">
-                            #${tag}
+                    <p class="text-xs text-zinc-600 dark:text-zinc-400 mb-3 line-clamp-2 flex-grow leading-relaxed">
+                        ${drama.description}
+                    </p>
+
+                    <!-- Tags -->
+                    <div class="flex flex-wrap gap-1.5 mb-4">
+                        ${drama.tags.slice(0, 3).map(tag => `
+                            <button onclick="toggleFilter('tag', '${tag}'); event.stopPropagation();" class="px-1.5 py-0.5 text-[10px] rounded bg-gray-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-gray-200 dark:border-zinc-700 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 hover:border-red-200 dark:hover:border-red-800 transition-all">
+                                #${tag}
+                            </button>
+                        `).join('')}
+                        ${drama.tags.length > 3 ? `<span class="text-[10px] text-zinc-400 py-0.5">+${drama.tags.length - 3}</span>` : ''}
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="flex gap-2 mt-auto pt-3 border-t border-gray-100 dark:border-zinc-800">
+                        <!-- Favorite Button -->
+                        <button onclick="toggleFavorite(${drama.id}); event.stopPropagation();" 
+                                class="flex items-center justify-center gap-1.5 py-1.5 px-3 rounded border transition-colors ${
+                                    isFavorite(drama.id) 
+                                    ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30' 
+                                    : 'border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-red-600 dark:hover:text-red-400'
+                                }"
+                                title="${isFavorite(drama.id) ? '取消收藏' : '添加收藏'}">
+                            <svg class="w-3.5 h-3.5 ${isFavorite(drama.id) ? 'fill-current' : ''}" fill="${isFavorite(drama.id) ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                            <span class="text-xs">${isFavorite(drama.id) ? '已收藏' : '收藏'}</span>
                         </button>
-                    `).join('')}
-                    ${drama.tags.length > 3 ? `<span class="text-[10px] text-zinc-400 py-0.5">+${drama.tags.length - 3}</span>` : ''}
-                </div>
-
-                <!-- Actions -->
-                <div class="flex gap-2 mt-auto pt-3 border-t border-gray-100 dark:border-zinc-800">
-                    ${drama.isTranslated && drama.translatedUrl ? `
-                        <a href="${drama.translatedUrl}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();"
-                           class="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded bg-red-600 hover:bg-red-700 text-white text-xs font-medium transition-colors">
-                            <span>观看汉化</span>
+                        
+                        ${drama.isTranslated && drama.translatedUrl ? `
+                            <a href="${drama.translatedUrl}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();"
+                               class="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded bg-red-600 hover:bg-red-700 text-white text-xs font-medium transition-colors">
+                                <span>观看汉化</span>
+                            </a>
+                        ` : ''}
+                        
+                        <a href="${drama.originalUrl}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();"
+                           class="${drama.isTranslated ? 'px-2.5' : 'flex-1'} flex items-center justify-center gap-1.5 py-1.5 rounded border border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-xs font-medium transition-colors"
+                           title="查看原版">
+                            ${!drama.isTranslated ? '<span>查看原版</span>' : ''}
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                         </a>
-                    ` : ''}
-                    
-                    <a href="${drama.originalUrl}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();"
-                       class="${drama.isTranslated ? 'px-2.5' : 'flex-1'} flex items-center justify-center gap-1.5 py-1.5 rounded border border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-xs font-medium transition-colors"
-                       title="查看原版">
-                        ${!drama.isTranslated ? '<span>查看原版</span>' : ''}
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
-                    </a>
+                    </div>
                 </div>
             </div>
-        </div>
-    `).join('');
+        `).join('');
+    }, 100); // Small delay for loading animation
 }
 
 function setupEventListeners() {
@@ -768,6 +1008,28 @@ function setupEventListeners() {
         observer.observe(sortBy, { attributes: true, attributeFilter: ['value'] });
     }
     
+    // Shortcuts modal events
+    const shortcutsBtn = document.getElementById('shortcutsBtn');
+    const shortcutsModal = document.getElementById('shortcutsModal');
+    const closeShortcutsModal = document.getElementById('closeShortcutsModal');
+    
+    shortcutsBtn.addEventListener('click', () => {
+        shortcutsModal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    });
+    
+    closeShortcutsModal.addEventListener('click', () => {
+        shortcutsModal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    });
+    
+    shortcutsModal.addEventListener('click', (e) => {
+        if (e.target === shortcutsModal) {
+            shortcutsModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+    });
+    
     // Clear Search Button
     document.getElementById('clearSearch').addEventListener('click', () => {
         const searchInput = document.getElementById('searchInput');
@@ -789,11 +1051,16 @@ function setupEventListeners() {
 function init() {
     // Wait for DOM to be fully loaded and Alpine.js to initialize
     setTimeout(() => {
+        // Add fade-in animation to body
+        document.body.classList.add('fade-in');
+        document.body.style.opacity = '1';
+        
         initTheme();
         updateStats();
         renderSidebar(); // Initial render of sidebar
         filterAndSortDramas();
         setupEventListeners();
+        setupKeyboardShortcuts(); // Setup keyboard shortcuts
         initSearchAutocomplete(); // Initialize search autocomplete
         setupSubmitForm();
     }, 100); // Small delay to ensure Alpine.js is ready
@@ -1049,8 +1316,9 @@ function setupSubmitForm() {
             : [];
 
         // Create drama object
+        const newId = dramas.length > 0 ? Math.max(...dramas.map(d => d.id)) + 1 : 1;
         const newDrama = {
-            id: dramas.length + 1, // Auto-increment ID
+            id: newId, // Safe ID generation
             title: formValues.title.trim(),
             author: formValues.author.trim(),
             translator: formValues.translator ? formValues.translator.trim() : '',
@@ -1081,16 +1349,59 @@ function setupSubmitForm() {
     // Copy JSON to clipboard
     copyJson.addEventListener('click', () => {
         const textToCopy = jsonCode.textContent;
-        navigator.clipboard.writeText(textToCopy).then(() => {
-            // Show success message
-            copySuccess.classList.remove('hidden');
-            setTimeout(() => {
-                copySuccess.classList.add('hidden');
-            }, 2000);
-        }).catch(err => {
-            console.error('Failed to copy JSON:', err);
-        });
+        
+        if (!textToCopy) {
+            console.error('No text to copy');
+            return;
+        }
+        
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                // Show success message
+                copySuccess.classList.remove('hidden');
+                setTimeout(() => {
+                    copySuccess.classList.add('hidden');
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy JSON:', err);
+                // Fallback for older browsers
+                copyToClipboardFallback(textToCopy);
+            });
+        } else {
+            // Fallback for older browsers
+            copyToClipboardFallback(textToCopy);
+        }
     });
+    
+    // Fallback clipboard copy function
+    function copyToClipboardFallback(text) {
+        try {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-999999px';
+            textArea.style.top = '-999999px';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            const successful = document.execCommand('copy');
+            document.body.removeChild(textArea);
+            
+            if (successful) {
+                copySuccess.classList.remove('hidden');
+                setTimeout(() => {
+                    copySuccess.classList.add('hidden');
+                }, 2000);
+            } else {
+                console.error('Fallback copy failed');
+                alert('复制失败，请手动复制文本');
+            }
+        } catch (err) {
+            console.error('Fallback copy error:', err);
+            alert('复制失败，请手动复制文本');
+        }
+    }
 }
 
 document.addEventListener('DOMContentLoaded', init);
