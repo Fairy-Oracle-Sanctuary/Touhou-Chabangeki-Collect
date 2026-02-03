@@ -518,8 +518,13 @@ function filterAndSortDramas() {
     const searchInput = document.getElementById('searchInput');
     const clearBtn = document.getElementById('clearSearch');
     const rawInput = searchInput.value;
-    const statusFilter = document.getElementById('statusFilter').value;
-    const sortBy = document.getElementById('sortBy').value;
+    
+    // Get status and sort values from both Alpine.js hidden inputs and direct DOM access
+    const statusFilterElement = document.getElementById('statusFilter');
+    const sortByElement = document.getElementById('sortBy');
+    
+    const statusFilter = statusFilterElement ? statusFilterElement.value : 'all';
+    const sortBy = sortByElement ? sortByElement.value : 'date-desc';
 
     // Toggle Clear Button
     if (rawInput.trim()) {
@@ -735,6 +740,34 @@ function setupEventListeners() {
         filterAndSortDramas();
     });
     
+    // Setup direct event listeners for hidden inputs
+    const statusFilter = document.getElementById('statusFilter');
+    const sortBy = document.getElementById('sortBy');
+    
+    if (statusFilter) {
+        statusFilter.addEventListener('input', filterAndSortDramas);
+        statusFilter.addEventListener('change', filterAndSortDramas);
+    }
+    
+    if (sortBy) {
+        sortBy.addEventListener('input', filterAndSortDramas);
+        sortBy.addEventListener('change', filterAndSortDramas);
+    }
+    
+    // Setup MutationObserver as backup
+    if (statusFilter && sortBy) {
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'value') {
+                    filterAndSortDramas();
+                }
+            });
+        });
+        
+        observer.observe(statusFilter, { attributes: true, attributeFilter: ['value'] });
+        observer.observe(sortBy, { attributes: true, attributeFilter: ['value'] });
+    }
+    
     // Clear Search Button
     document.getElementById('clearSearch').addEventListener('click', () => {
         const searchInput = document.getElementById('searchInput');
@@ -754,13 +787,16 @@ function setupEventListeners() {
 }
 
 function init() {
-    initTheme();
-    updateStats();
-    renderSidebar(); // Initial render of sidebar
-    filterAndSortDramas();
-    setupEventListeners();
-    initSearchAutocomplete(); // Initialize search autocomplete
-    setupSubmitForm();
+    // Wait for DOM to be fully loaded and Alpine.js to initialize
+    setTimeout(() => {
+        initTheme();
+        updateStats();
+        renderSidebar(); // Initial render of sidebar
+        filterAndSortDramas();
+        setupEventListeners();
+        initSearchAutocomplete(); // Initialize search autocomplete
+        setupSubmitForm();
+    }, 100); // Small delay to ensure Alpine.js is ready
 }
 
 function setupSubmitForm() {
