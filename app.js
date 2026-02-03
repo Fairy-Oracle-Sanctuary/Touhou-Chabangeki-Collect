@@ -115,6 +115,143 @@ window.showFavoritesOnly = function() {
     document.getElementById('dramaGrid').scrollIntoView({ behavior: 'smooth' });
 };
 
+// --- Timeline ---
+// Show timeline modal
+window.showTimelineModal = function() {
+    const timelineModal = document.getElementById('timelineModal');
+    timelineModal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    
+    // Generate timeline content
+    generateTimeline();
+};
+
+// Generate timeline content
+function generateTimeline() {
+    const timelineContent = document.getElementById('timelineContent');
+    
+    // Sort dramas by date
+    const sortedDramas = [...dramas].sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
+    
+    // Group by year and month
+    const groupedDramas = {};
+    sortedDramas.forEach(drama => {
+        const date = new Date(drama.dateAdded);
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1;
+        const key = `${year}年${month}月`;
+        
+        if (!groupedDramas[key]) {
+            groupedDramas[key] = [];
+        }
+        groupedDramas[key].push(drama);
+    });
+    
+    // Generate timeline HTML
+    let timelineHTML = '';
+    Object.keys(groupedDramas).forEach(period => {
+        const periodDramas = groupedDramas[period];
+        timelineHTML += `
+            <div class="relative">
+                <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-300 dark:bg-zinc-600"></div>
+                <div class="relative flex items-start mb-6">
+                    <div class="absolute left-0 w-8 h-8 bg-red-600 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                        ${periodDramas.length}
+                    </div>
+                    <div class="ml-12">
+                        <h3 class="text-lg font-bold text-zinc-900 dark:text-white mb-3">${period}</h3>
+                        <div class="space-y-3">
+                            ${periodDramas.map(drama => `
+                                <div class="bg-gray-50 dark:bg-zinc-800 rounded-lg p-3 hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors cursor-pointer" onclick="openDetail(${JSON.stringify(drama).replace(/"/g, '&quot;')})">
+                                    <div class="flex items-start gap-3">
+                                        <img src="${drama.thumbnail}" alt="${drama.title}" class="w-16 h-12 object-cover rounded">
+                                        <div class="flex-1">
+                                            <h4 class="font-medium text-zinc-900 dark:text-white">${drama.title}</h4>
+                                            <p class="text-xs text-zinc-500 dark:text-zinc-400">${drama.author} • ${drama.isTranslated ? '已汉化' : '未汉化'}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    
+    timelineContent.innerHTML = timelineHTML;
+}
+
+// --- Related Works Recommendation ---
+// Get related works based on tags and author
+function getRelatedWorks(currentDrama, limit = 6) {
+    const relatedScores = new Map();
+    
+    dramas.forEach(drama => {
+        if (drama.id === currentDrama.id) return;
+        
+        let score = 0;
+        
+        // Same author (highest weight)
+        if (drama.author === currentDrama.author) {
+            score += 10;
+        }
+        
+        // Same translator (high weight)
+        if (drama.translator && currentDrama.translator && drama.translator === currentDrama.translator) {
+            score += 8;
+        }
+        
+        // Same tags (medium weight)
+        const commonTags = drama.tags.filter(tag => currentDrama.tags.includes(tag));
+        score += commonTags.length * 2;
+        
+        // Same translation status (low weight)
+        if (drama.isTranslated === currentDrama.isTranslated) {
+            score += 1;
+        }
+        
+        if (score > 0) {
+            relatedScores.set(drama, score);
+        }
+    });
+    
+    // Sort by score and return top results
+    return Array.from(relatedScores.entries())
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, limit)
+        .map(([drama]) => drama);
+}
+
+// Render related works in detail page
+function renderRelatedWorks(currentDrama) {
+    const relatedWorksContainer = document.getElementById('relatedWorks');
+    const relatedWorks = getRelatedWorks(currentDrama);
+    
+    if (relatedWorks.length === 0) {
+        relatedWorksContainer.innerHTML = '<p class="text-sm text-zinc-500 dark:text-zinc-400">暂无相关推荐</p>';
+        return;
+    }
+    
+    relatedWorksContainer.innerHTML = relatedWorks.map(drama => `
+        <div class="bg-gray-50 dark:bg-zinc-800 rounded-lg p-3 hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors cursor-pointer" onclick="openDetail(${JSON.stringify(drama).replace(/"/g, '&quot;')})">
+            <div class="flex items-start gap-2">
+                <img src="${drama.thumbnail}" alt="${drama.title}" class="w-12 h-9 object-cover rounded">
+                <div class="flex-1 min-w-0">
+                    <h4 class="text-sm font-medium text-zinc-900 dark:text-white truncate">${drama.title}</h4>
+                    <p class="text-xs text-zinc-500 dark:text-zinc-400">${drama.author}</p>
+                    <div class="flex items-center gap-2 mt-1">
+                        <span class="px-1.5 py-0.5 rounded text-[8px] font-medium ${drama.isTranslated ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-400' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-400'}">
+                            ${drama.isTranslated ? '已汉化' : '未汉化'}
+                        </span>
+                        ${isFavorite(drama.id) ? '<svg class="w-3 h-3 text-red-500 fill-current" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>' : ''}
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
 // --- Batch Operations ---
 // Show batch actions modal
 window.showBatchActionsModal = function() {
@@ -1222,9 +1359,16 @@ function openDetail(drama) {
     detailOriginalLink.href = drama.originalUrl;
     
     // Add favorite button to detail links
+    // Remove any existing favorite button first
+    const detailLinksContainer = detailTranslatedLink.parentElement;
+    const existingFavoriteButton = detailLinksContainer.querySelector('button[onclick*="toggleFavorite"]');
+    if (existingFavoriteButton) {
+        existingFavoriteButton.remove();
+    }
+    
     const favoriteButton = document.createElement('button');
     favoriteButton.onclick = () => toggleFavorite(drama.id);
-    favoriteButton.className = `flex items-center justify-center gap-1.5 py-2 rounded border transition-colors ${
+    favoriteButton.className = `flex items-center justify-center gap-1.5 py-2 px-4 rounded border transition-colors ${
         isFavorite(drama.id) 
         ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30' 
         : 'border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-red-600 dark:hover:text-red-400'
@@ -1237,8 +1381,10 @@ function openDetail(drama) {
     `;
     
     // Insert favorite button before the links
-    const detailLinksContainer = detailTranslatedLink.parentElement;
     detailLinksContainer.insertBefore(favoriteButton, detailTranslatedLink);
+    
+    // Render related works
+    renderRelatedWorks(drama);
     
     // Show detail page
     detailPage.classList.remove('hidden');
@@ -1402,6 +1548,22 @@ function setupEventListeners() {
         observer.observe(statusFilter, { attributes: true, attributeFilter: ['value'] });
         observer.observe(sortBy, { attributes: true, attributeFilter: ['value'] });
     }
+    
+    // Timeline modal events
+    const timelineModal = document.getElementById('timelineModal');
+    const closeTimelineModal = document.getElementById('closeTimelineModal');
+    
+    closeTimelineModal.addEventListener('click', () => {
+        timelineModal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    });
+    
+    timelineModal.addEventListener('click', (e) => {
+        if (e.target === timelineModal) {
+            timelineModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+    });
     
     // Batch actions modal events
     const batchActionsBtn = document.getElementById('batchActionsBtn');
