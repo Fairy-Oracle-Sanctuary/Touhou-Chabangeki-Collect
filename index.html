@@ -130,6 +130,12 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </button>
+                        <!-- Autocomplete Dropdown -->
+                        <div id="autocompleteDropdown" class="absolute left-0 right-0 top-full mt-1 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-md shadow-lg z-20 hidden">
+                            <ul id="autocompleteList" class="py-1 max-h-60 overflow-y-auto">
+                                <!-- Autocomplete items will be injected here -->
+                            </ul>
+                        </div>
                     </div>
                     
                     <div class="flex gap-2" x-data="{ 

@@ -158,6 +158,239 @@ window.toggleFilter = function(type, value) {
     }
 };
 
+// 标签展开状态
+let tagsExpanded = false;
+
+// 切换标签展开状态
+function toggleTagsExpanded() {
+    tagsExpanded = !tagsExpanded;
+    renderSidebar();
+}
+
+// 搜索补全功能
+function initSearchAutocomplete() {
+    const searchInput = document.getElementById('searchInput');
+    const autocompleteDropdown = document.getElementById('autocompleteDropdown');
+    const autocompleteList = document.getElementById('autocompleteList');
+    let autocompleteTimeout;
+
+    // 生成补全建议
+    function generateAutocompleteSuggestions(input) {
+        if (!input || input.length < 1) return [];
+
+        const inputLower = input.toLowerCase();
+        const suggestions = [];
+        const seen = new Set();
+
+        // 搜索标题
+        dramas.forEach(drama => {
+            if (drama.title.toLowerCase().includes(inputLower) && !seen.has(drama.title)) {
+                seen.add(drama.title);
+                suggestions.push({
+                    type: 'title',
+                    value: drama.title,
+                    label: drama.title,
+                    count: 1
+                });
+            }
+        });
+
+        // 搜索作者
+        const authorCounts = {};
+        dramas.forEach(drama => {
+            if (drama.author.toLowerCase().includes(inputLower)) {
+                authorCounts[drama.author] = (authorCounts[drama.author] || 0) + 1;
+            }
+        });
+        Object.entries(authorCounts).forEach(([author, count]) => {
+            if (!seen.has(author)) {
+                seen.add(author);
+                suggestions.push({
+                    type: 'artist',
+                    value: author,
+                    label: author,
+                    count: count
+                });
+            }
+        });
+
+        // 搜索译者
+        const translatorCounts = {};
+        dramas.forEach(drama => {
+            if (drama.translator && drama.translator.toLowerCase().includes(inputLower)) {
+                translatorCounts[drama.translator] = (translatorCounts[drama.translator] || 0) + 1;
+            }
+        });
+        Object.entries(translatorCounts).forEach(([translator, count]) => {
+            if (!seen.has(translator)) {
+                seen.add(translator);
+                suggestions.push({
+                    type: 'translator',
+                    value: translator,
+                    label: translator,
+                    count: count
+                });
+            }
+        });
+
+        // 搜索标签
+        const tagCounts = {};
+        dramas.forEach(drama => {
+            drama.tags.forEach(tag => {
+                if (tag.toLowerCase().includes(inputLower)) {
+                    tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+                }
+            });
+        });
+        Object.entries(tagCounts).forEach(([tag, count]) => {
+            if (!seen.has(tag)) {
+                seen.add(tag);
+                suggestions.push({
+                    type: 'tag',
+                    value: tag,
+                    label: tag,
+                    count: count
+                });
+            }
+        });
+
+        // 限制最多显示10个建议
+        return suggestions.slice(0, 10);
+    }
+
+    // 渲染补全建议
+    function renderAutocompleteSuggestions(suggestions) {
+        if (suggestions.length === 0) {
+            autocompleteDropdown.classList.add('hidden');
+            return;
+        }
+
+        autocompleteList.innerHTML = suggestions.map(suggestion => {
+            let typeLabel, typeClass;
+            switch (suggestion.type) {
+                case 'title':
+                    typeLabel = '标题';
+                    typeClass = 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400';
+                    break;
+                case 'artist':
+                    typeLabel = '作者';
+                    typeClass = 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400';
+                    break;
+                case 'translator':
+                    typeLabel = '译者';
+                    typeClass = 'bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-400';
+                    break;
+                case 'tag':
+                    typeLabel = '标签';
+                    typeClass = 'bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-400';
+                    break;
+            }
+
+            return `
+                <li>
+                    <button 
+                        onclick="selectAutocompleteSuggestion('${suggestion.type}', '${suggestion.value}')" 
+                        class="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors flex items-center justify-between"
+                    >
+                        <div>
+                            <span>${suggestion.label}</span>
+                            <span class="ml-2 text-xs px-1.5 py-0.5 rounded ${typeClass}">${typeLabel}</span>
+                        </div>
+                        <span class="text-xs text-zinc-500 dark:text-zinc-400">${suggestion.count}</span>
+                    </button>
+                </li>
+            `;
+        }).join('');
+
+        autocompleteDropdown.classList.remove('hidden');
+    }
+
+    // 隐藏补全下拉菜单
+    function hideAutocompleteDropdown() {
+        autocompleteDropdown.classList.add('hidden');
+    }
+
+    // 输入事件监听
+    searchInput.addEventListener('input', (e) => {
+        clearTimeout(autocompleteTimeout);
+        const input = e.target.value.trim();
+
+        autocompleteTimeout = setTimeout(() => {
+            const suggestions = generateAutocompleteSuggestions(input);
+            renderAutocompleteSuggestions(suggestions);
+        }, 200);
+    });
+
+    // 点击外部隐藏下拉菜单
+    document.addEventListener('click', (e) => {
+        if (!searchInput.contains(e.target) && !autocompleteDropdown.contains(e.target)) {
+            hideAutocompleteDropdown();
+        }
+    });
+
+    // 键盘导航
+    searchInput.addEventListener('keydown', (e) => {
+        const activeItem = autocompleteList.querySelector('.bg-gray-100 dark:bg-zinc-700');
+        const allItems = autocompleteList.querySelectorAll('li button');
+
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            if (activeItem) {
+                activeItem.classList.remove('bg-gray-100', 'dark:bg-zinc-700');
+                const nextItem = activeItem.parentElement.nextElementSibling?.querySelector('button');
+                if (nextItem) {
+                    nextItem.classList.add('bg-gray-100', 'dark:bg-zinc-700');
+                    nextItem.scrollIntoView({ block: 'nearest' });
+                } else {
+                    allItems[0]?.classList.add('bg-gray-100', 'dark:bg-zinc-700');
+                }
+            } else {
+                allItems[0]?.classList.add('bg-gray-100', 'dark:bg-zinc-700');
+            }
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            if (activeItem) {
+                activeItem.classList.remove('bg-gray-100', 'dark:bg-zinc-700');
+                const prevItem = activeItem.parentElement.previousElementSibling?.querySelector('button');
+                if (prevItem) {
+                    prevItem.classList.add('bg-gray-100', 'dark:bg-zinc-700');
+                    prevItem.scrollIntoView({ block: 'nearest' });
+                } else {
+                    allItems[allItems.length - 1]?.classList.add('bg-gray-100', 'dark:bg-zinc-700');
+                }
+            } else {
+                allItems[allItems.length - 1]?.classList.add('bg-gray-100', 'dark:bg-zinc-700');
+            }
+        } else if (e.key === 'Enter') {
+            if (activeItem) {
+                e.preventDefault();
+                activeItem.click();
+            }
+        } else if (e.key === 'Escape') {
+            hideAutocompleteDropdown();
+        }
+    });
+}
+
+// 选择补全建议
+window.selectAutocompleteSuggestion = function(type, value) {
+    const searchInput = document.getElementById('searchInput');
+    
+    if (type === 'title') {
+        // 直接搜索标题
+        searchInput.value = value;
+    } else {
+        // 使用过滤器语法
+        toggleFilter(type, value);
+    }
+    
+    // 触发搜索
+    searchInput.dispatchEvent(new Event('input'));
+    
+    // 隐藏下拉菜单
+    document.getElementById('autocompleteDropdown').classList.add('hidden');
+};
+
 function renderSidebar() {
     const { sortedTags, sortedAuthors, sortedTranslators } = getStats();
     const tagCloud = document.getElementById('tagCloud');
@@ -168,8 +401,12 @@ function renderSidebar() {
     const searchInput = document.getElementById('searchInput');
     const { tags: activeTags, artists: activeArtists, translators: activeTranslators } = parseSearchInput(searchInput.value);
 
-    // Render Tags (Top 20)
-    tagCloud.innerHTML = sortedTags.slice(0, 20).map(tag => {
+    // 决定显示的标签数量
+    const displayCount = tagsExpanded ? sortedTags.length : 20;
+    const displayTags = sortedTags.slice(0, displayCount);
+    
+    // Render Tags
+    tagCloud.innerHTML = displayTags.map(tag => {
         const isActive = activeTags.includes(tag.name.toLowerCase());
         const activeClass = isActive 
             ? 'bg-red-600 text-white border-red-600 hover:bg-red-700' 
@@ -182,6 +419,20 @@ function renderSidebar() {
             </button>
         `;
     }).join('');
+    
+    // 添加展开/折叠按钮
+    if (sortedTags.length > 20) {
+        const toggleText = tagsExpanded ? '收起' : '展开全部';
+        const remainingCount = sortedTags.length - 20;
+        const buttonText = tagsExpanded ? toggleText : `${toggleText} (${remainingCount}个)`;
+        
+        tagCloud.innerHTML += `
+            <button onclick="toggleTagsExpanded()" 
+                    class="mt-3 px-3 py-1.5 text-xs rounded bg-gray-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-gray-200 dark:hover:bg-zinc-700 transition-colors">
+                ${buttonText}
+            </button>
+        `;
+    }
 
     // Render Authors (Top 10)
     authorList.innerHTML = sortedAuthors.slice(0, 10).map(author => {
@@ -463,6 +714,7 @@ function init() {
     renderSidebar(); // Initial render of sidebar
     filterAndSortDramas();
     setupEventListeners();
+    initSearchAutocomplete(); // Initialize search autocomplete
     setupSubmitForm();
 }
 
