@@ -178,7 +178,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=tL5lu9jG9m8",
         translatedUrl: "https://space.bilibili.com/12621850/lists/5104404",
         description: "世界谚语科普",
-        thumbnail: "",
+        thumbnail: "https://free.picui.cn/free/2026/02/04/6982d83f1e9d1.jpg",
         dateAdded: "2022-08-13"
     },
     {
@@ -191,7 +191,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=6cME-im2kDE",
         translatedUrl: "https://space.bilibili.com/12621850/lists/7228361",
         description: "这是啥子角色？",
-        thumbnail: "",
+        thumbnail: "https://free.picui.cn/free/2026/02/04/6982d83f047d8.jpg",
         dateAdded: "2021-12-27"
     },
     {
@@ -204,7 +204,85 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL15bNp6jPccn24qH-xfKfS2XQTJY30Fuu",
         translatedUrl: "https://space.bilibili.com/12621850/lists/6626365",
         description: "魂魄妖梦，你毁了我的性取向",
-        thumbnail: "",
+        thumbnail: "https://free.picui.cn/free/2026/02/04/6982d83f0bb27.jpg",
         dateAdded: "2019-02-16"
+    },
+    {
+        id: 17,
+        title: "东方永梦樱",
+        author: "みつば【mituba】",
+        translator: "Baby_2016",
+        tags: ["西行寺幽幽子", "八云紫", "魂魄妖梦", "博丽灵梦", "十六夜咲夜", "雾雨魔理沙", "东风谷早苗", "蕾米莉亚", "芙兰朵露", "宫古芳香", "铃仙", "绵月依姬", "藤原妹红", "八云蓝", "上白泽慧音", "古明地恋"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PLmc6eO_qCE4nYR7tYmTsppAF1CTxhcrTP",
+        translatedUrl: "https://space.bilibili.com/499929312/lists/6449310",
+        description: "佛前樱散祈缘契，愿渡来生共世人。",
+        thumbnail: "https://free.picui.cn/free/2026/02/04/6982deaa68f9e.jpg",
+        dateAdded: "2018-10-14"
+    },
+    {
+        id: 18,
+        title: "自杀未遂后竟然和蕾米莉亚开始交往了!?",
+        author: "幻夢 ゆっくり茶番劇",
+        translator: "Baby_2016",
+        tags: ["蕾米莉亚"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PLwnprYHAfPHaqEZqQFi2nQiPLg5Igo3mT",
+        translatedUrl: "https://space.bilibili.com/499929312/lists/6466841",
+        description: "无刀可放心食用",
+        thumbnail: "https://free.picui.cn/free/2026/02/04/6982deaa910d9.jpg",
+        dateAdded: "2025-07-24"
+    },
+    {
+        id: 19,
+        title: "幻想入沃尔加",
+        author: "ゆっくりヴォルガ",
+        translator: "Baby_2016",
+        tags: ["蕾米莉亚", "芙兰朵露", "十六夜咲夜", "易者", "帕秋莉", "辉夜", "藤原妹红", "古明地恋", "古明地觉", "铃仙", "魂魄妖梦", "茨木华扇", "姬海棠果", "射命丸文", "犬走椛", "洩矢诹访子", "八坂神奈子", "东风谷早苗", "二岩猯藏", "红美铃", "小恶魔"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PLn5zMpk5-YR-Qzz5RcosD3oA5MbuMk23V",
+        translatedUrl: "https://space.bilibili.com/499929312/lists/6525221",
+        description: "mmd和茶番剧二合一",
+        thumbnail: "https://free.picui.cn/free/2026/02/04/6982deaa90602.jpg",
+        dateAdded: "2024-07-31"
+    },
+    {
+        id: 20,
+        title: "谈了一场如魔法般的恋爱",
+        author: "幻夢 ゆっくり茶番劇",
+        translator: "Baby_2016",
+        tags: ["帕秋莉"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PLwnprYHAfPHZ0bKlsSRE1CQYkWNYw5L6U",
+        translatedUrl: "https://space.bilibili.com/499929312/lists/6702992",
+        description: "帕秋莉厨必看系列",
+        thumbnail: "https://free.picui.cn/free/2026/02/04/6982e2f6802e3.jpg",
+        dateAdded: "2025-09-12"
+    },
+    {
+        id: 21,
+        title: "拯救被欺凌男孩的天使妹妹",
+        author: "シク−Siku−   ゆっくり",
+        translator: "Baby_2016",
+        tags: ["蕾米莉亚", "芙兰朵露", "十六夜咲夜", "洩矢诹访子", "吉吊八千慧", "博丽灵梦", "八坂神奈子"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PLkONYltbNkGdPwu1CVug0NyOROBUShYqh",
+        translatedUrl: "https://space.bilibili.com/499929312/lists/6809460",
+        description: "繧?▲縺上ｊ縺励※縺?▲縺ｦ縺ｭ?",
+        thumbnail: "https://free.picui.cn/free/2026/02/04/6982e2f69a815.jpg",
+        dateAdded: "2023-10-01"
+    },
+    {
+        id: 22,
+        title: "染上色彩的恋爱始于你",
+        author: "ゆっくり春",
+        translator: "Baby_2016",
+        tags: ["圣白莲", "命莲", "八云紫", "博丽灵梦", "露米娅", "稗田阿求", "本居小铃", "上白泽慧音", "寅丸星", "幽谷响子", "云居一轮", "村纱水蜜", "森近霖之助", "爱丽丝", "宇佐见莲子", "小恶魔", "帕秋莉", "封兽鵺", "多多良小伞", "风见幽香", "蕾米莉亚", "芙兰朵露", "藤原妹红", "铃仙", "琪露诺", "红美铃", "大妖精", "米斯蒂娅", "莉格露", "魂魄妖梦", "西行寺幽幽子"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PLwsFUfY3oQWJ3GsyshggcsJbI6_X8hRD0",
+        translatedUrl: "https://space.bilibili.com/499929312/lists/7221002",
+        description: "",
+        thumbnail: "https://free.picui.cn/free/2026/02/04/6982e2f69d767.jpg",
+        dateAdded: "2024-08-23"
     }
 ];
