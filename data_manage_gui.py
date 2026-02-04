@@ -48,6 +48,9 @@ class DataManagerGUI:
         ttk.Button(btn_bar, text="添加新条目", command=self.add_item).pack(
             side=tk.LEFT, padx=2
         )
+        ttk.Button(btn_bar, text="管理作者链接", command=self.manage_author_links).pack(
+            side=tk.LEFT, padx=2
+        )
         ttk.Button(btn_bar, text="从 JSON 添加", command=self.add_from_json).pack(
             side=tk.LEFT, padx=2
         )
@@ -291,6 +294,13 @@ class DataManagerGUI:
         if messagebox.askyesno("确认", "确定要永久删除此条目吗？"):
             self.data.pop(self.tree.index(sel[0]))
             self._update_ids_and_refresh(silent=True)
+
+    def manage_author_links(self):
+        """管理作者和译者链接"""
+        dialog = AuthorLinksDialog(self.root, self.data)
+        self.root.wait_window(dialog)
+        if dialog.result:
+            self.save_data_gui()
 
     def add_from_json(self):
         d = JsonImportDialog(self.root)
@@ -591,8 +601,47 @@ class AddEditDialog(tk.Toplevel):
     def _setup_tag_autocomplete(self, entry_widget):
         """为tag输入框设置自动补全功能"""
         self.autocomplete_listbox = None
+        self._arrow_key_pressed = False  # 添加标志
         
         def on_key_press(event):
+            # 如果是箭头键，设置标志并返回
+            if event.keysym in ["Up", "Down"]:
+                self._arrow_key_pressed = True
+                return
+                
+            # 获取当前输入的最后一个词
+            current_text = entry_widget.get()
+            cursor_pos = entry_widget.index(tk.INSERT)
+            
+            # 找到当前光标所在位置的词
+            text_before_cursor = current_text[:cursor_pos]
+            words = text_before_cursor.split(",")
+            current_word = words[-1].strip() if words else ""
+            
+            if len(current_word) < 1:
+                self._hide_autocomplete()
+                return
+            
+            # 查找匹配的标签
+            all_tags = self.suggestions.get("tags", [])
+            matches = [tag for tag in all_tags 
+                      if tag.lower().startswith(current_word.lower())]
+            
+            if matches:
+                self._show_autocomplete(entry_widget, matches, current_word)
+            else:
+                self._hide_autocomplete()
+        
+        def on_key_release(event):
+            # 如果是箭头键，清除标志并返回
+            if event.keysym in ["Up", "Down"]:
+                self._arrow_key_pressed = False
+                return "break"  # 阻止进一步处理
+                
+            # 如果箭头键刚被按下，不处理自动补全
+            if self._arrow_key_pressed:
+                return
+                
             # 获取当前输入的最后一个词
             current_text = entry_widget.get()
             cursor_pos = entry_widget.index(tk.INSERT)
@@ -635,12 +684,12 @@ class AddEditDialog(tk.Toplevel):
                 text_before_cursor = current_text[:cursor_pos]
                 words = text_before_cursor.split(",")
                 
-                # 替换最后一个词
+                # 替换最后一个词并添加逗号
                 if len(words) > 1:
-                    words[-1] = selected_tag
+                    words[-1] = selected_tag + ", "
                     new_text = ",".join(words)
                 else:
-                    new_text = selected_tag
+                    new_text = selected_tag + ", "
                 
                 entry_widget.delete(0, tk.END)
                 entry_widget.insert(0, new_text)
@@ -661,8 +710,12 @@ class AddEditDialog(tk.Toplevel):
             if not self.autocomplete_listbox:
                 return
                 
+            # 只处理上下箭头键
+            if event.keysym not in ["Up", "Down"]:
+                return
+                
             current_selection = self.autocomplete_listbox.curselection()
-            current_index = current_selection[0] if current_selection else -1
+            current_index = current_selection[0] if current_selection else 0
             
             if event.keysym == "Up":
                 # 向上选择
@@ -670,21 +723,21 @@ class AddEditDialog(tk.Toplevel):
                     self.autocomplete_listbox.selection_clear(0, tk.END)
                     self.autocomplete_listbox.selection_set(current_index - 1)
                     self.autocomplete_listbox.see(current_index - 1)
-                return "break"
             elif event.keysym == "Down":
                 # 向下选择
                 if current_index < self.autocomplete_listbox.size() - 1:
                     self.autocomplete_listbox.selection_clear(0, tk.END)
                     self.autocomplete_listbox.selection_set(current_index + 1)
                     self.autocomplete_listbox.see(current_index + 1)
-                return "break"
+            
+            # 阻止事件传播到KeyRelease
+            return "break"
         
-        entry_widget.bind("<KeyRelease>", on_key_press)
+        entry_widget.bind("<KeyPress>", on_arrow_key_press)  # 先绑定箭头键
+        entry_widget.bind("<KeyRelease>", on_key_release)   # 使用新的KeyRelease处理
         entry_widget.bind("<Tab>", on_tab_press)
         entry_widget.bind("<Escape>", on_escape_press)
         entry_widget.bind("<FocusOut>", on_focus_out)
-        entry_widget.bind("<Up>", on_arrow_key_press)
-        entry_widget.bind("<Down>", on_arrow_key_press)
     
     def _show_autocomplete(self, entry_widget, matches, current_word):
         """显示自动补全列表"""
@@ -738,12 +791,12 @@ class AddEditDialog(tk.Toplevel):
                 text_before_cursor = current_text[:cursor_pos]
                 words = text_before_cursor.split(",")
                 
-                # 替换最后一个词
+                # 替换最后一个词并添加逗号
                 if len(words) > 1:
-                    words[-1] = selected_tag
+                    words[-1] = selected_tag + ", "
                     new_text = ",".join(words)
                 else:
-                    new_text = selected_tag
+                    new_text = selected_tag + ", "
                 
                 entry_widget.delete(0, tk.END)
                 entry_widget.insert(0, new_text)
@@ -777,6 +830,227 @@ class AddEditDialog(tk.Toplevel):
             "thumbnail": self.vars["thumbnail"].get().strip(),
             "dateAdded": self.vars["dateAdded"].get().strip(),
         }
+        self.destroy()
+
+
+class AuthorLinksDialog(tk.Toplevel):
+    def __init__(self, parent, data):
+        super().__init__(parent)
+        self.title("管理作者/译者链接")
+        self.data = data
+        self.result = None
+        self.geometry("600x500")
+        
+        # 主框架
+        main_frame = ttk.Frame(self, padding="10")
+        main_frame.pack(fill=tk.BOTH, expand=True)
+        
+        # 说明
+        ttk.Label(main_frame, text="配置作者和译者的主页链接，支持YouTube和B站", 
+                 font=("Microsoft YaHei", 10)).pack(pady=(0, 10))
+        
+        # 创建表格框架
+        table_frame = ttk.Frame(main_frame)
+        table_frame.pack(fill=tk.BOTH, expand=True)
+        
+        # 滚动条
+        scrollbar = ttk.Scrollbar(table_frame)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        
+        # 树形视图
+        self.tree = ttk.Treeview(table_frame, columns=("name", "link"), show="headings", 
+                                 yscrollcommand=scrollbar.set)
+        self.tree.heading("name", text="作者/译者")
+        self.tree.heading("link", text="主页链接")
+        self.tree.column("name", width=200)
+        self.tree.column("link", width=350)
+        self.tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        scrollbar.config(command=self.tree.yview)
+        
+        # 加载现有链接
+        self.load_existing_links()
+        
+        # 按钮区
+        btn_frame = ttk.Frame(main_frame)
+        btn_frame.pack(fill=tk.X, pady=(10, 0))
+        
+        ttk.Button(btn_frame, text="添加/修改", command=self.add_edit_link).pack(side=tk.LEFT, padx=2)
+        ttk.Button(btn_frame, text="删除", command=self.delete_link).pack(side=tk.LEFT, padx=2)
+        ttk.Button(btn_frame, text="保存", command=self.save_links).pack(side=tk.RIGHT, padx=2)
+        ttk.Button(btn_frame, text="取消", command=self.destroy).pack(side=tk.RIGHT, padx=2)
+        
+        # 双击编辑
+        self.tree.bind("<Double-1>", lambda e: self.add_edit_link())
+    
+    def load_existing_links(self):
+        """加载现有的作者链接"""
+        # 从data.js中提取authorLinks
+        try:
+            with open("data.js", "r", encoding="utf-8") as f:
+                content = f.read()
+                
+            # 查找authorLinks对象
+            match = re.search(r'const authorLinks = ({.*?});', content, re.DOTALL)
+            if match:
+                links_str = match.group(1)
+                print(f"原始字符串: {repr(links_str[:200])}")
+                
+                # 移除JavaScript注释，使其成为有效的JSON
+                # 移除单行注释 //（但不包括URL中的//）
+                links_str = re.sub(r'^\s*//.*$', '', links_str, flags=re.MULTILINE)
+                # 移除多行注释 /* */
+                links_str = re.sub(r'/\*.*?\*/', '', links_str, flags=re.DOTALL)
+                # 移除多余的逗号和空白
+                links_str = re.sub(r',\s*}', '}', links_str)
+                links_str = re.sub(r',\s*]', ']', links_str)
+                links_str = links_str.strip()
+                
+                print(f"清理后字符串: {repr(links_str[:200])}")
+                
+                # 尝试解析JSON，如果失败则尝试修复常见问题
+                try:
+                    self.author_links = json.loads(links_str)
+                except json.JSONDecodeError as e:
+                    print(f"JSON解析错误详情: {e}")
+                    # 尝试修复常见的JSON问题
+                    # 移除控制字符但保留必要的换行符
+                    links_str = re.sub(r'[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F-\x9F]', '', links_str)
+                    # 确保字符串使用双引号
+                    links_str = re.sub(r"'([^']*)'", r'"\1"', links_str)
+                    print(f"修复后字符串: {repr(links_str[:200])}")
+                    self.author_links = json.loads(links_str)
+                
+                print(f"解析成功，共有 {len(self.author_links)} 个链接")
+            else:
+                print("未找到authorLinks对象")
+                self.author_links = {}
+        except Exception as e:
+            print(f"加载作者链接时出错: {e}")
+            import traceback
+            traceback.print_exc()
+            self.author_links = {}
+        
+        # 显示到表格
+        print(f"准备显示到表格，链接数量: {len(self.author_links)}")
+        for name, link in self.author_links.items():
+            print(f"添加: {name} -> {link}")
+            self.tree.insert("", tk.END, values=(name, link))
+    
+    def add_edit_link(self):
+        """添加或修改链接"""
+        selection = self.tree.selection()
+        if selection:
+            item = self.tree.item(selection[0])
+            name, link = item['values']
+        else:
+            name = ""
+            link = ""
+        
+        dialog = LinkEditDialog(self, name, link)
+        self.wait_window(dialog)
+        
+        if dialog.result:
+            new_name, new_link = dialog.result
+            # 更新或添加
+            if selection:
+                self.tree.item(selection[0], values=(new_name, new_link))
+            else:
+                self.tree.insert("", tk.END, values=(new_name, new_link))
+    
+    def delete_link(self):
+        """删除链接"""
+        selection = self.tree.selection()
+        if not selection:
+            messagebox.showwarning("提示", "请先选择要删除的项目")
+            return
+        
+        if messagebox.askyesno("确认", "确定要删除这个链接吗？"):
+            self.tree.delete(selection[0])
+    
+    def save_links(self):
+        """保存链接到data.js"""
+        # 收集所有链接
+        links = {}
+        for child in self.tree.get_children():
+            name, link = self.tree.item(child)['values']
+            if name and link:
+                links[name] = link
+        
+        # 读取data.js文件
+        try:
+            with open("data.js", "r", encoding="utf-8") as f:
+                content = f.read()
+        except:
+            messagebox.showerror("错误", "无法读取data.js文件")
+            return
+        
+        # 替换authorLinks部分
+        new_links_str = "const authorLinks = " + json.dumps(links, ensure_ascii=False, indent=4) + ";"
+        
+        # 查找并替换
+        pattern = r'const authorLinks = {.*?};'
+        if re.search(pattern, content, re.DOTALL):
+            new_content = re.sub(pattern, new_links_str, content, flags=re.DOTALL)
+        else:
+            # 如果没有找到，在文件开头添加
+            new_content = new_links_str + "\n\n" + content
+        
+        # 保存文件
+        try:
+            with open("data.js", "w", encoding="utf-8") as f:
+                f.write(new_content)
+            self.result = True
+            messagebox.showinfo("成功", "作者链接已保存")
+            self.destroy()
+        except Exception as e:
+            messagebox.showerror("错误", f"保存失败: {str(e)}")
+
+
+class LinkEditDialog(tk.Toplevel):
+    def __init__(self, parent, name="", link=""):
+        super().__init__(parent)
+        self.title("编辑链接")
+        self.result = None
+        self.geometry("400x200")
+        
+        # 主框架
+        main_frame = ttk.Frame(self, padding="20")
+        main_frame.pack(fill=tk.BOTH, expand=True)
+        
+        # 名称输入
+        ttk.Label(main_frame, text="作者/译者名称:").pack(anchor=tk.W)
+        self.name_var = tk.StringVar(value=name)
+        ttk.Entry(main_frame, textvariable=self.name_var, width=50).pack(fill=tk.X, pady=(0, 10))
+        
+        # 链接输入
+        ttk.Label(main_frame, text="主页链接:").pack(anchor=tk.W)
+        self.link_var = tk.StringVar(value=link)
+        ttk.Entry(main_frame, textvariable=self.link_var, width=50).pack(fill=tk.X, pady=(0, 10))
+        
+        # 说明
+        ttk.Label(main_frame, text="支持YouTube频道链接或B站空间链接", 
+                 font=("Microsoft YaHei", 9), foreground="#666").pack(pady=(0, 10))
+        
+        # 按钮
+        btn_frame = ttk.Frame(main_frame)
+        btn_frame.pack(fill=tk.X)
+        
+        ttk.Button(btn_frame, text="确定", command=self.ok).pack(side=tk.RIGHT, padx=2)
+        ttk.Button(btn_frame, text="取消", command=self.destroy).pack(side=tk.RIGHT, padx=2)
+    
+    def ok(self):
+        name = self.name_var.get().strip()
+        link = self.link_var.get().strip()
+        
+        if not name:
+            messagebox.showwarning("提示", "请输入作者/译者名称")
+            return
+        
+        if not link:
+            messagebox.showwarning("提示", "请输入主页链接")
+            return
+        
+        self.result = (name, link)
         self.destroy()
 
 

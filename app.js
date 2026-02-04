@@ -875,10 +875,24 @@ window.toggleFilter = function(type, value) {
 
 // 标签展开状态
 let tagsExpanded = false;
+let authorsExpanded = false;
+let translatorsExpanded = false;
 
 // 切换标签展开状态
 function toggleTagsExpanded() {
     tagsExpanded = !tagsExpanded;
+    renderSidebar();
+}
+
+// 切换作者展开状态
+function toggleAuthorsExpanded() {
+    authorsExpanded = !authorsExpanded;
+    renderSidebar();
+}
+
+// 切换译者展开状态
+function toggleTranslatorsExpanded() {
+    translatorsExpanded = !translatorsExpanded;
     renderSidebar();
 }
 
@@ -1208,8 +1222,11 @@ function renderSidebar() {
         `;
     }
 
-    // Render Authors (Top 10)
-    authorList.innerHTML = sortedAuthors.slice(0, 10).map(author => {
+    // Render Authors
+    const authorDisplayCount = authorsExpanded ? sortedAuthors.length : 10;
+    const displayAuthors = sortedAuthors.slice(0, authorDisplayCount);
+    
+    authorList.innerHTML = displayAuthors.map(author => {
         const isActive = activeArtists.includes(author.name.toLowerCase());
         const activeClass = isActive
             ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 font-medium'
@@ -1224,9 +1241,26 @@ function renderSidebar() {
         `;
     }).join('');
 
-    // Render Translators (Top 10)
+    // 添加作者展开/折叠按钮
+    if (sortedAuthors.length > 10) {
+        const toggleText = authorsExpanded ? '收起' : '展开全部';
+        const remainingCount = sortedAuthors.length - 10;
+        const buttonText = authorsExpanded ? toggleText : `${toggleText} (${remainingCount}个)`;
+        
+        authorList.innerHTML += `
+            <button onclick="toggleAuthorsExpanded()" 
+                    class="mt-2 px-3 py-1.5 text-xs rounded bg-gray-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-gray-200 dark:hover:bg-zinc-700 transition-colors">
+                ${buttonText}
+            </button>
+        `;
+    }
+
+    // Render Translators
     if (translatorList) {
-        translatorList.innerHTML = sortedTranslators.slice(0, 10).map(translator => {
+        const translatorDisplayCount = translatorsExpanded ? sortedTranslators.length : 10;
+        const displayTranslators = sortedTranslators.slice(0, translatorDisplayCount);
+        
+        translatorList.innerHTML = displayTranslators.map(translator => {
             const isActive = activeTranslators.includes(translator.name.toLowerCase());
             const activeClass = isActive
                 ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 font-medium'
@@ -1240,6 +1274,20 @@ function renderSidebar() {
                 </button>
             `;
         }).join('');
+
+        // 添加译者展开/折叠按钮
+        if (sortedTranslators.length > 10) {
+            const toggleText = translatorsExpanded ? '收起' : '展开全部';
+            const remainingCount = sortedTranslators.length - 10;
+            const buttonText = translatorsExpanded ? toggleText : `${toggleText} (${remainingCount}个)`;
+            
+            translatorList.innerHTML += `
+                <button onclick="toggleTranslatorsExpanded()" 
+                        class="mt-2 px-3 py-1.5 text-xs rounded bg-gray-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-gray-200 dark:hover:bg-zinc-700 transition-colors">
+                    ${buttonText}
+                </button>
+            `;
+        }
     }
 }
 
@@ -1320,6 +1368,10 @@ function filterAndSortDramas() {
                 return a.title.localeCompare(b.title);
             case 'name-desc':
                 return b.title.localeCompare(a.title);
+            case 'id-asc':
+                return a.id - b.id;
+            case 'id-desc':
+                return b.id - a.id;
             default:
                 return 0;
         }
@@ -1350,9 +1402,28 @@ function openDetail(drama) {
     detailStatus.textContent = drama.isTranslated ? '已汉化' : '未汉化';
     
     detailTitle.textContent = drama.title;
-    detailAuthor.innerHTML = `<button onclick="toggleFilter('artist', '${drama.author}')" class="hover:text-red-600 dark:hover:text-red-400 transition-colors hover:underline">${drama.author}</button>`;
+    
+    // 作者链接 - 优先跳转到主页，如果没有则使用筛选功能
+    const authorLink = authorLinks[drama.author];
+    if (authorLink) {
+        detailAuthor.innerHTML = `<a href="${authorLink}" target="_blank" rel="noopener noreferrer" class="hover:text-red-600 dark:hover:text-red-400 transition-colors hover:underline cursor-pointer">${drama.author}</a>`;
+    } else {
+        detailAuthor.innerHTML = `<button onclick="toggleFilter('artist', '${drama.author}')" class="hover:text-red-600 dark:hover:text-red-400 transition-colors hover:underline cursor-pointer">${drama.author}</button>`;
+    }
+    
     detailDate.textContent = drama.dateAdded;
-    detailTranslator.innerHTML = drama.translator ? `<button onclick="toggleFilter('translator', '${drama.translator}')" class="hover:text-red-600 dark:hover:text-red-400 transition-colors hover:underline">${drama.translator}</button>` : '无';
+    
+    // 译者链接 - 优先跳转到主页，如果没有则使用筛选功能
+    if (drama.translator) {
+        const translatorLink = authorLinks[drama.translator];
+        if (translatorLink) {
+            detailTranslator.innerHTML = `<a href="${translatorLink}" target="_blank" rel="noopener noreferrer" class="hover:text-red-600 dark:hover:text-red-400 transition-colors hover:underline cursor-pointer">${drama.translator}</a>`;
+        } else {
+            detailTranslator.innerHTML = `<button onclick="toggleFilter('translator', '${drama.translator}')" class="hover:text-red-600 dark:hover:text-red-400 transition-colors hover:underline cursor-pointer">${drama.translator}</button>`;
+        }
+    } else {
+        detailTranslator.textContent = '无';
+    }
     detailDescription.textContent = drama.description;
     
     // Fill tags

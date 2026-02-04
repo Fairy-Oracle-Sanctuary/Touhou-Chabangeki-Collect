@@ -1,6 +1,53 @@
+// 作者和译者主页链接映射
+const authorLinks = {
+    // 作者
+    "OKOME": "https://www.youtube.com/@OKOME-j4z",
+    "ささきの茶釜": "https://www.youtube.com/@%E3%81%95%E3%81%95%E3%81%8D%E3%81%AE%E8%8C%B6%E9%87%9C",
+    "ラングリィ": "https://www.youtube.com/@LANGULY",
+    "まったりさん": "https://www.youtube.com/@mattarisan",
+    "DAIゆっくり": "https://www.youtube.com/@_dai6935",
+    "白熱の親指": "https://www.youtube.com/@%E7%99%BD%E7%86%B1%E3%81%AE%E8%A6%AA%E6%8C%87-k6g",
+    "須方のさんちゃん工房": "https://www.youtube.com/@%E9%A0%88%E6%96%B9%E3%81%AE%E3%81%95%E3%82%93%E3%81%A1%E3%82%83%E3%82%93%E5%B7%A5%E6%88%BF",
+    "みつば【mituba】": "https://www.youtube.com/@mituba_clover",
+    "ねんねまるゆっくり": "https://www.youtube.com/@nene-yukkuri",
+    "不知火桃": "https://www.youtube.com/@shiranuimomo",
+    "MISAKI 3518": "https://www.youtube.com/@MISAKI-3518",
+    "みるもるの家": "https://www.youtube.com/@mirumoru",
+    "Super_Nakachan": "https://www.youtube.com/@SuperNakachanTV",
+    "転生さん": "https://www.youtube.com/@tensei_san",
+    "月田瑞希": "https://www.youtube.com/@%E6%9C%88%E7%94%B0%E7%91%9E%E5%B8%8C",
+    "東方キャラと恋愛するノベル動画ch": "https://www.youtube.com/@ch-vq5tf",
+    "みとは ゆっくり製作所": "https://www.youtube.com/@rinne_mitoha",
+    "〆タケ": "https://www.youtube.com/@Sime-Take",
+    "ゆっくり紫月": "https://www.youtube.com/@%E3%82%86%E3%81%A3%E3%81%8F%E3%82%8A%E7%B4%AB%E6%9C%88",
+    "森の民やむぅ": "https://www.youtube.com/@UTA413",
+    "れくしぃちきん@ゆっくり茶番劇": "https://www.youtube.com/@req4chicken",
+    "アスター": "https://www.youtube.com/@%E3%82%A2%E3%82%B9%E3%82%BF%E3%83%BC-q8x",
+    "KOTATU": "https://www.youtube.com/@KOTATU3118",
+    // 译者
+    "一脚踢飞毛布": "https://space.bilibili.com/33819012",
+    "就是很一般": "https://space.bilibili.com/12621850",
+    "Baby_2016": "https://space.bilibili.com/499929312",
+    "寄遗忘之物于流年": "https://space.bilibili.com/109338384",
+    "幻想入的Jier": "https://space.bilibili.com/87123918"
+};
+
 const dramas = [
     {
         id: 1,
+        title: "这里是幻想高中话剧部！",
+        author: "OKOME",
+        translator: "一脚踢飞毛布",
+        tags: ["秋静叶", "博丽灵梦", "鬼人正邪", "上白泽慧音", "八云紫", "魂魄妖忌", "魂魄妖梦", "雾雨魔理沙", "西行寺幽幽子"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PL-pkvuGg-eTBtbPiC-dhheSrl0GaAeifd",
+        translatedUrl: "https://space.bilibili.com/33819012/lists/6789016",
+        description: "来演话剧吧！博丽同学！",
+        thumbnail: "https://free.picui.cn/free/2026/02/04/6982e5c6bfe56.jpg",
+        dateAdded: "2025-02-10"
+    },
+    {
+        id: 2,
         title: "死神与少年",
         author: "ささきの茶釜",
         translator: "就是很一般",
@@ -13,7 +60,7 @@ const dramas = [
         dateAdded: "2023-06-18"
     },
     {
-        id: 2,
+        id: 3,
         title: "幻想死洛谭",
         author: "ささきの茶釜",
         translator: "就是很一般",
@@ -26,7 +73,7 @@ const dramas = [
         dateAdded: "2024-08-24"
     },
     {
-        id: 3,
+        id: 4,
         title: "幻想心狼殿",
         author: "ささきの茶釜",
         translator: "就是很一般",
@@ -39,11 +86,11 @@ const dramas = [
         dateAdded: "2025-08-17"
     },
     {
-        id: 4,
+        id: 5,
         title: "騒がしすぎて怖くない夜廻三",
         author: "ささきの茶釜",
         translator: "",
-        tags: [],
+        tags: ["魂魄妖梦", "芙兰朵露", "十六夜咲夜", "洩矢诹访子", "博丽灵梦", "东风谷早苗", "雾雨魔理沙", "森近霖之助", "上白泽慧音", "蕾米莉亚", "爱丽丝"],
         isTranslated: false,
         originalUrl: "https://www.youtube.com/playlist?list=PLxioisTzjlBYrCViDpMBfFOEy1R4xNi1t",
         translatedUrl: "",
@@ -52,46 +99,7 @@ const dramas = [
         dateAdded: "2022-08-10"
     },
     {
-        id: 5,
-        title: "吸血鬼と同棲⁉",
-        author: "ねんねまるゆっくり",
-        translator: "Baby_2016",
-        tags: ["蕾米莉亚", "博丽灵梦", "芙兰朵露"],
-        isTranslated: true,
-        originalUrl: "https://www.youtube.com/playlist?list=PL4PMLGSCaH8AF_vC-FcV9DTDU5XPCatxG",
-        translatedUrl: "https://space.bilibili.com/499929312/lists/6267690",
-        description: "莫名其妙就要和吸血鬼同居了！？",
-        thumbnail: "https://free.picui.cn/free/2026/02/03/6981d3f9ea961.jpg",
-        dateAdded: "2020-05-29"
-    },
-    {
         id: 6,
-        title: "红月夜的契约——与蕾米莉亚的彻夜醉迷",
-        author: "不知火桃",
-        translator: "Baby_2016",
-        tags: ["蕾米莉亚", "古明地觉"],
-        isTranslated: true,
-        originalUrl: "https://www.youtube.com/playlist?list=PLFU-QWGTBq-4SsfGQuJBNzmvZtTzN3FoJ",
-        translatedUrl: "https://space.bilibili.com/499929312/lists/6324095",
-        description: "学校的优等生竟和吸血鬼夜游！？",
-        thumbnail: "https://free.picui.cn/free/2026/02/03/6981d3f9f2bff.jpg",
-        dateAdded: "2022-09-09"
-    },
-    {
-        id: 7,
-        title: "Bunny girl",
-        author: "MISAKI 3518",
-        translator: "寄遗忘之物于流年",
-        tags: ["铃仙"],
-        isTranslated: true,
-        originalUrl: "https://www.youtube.com/watch?v=ienoNid46dM&list=PLPIDlOi7aH3EiGs9HnU3Rg52r4j587qsI&index=6",
-        translatedUrl: "https://www.bilibili.com/video/BV16A6QBCEqD/?vd_source=29215d7e01e2e3b79461f647961a787f",
-        description: "与铃仙在酒吧的小故事",
-        thumbnail: "https://free.picui.cn/free/2026/02/03/6981d4bbb3958.jpg",
-        dateAdded: "2025-06-20"
-    },
-    {
-        id: 8,
         title: "幻想怪異録",
         author: "ラングリィ",
         translator: "就是很一般",
@@ -104,7 +112,7 @@ const dramas = [
         dateAdded: "2021-03-24"
     },
     {
-        id: 9,
+        id: 7,
         title: "东方海龟汤",
         author: "みつば【mituba】",
         translator: "就是很一般",
@@ -117,7 +125,7 @@ const dramas = [
         dateAdded: "2026-02-03"
     },
     {
-        id: 10,
+        id: 8,
         title: "欠了100亿的我被蕾米莉亚用100元买下了",
         author: "まったりさん",
         translator: "就是很一般",
@@ -130,7 +138,7 @@ const dramas = [
         dateAdded: "2024-07-25"
     },
     {
-        id: 11,
+        id: 9,
         title: "那些年我与小石头的恋爱攻防战",
         author: "まったりさん",
         translator: "就是很一般",
@@ -143,7 +151,7 @@ const dramas = [
         dateAdded: "2024-07-31"
     },
     {
-        id: 12,
+        id: 10,
         title: "创世神似乎在自己的世界挑战强者的样子",
         author: "DAIゆっくり",
         translator: "就是很一般",
@@ -156,7 +164,7 @@ const dramas = [
         dateAdded: "2024-03-07"
     },
     {
-        id: 13,
+        id: 11,
         title: "冷漠读心男幻想入",
         author: "白熱の親指",
         translator: "就是很一般",
@@ -169,7 +177,7 @@ const dramas = [
         dateAdded: "2024-12-06"
     },
     {
-        id: 14,
+        id: 12,
         title: "河童世界谚语剧场",
         author: "須方のさんちゃん工房",
         translator: "就是很一般",
@@ -182,7 +190,7 @@ const dramas = [
         dateAdded: "2022-08-13"
     },
     {
-        id: 15,
+        id: 13,
         title: "天才的我被IQ9的后辈琪露诺告白了",
         author: "まったりさん",
         translator: "就是很一般",
@@ -195,7 +203,7 @@ const dramas = [
         dateAdded: "2021-12-27"
     },
     {
-        id: 16,
+        id: 14,
         title: "爱上可爱妖梦.....但是",
         author: "まったりさん",
         translator: "就是很一般",
@@ -206,6 +214,32 @@ const dramas = [
         description: "魂魄妖梦，你毁了我的性取向",
         thumbnail: "https://free.picui.cn/free/2026/02/04/6982d83f0bb27.jpg",
         dateAdded: "2019-02-16"
+    },
+    {
+        id: 15,
+        title: "红月夜的契约——与蕾米莉亚的彻夜醉迷",
+        author: "不知火桃",
+        translator: "Baby_2016",
+        tags: ["蕾米莉亚", "古明地觉"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PLFU-QWGTBq-4SsfGQuJBNzmvZtTzN3FoJ",
+        translatedUrl: "https://space.bilibili.com/499929312/lists/6324095",
+        description: "学校的优等生竟和吸血鬼夜游！？",
+        thumbnail: "https://free.picui.cn/free/2026/02/03/6981d3f9f2bff.jpg",
+        dateAdded: "2022-09-09"
+    },
+    {
+        id: 16,
+        title: "吸血鬼と同棲⁉",
+        author: "ねんねまるゆっくり",
+        translator: "Baby_2016",
+        tags: ["蕾米莉亚", "博丽灵梦", "芙兰朵露"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PL4PMLGSCaH8AF_vC-FcV9DTDU5XPCatxG",
+        translatedUrl: "https://space.bilibili.com/499929312/lists/6267690",
+        description: "莫名其妙就要和吸血鬼同居了！？",
+        thumbnail: "https://free.picui.cn/free/2026/02/03/6981d3f9ea961.jpg",
+        dateAdded: "2020-05-29"
     },
     {
         id: 17,
@@ -287,19 +321,6 @@ const dramas = [
     },
     {
         id: 23,
-        title: "这里是幻想高中话剧部！",
-        author: "OKOME",
-        translator: "一脚踢飞毛布",
-        tags: ["秋静叶", "博丽灵梦", "鬼人正邪", "上白泽慧音", "八云紫", "魂魄妖忌", "魂魄妖梦", "雾雨魔理沙", "西行寺幽幽子"],
-        isTranslated: true,
-        originalUrl: "https://www.youtube.com/playlist?list=PL-pkvuGg-eTBtbPiC-dhheSrl0GaAeifd",
-        translatedUrl: "https://space.bilibili.com/33819012/lists/6789016",
-        description: "来演话剧吧！博丽同学！",
-        thumbnail: "https://free.picui.cn/free/2026/02/04/6982e5c6bfe56.jpg",
-        dateAdded: "2025-02-10"
-    },
-    {
-        id: 24,
         title: "博丽灵梦消失的那一天",
         author: "みつば【mituba】",
         translator: "幻想入的Jier",
@@ -312,7 +333,7 @@ const dramas = [
         dateAdded: "2021-06-07"
     },
     {
-        id: 25,
+        id: 24,
         title: "满脑子黄色废料的心酱",
         author: "不知火桃",
         translator: "幻想入的Jier",
@@ -325,7 +346,7 @@ const dramas = [
         dateAdded: "2022-10-09"
     },
     {
-        id: 26,
+        id: 25,
         title: "○○空间",
         author: "KOTATU",
         translator: "幻想入的Jier",
@@ -336,5 +357,226 @@ const dramas = [
         description: "想要出去就只能○○的房间",
         thumbnail: "https://free.picui.cn/free/2026/02/04/6982feaa04b7b.jpg",
         dateAdded: "2023-11-07"
+    },
+    {
+        id: 26,
+        title: "【みるもるの家】作者的茶番剧合集",
+        author: "みるもるの家",
+        translator: "幻想入的Jier",
+        tags: ["古明地恋", "古明地觉", "蕾米莉亚", "芙兰朵露"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/watch?v=t-vZgFACfmw",
+        translatedUrl: "https://space.bilibili.com/87123918/lists/4780455",
+        description: "",
+        thumbnail: "https://free.picui.cn/free/2026/02/04/6983041b835ce.jpg",
+        dateAdded: "2021-11-14"
+    },
+    {
+        id: 27,
+        title: "Super_Nakachan作者的贴贴合集",
+        author: "Super_Nakachan",
+        translator: "幻想入的Jier",
+        tags: ["博丽灵梦", "雾雨魔理沙", "射命丸文", "蕾米莉亚", "帕秋莉", "爱丽丝", "八云紫", "古明地觉", "古明地恋", "八云紫", "摩多罗隐岐奈", "十六夜咲夜"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/watch?v=NNAi4rWxy4k",
+        translatedUrl: "https://space.bilibili.com/87123918/lists/4396885",
+        description: "",
+        thumbnail: "https://free.picui.cn/free/2026/02/04/6983041bc47bb.jpg",
+        dateAdded: "2022-08-05"
+    },
+    {
+        id: 28,
+        title: "病娇芙兰对我展开了猛烈追求！？",
+        author: "転生さん",
+        translator: "幻想入的Jier",
+        tags: ["芙兰朵露", "宇佐见莲子"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PLl_rWSOGGXM8ULORk8_P5JQJEc4AIEz4W",
+        translatedUrl: "https://space.bilibili.com/87123918/lists/4409450",
+        description: "",
+        thumbnail: "https://free.picui.cn/free/2026/02/04/6983041cde7bd.jpg",
+        dateAdded: "2020-09-02"
+    },
+    {
+        id: 29,
+        title: "【月田瑞希】的桃子文茶番剧合集",
+        author: "月田瑞希",
+        translator: "幻想入的Jier",
+        tags: ["芙兰朵露", "古明地恋", "古明地觉", "博丽灵梦", "多多良小伞", "秦心", "琪露诺", "上白泽慧音", "蕾米莉亚"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/watch?v=qrRNO2w6JqE",
+        translatedUrl: "https://space.bilibili.com/87123918/lists/5117741",
+        description: "",
+        thumbnail: "https://free.picui.cn/free/2026/02/04/69830537aa06c.jpg",
+        dateAdded: "2025-02-03"
+    },
+    {
+        id: 30,
+        title: "【東方キャラと恋愛するノベル動画ch】的茶番剧合集",
+        author: "東方キャラと恋愛するノベル動画ch",
+        translator: "幻想入的Jier",
+        tags: ["十六夜咲夜", "古明地觉", "魂魄妖梦", "琪露诺", "蕾米莉亚"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/watch?v=U_hPtTKAMlM",
+        translatedUrl: "https://space.bilibili.com/87123918/lists/5574603",
+        description: "",
+        thumbnail: "https://free.picui.cn/free/2026/02/04/6983073da92d7.jpg",
+        dateAdded: "2022-10-02"
+    },
+    {
+        id: 31,
+        title: "始于小伞的恋物语",
+        author: "みとは ゆっくり製作所",
+        translator: "幻想入的Jier",
+        tags: ["多多良小伞", "封兽鵺", "博丽灵梦", "雾雨魔理沙", "东风谷早苗", "十六夜咲夜"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PLVBIKA03FhZPjrYJAJ4Qb3bXCZAyE8jyv",
+        translatedUrl: "https://space.bilibili.com/87123918/lists/4758726",
+        description: "雨爱的秘密，会一直延续~",
+        thumbnail: "https://free.picui.cn/free/2026/02/04/6983081bbf01f.jpg",
+        dateAdded: "2023-01-13"
+    },
+    {
+        id: 32,
+        title: "〆タケ作者的纯爱超甜合集",
+        author: "〆タケ",
+        translator: "幻想入的Jier",
+        tags: ["蕾米莉亚", "芙兰朵露", "秦心"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/watch?v=c6mxNbdWinY",
+        translatedUrl: "https://space.bilibili.com/87123918/lists/4415038",
+        description: "",
+        thumbnail: "https://free.picui.cn/free/2026/02/04/698308f1f0a80.jpg",
+        dateAdded: "2024-08-18"
+    },
+    {
+        id: 33,
+        title: "【ゆっくり紫月】的百合向茶番剧合集",
+        author: "ゆっくり紫月",
+        translator: "幻想入的Jier",
+        tags: ["依莉斯", "博丽灵梦"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/watch?v=6KldaHy1u0I",
+        translatedUrl: "https://space.bilibili.com/87123918/lists/5409881",
+        description: "",
+        thumbnail: "https://free.picui.cn/free/2026/02/04/698309dceb812.jpg",
+        dateAdded: "2025-03-03"
+    },
+    {
+        id: 34,
+        title: "古今西行歌枕",
+        author: "森の民やむぅ",
+        translator: "幻想入的Jier",
+        tags: ["西行寺幽幽子", "八云紫", "魂魄妖梦"],
+        isTranslated: true,
+        originalUrl: "https://www.nicovideo.jp/watch/sm28681278",
+        translatedUrl: "https://space.bilibili.com/87123918/lists/5224003",
+        description: "莫问来生伴谁侧，樱花落处即相逢。",
+        thumbnail: "https://free.picui.cn/free/2026/02/04/69830b90345c5.jpg",
+        dateAdded: "2016-04-23"
+    },
+    {
+        id: 35,
+        title: "xxx变成病娇了……？",
+        author: "れくしぃちきん@ゆっくり茶番劇",
+        translator: "幻想入的Jier",
+        tags: ["博丽灵梦", "雾雨魔理沙", "芙兰朵露", "幻想入"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PL3rAsEOjJPkNOjHdzZr77LpCrL1C69gKP",
+        translatedUrl: "https://space.bilibili.com/87123918/lists/6936080",
+        description: "想起了…",
+        thumbnail: "https://free.picui.cn/free/2026/02/04/69830c59609bd.jpg",
+        dateAdded: "2020-10-01"
+    },
+    {
+        id: 36,
+        title: "青梅竹马的恋恋想让我心动",
+        author: "アスター",
+        translator: "幻想入的Jier",
+        tags: ["古明地恋"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PL5Ezg2qezOuyorGr52XSbjp9DQbJQ3mBS",
+        translatedUrl: "https://www.bilibili.com/video/BV1mxdSYeE62",
+        description: "恋恋可爱捏（",
+        thumbnail: "https://free.picui.cn/free/2026/02/04/69830d4c75b9c.jpg",
+        dateAdded: "2020-05-14"
+    },
+    {
+        id: 37,
+        title: "进来让蕾咪强控你26秒",
+        author: "アスター",
+        translator: "幻想入的Jier",
+        tags: ["蕾米莉亚"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/shorts/S7oAsAhm0NU",
+        translatedUrl: "https://www.bilibili.com/video/BV1jDdbYoEca",
+        description: "蕾米可爱捏",
+        thumbnail: "https://free.picui.cn/free/2026/02/04/69830dbf3a157.jpg",
+        dateAdded: "2024-03-10"
+    },
+    {
+        id: 38,
+        title: "无法吃人的食人妖怪",
+        author: "アスター",
+        translator: "幻想入的Jier",
+        tags: ["露米娅", "博丽灵梦", "雾雨魔理沙", "古明地恋", "卡娜安娜贝拉尔"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PL5Ezg2qezOux8cq6dLe9S47gQJkk_uuZz",
+        translatedUrl: "https://www.bilibili.com/video/BV1emAseZEwa",
+        description: "",
+        thumbnail: "https://free.picui.cn/free/2026/02/04/69830ec01ab5c.jpg",
+        dateAdded: "2020-06-14"
+    },
+    {
+        id: 39,
+        title: "渺小之人的伟大勇气",
+        author: "アスター",
+        translator: "幻想入的Jier",
+        tags: ["琪露诺", "大妖精", "米斯蒂娅", "莉格露", "露米娅", "上白泽慧音"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PL5Ezg2qezOuzcuFHQqi6LQQpGDJUGiTPz",
+        translatedUrl: "https://www.bilibili.com/video/BV1wFRVYXE9m",
+        description: "以baka小队为主角的系列~",
+        thumbnail: "https://free.picui.cn/free/2026/02/04/698310463f030.jpg",
+        dateAdded: "2024-03-02"
+    },
+    {
+        id: 40,
+        title: "平凡的我与、天才般的你",
+        author: "アスター",
+        translator: "幻想入的Jier",
+        tags: ["蕾米莉亚", "东风谷早苗", "芙兰朵露"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PL5Ezg2qezOuxc9DJkmjOcEkTYfUehOCXb",
+        translatedUrl: "https://www.bilibili.com/video/BV1mtPveLEjJ",
+        description: "在无数重复的时间线中，我的声音定能再度围绕你左右。",
+        thumbnail: "https://free.picui.cn/free/2026/02/04/698310e9572ff.jpg",
+        dateAdded: "2024-08-30"
+    },
+    {
+        id: 41,
+        title: "世界上最难操作的游戏",
+        author: "アスター",
+        translator: "幻想入的Jier",
+        tags: ["雾雨魔理沙", "蕾米莉亚"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PL5Ezg2qezOuwb0u1PD_ipY9UREG6ig5fJ",
+        translatedUrl: "https://www.bilibili.com/video/BV1ZEdZY3ERs",
+        description: "可以看到蕾米花式破防的一集（",
+        thumbnail: "https://free.picui.cn/free/2026/02/04/698311780ffef.jpg",
+        dateAdded: "2024-09-21"
+    },
+    {
+        id: 42,
+        title: "Bunny girl",
+        author: "MISAKI 3518",
+        translator: "寄遗忘之物于流年",
+        tags: ["铃仙"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/watch?v=ienoNid46dM&list=PLPIDlOi7aH3EiGs9HnU3Rg52r4j587qsI&index=6",
+        translatedUrl: "https://www.bilibili.com/video/BV16A6QBCEqD/?vd_source=29215d7e01e2e3b79461f647961a787f",
+        description: "与铃仙在酒吧的小故事",
+        thumbnail: "https://free.picui.cn/free/2026/02/03/6981d4bbb3958.jpg",
+        dateAdded: "2025-06-20"
     }
 ];
