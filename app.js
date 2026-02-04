@@ -763,6 +763,8 @@ function getStats() {
     const tagCounts = {};
     const authorCounts = {};
     const translatorCounts = {};
+    const authorTags = {};
+    const translatorTags = {};
 
     dramas.forEach(drama => {
         // Count Tags
@@ -770,12 +772,24 @@ function getStats() {
             tagCounts[tag] = (tagCounts[tag] || 0) + 1;
         });
 
-        // Count Authors
+        // Count Authors and collect their tags
         authorCounts[drama.author] = (authorCounts[drama.author] || 0) + 1;
+        if (!authorTags[drama.author]) {
+            authorTags[drama.author] = {};
+        }
+        drama.tags.forEach(tag => {
+            authorTags[drama.author][tag] = (authorTags[drama.author][tag] || 0) + 1;
+        });
         
-        // Count Translators
+        // Count Translators and collect their tags
         if (drama.translator) {
             translatorCounts[drama.translator] = (translatorCounts[drama.translator] || 0) + 1;
+            if (!translatorTags[drama.translator]) {
+                translatorTags[drama.translator] = {};
+            }
+            drama.tags.forEach(tag => {
+                translatorTags[drama.translator][tag] = (translatorTags[drama.translator][tag] || 0) + 1;
+            });
         }
     });
 
@@ -785,11 +799,25 @@ function getStats() {
         .sort((a, b) => b.count - a.count);
 
     const sortedAuthors = Object.entries(authorCounts)
-        .map(([name, count]) => ({ name, count }))
+        .map(([name, count]) => ({ 
+            name, 
+            count,
+            topTags: Object.entries(authorTags[name] || {})
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 3)
+                .map(([tag]) => tag)
+        }))
         .sort((a, b) => b.count - a.count);
 
     const sortedTranslators = Object.entries(translatorCounts)
-        .map(([name, count]) => ({ name, count }))
+        .map(([name, count]) => ({ 
+            name, 
+            count,
+            topTags: Object.entries(translatorTags[name] || {})
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 3)
+                .map(([tag]) => tag)
+        }))
         .sort((a, b) => b.count - a.count);
 
     return { sortedTags, sortedAuthors, sortedTranslators };
@@ -894,6 +922,172 @@ function toggleAuthorsExpanded() {
 function toggleTranslatorsExpanded() {
     translatorsExpanded = !translatorsExpanded;
     renderSidebar();
+}
+
+// 单独查看作者/译者详情
+function viewAuthorDetails(type, name) {
+    const filteredDramas = dramas.filter(drama => {
+        if (type === 'artist') {
+            return drama.author === name;
+        } else if (type === 'translator') {
+            return drama.translator === name;
+        }
+        return false;
+    });
+    
+    // 检查是否有主页链接
+    const authorLink = authorLinks[name];
+    
+    // 创建作者详情页面
+    const detailModal = document.createElement('div');
+    detailModal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+    detailModal.innerHTML = `
+        <div class="bg-white dark:bg-zinc-900 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+            <div class="p-6 border-b border-gray-200 dark:border-zinc-700">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+                            ${authorLink ? 
+                                `<a href="${authorLink}" target="_blank" rel="noopener noreferrer" class="hover:text-red-600 dark:hover:text-red-400 transition-colors hover:underline">
+                                    ${name}
+                                </a>` : 
+                                name
+                            }
+                        </h2>
+                        <p class="text-zinc-600 dark:text-zinc-400 mt-1">
+                            ${type === 'artist' ? '作者' : '译者'} • 共 ${filteredDramas.length} 个作品
+                        </p>
+                    </div>
+                    <button onclick="this.closest('.fixed').remove()" class="p-2 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-lg transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto p-6">
+                <div class="grid gap-4">
+                    ${filteredDramas.map(drama => `
+                        <div class="border border-gray-200 dark:border-zinc-700 rounded-lg p-4 hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors cursor-pointer" onclick="openDetail(${drama.id}); this.closest('.fixed').remove();">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-medium text-zinc-900 dark:text-zinc-100">${drama.title}</h3>
+                                <span class="text-xs px-2 py-1 rounded ${drama.isTranslated ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' : 'bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-zinc-400'}">
+                                    ${drama.isTranslated ? '已翻译' : '未翻译'}
+                                </span>
+                            </div>
+                            <div class="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-500 mb-2">
+                                ${type === 'artist' ? 
+                                    `<span>译者: ${drama.translator}</span>` : 
+                                    `<span>作者: ${drama.author}</span>`
+                                }
+                                <span>•</span>
+                                <span>${drama.dateAdded}</span>
+                            </div>
+                            <div class="flex flex-wrap gap-1">
+                                ${drama.tags.slice(0, 5).map(tag => `
+                                    <span class="px-2 py-0.5 text-xs rounded bg-gray-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
+                                        #${tag}
+                                    </span>
+                                `).join('')}
+                                ${drama.tags.length > 5 ? `<span class="text-xs text-zinc-500">+${drama.tags.length - 5}</span>` : ''}
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+            
+            <div class="p-4 border-t border-gray-200 dark:border-zinc-700">
+                <div class="flex gap-2">
+                    <button onclick="toggleFilter('${type}', '${name}'); this.closest('.fixed').remove();" class="flex-1 py-2 px-4 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+                        筛选此${type === 'artist' ? '作者' : '译者'}的作品
+                    </button>
+                    <button onclick="this.closest('.fixed').remove()" class="flex-1 py-2 px-4 bg-gray-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-300 rounded-lg hover:bg-gray-300 dark:hover:bg-zinc-600 transition-colors">
+                        关闭
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(detailModal);
+}
+
+// 打开作者/译者浏览列表
+function openAuthorBrowser(type) {
+    const { sortedAuthors, sortedTranslators } = getStats();
+    const items = type === 'artist' ? sortedAuthors : sortedTranslators;
+    const title = type === 'artist' ? '作者浏览' : '译者浏览';
+    
+    // 创建浏览页面
+    const browserModal = document.createElement('div');
+    browserModal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+    browserModal.innerHTML = `
+        <div class="bg-white dark:bg-zinc-900 rounded-lg max-w-6xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+            <div class="p-6 border-b border-gray-200 dark:border-zinc-700">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-2xl font-bold text-zinc-900 dark:text-zinc-100">${title}</h2>
+                    <button onclick="this.closest('.fixed').remove()" class="p-2 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-lg transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                    ${items.map(item => {
+                        const authorLink = authorLinks[item.name];
+                        return `
+                            <div class="bg-gray-50 dark:bg-zinc-800 rounded-lg p-4 hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors cursor-pointer group">
+                                <div class="flex items-start justify-between mb-3">
+                                    <div class="flex-1">
+                                        <h3 class="font-medium text-zinc-900 dark:text-zinc-100 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
+                                            ${authorLink ? 
+                                                `<a href="${authorLink}" target="_blank" rel="noopener noreferrer" class="hover:underline" onclick="event.stopPropagation()">
+                                                    ${item.name}
+                                                </a>` : 
+                                                item.name
+                                            }
+                                        </h3>
+                                        <p class="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+                                            共 ${item.count} 个作品
+                                        </p>
+                                    </div>
+                                    <div class="flex gap-1">
+                                        <button onclick="viewAuthorDetails('${type}', '${item.name}'); event.stopPropagation();" 
+                                                title="查看详情"
+                                                class="p-1.5 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-gray-200 dark:hover:bg-zinc-600 rounded">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                        </button>
+                                        <button onclick="toggleFilter('${type}', '${item.name}'); this.closest('.fixed').remove();" 
+                                                title="筛选作品"
+                                                class="p-1.5 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-gray-200 dark:hover:bg-zinc-600 rounded">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="flex flex-wrap gap-1">
+                                    ${item.topTags && item.topTags.length > 0 ? item.topTags.slice(0, 3).map(tag => `
+                                        <span class="px-2 py-0.5 text-xs rounded bg-gray-200 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-400">
+                                            #${tag}
+                                        </span>
+                                    `).join('') : '<span class="text-xs text-zinc-500">暂无标签</span>'}
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(browserModal);
 }
 
 // 搜索补全功能
@@ -1233,11 +1427,20 @@ function renderSidebar() {
             : 'hover:bg-gray-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-red-600 dark:hover:text-red-400';
             
         return `
-            <button onclick="toggleFilter('artist', '${author.name}')" 
-                    class="w-full text-left px-2 py-1.5 text-xs rounded transition-colors flex justify-between items-center group ${activeClass}">
-                <span class="truncate">${author.name}</span>
-                <span class="text-[10px] bg-gray-100 dark:bg-zinc-800 group-hover:bg-white dark:group-hover:bg-zinc-700 px-1.5 py-0.5 rounded-full transition-colors">${author.count}</span>
-            </button>
+            <div class="flex items-center gap-1 group">
+                <button onclick="toggleFilter('artist', '${author.name}')" 
+                        class="flex-1 text-left px-2 py-1.5 text-xs rounded transition-colors flex justify-between items-center ${activeClass}">
+                    <span class="truncate">${author.name}</span>
+                    <span class="text-[10px] bg-gray-100 dark:bg-zinc-800 group-hover:bg-white dark:group-hover:bg-zinc-700 px-1.5 py-0.5 rounded-full transition-colors">${author.count}</span>
+                </button>
+                <button onclick="viewAuthorDetails('artist', '${author.name}')" 
+                        title="查看作者详情"
+                        class="p-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-gray-100 dark:hover:bg-zinc-800 rounded">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </button>
+            </div>
         `;
     }).join('');
 
@@ -1255,6 +1458,25 @@ function renderSidebar() {
         `;
     }
 
+    // 添加浏览所有作者按钮
+    const authorSection = authorList.parentElement;
+    if (authorSection) {
+        const authorTitle = authorSection.querySelector('h3');
+        if (authorTitle && !authorTitle.querySelector('.author-browse-btn')) {
+            // 先添加flex类到h3，确保按钮能正确对齐
+            authorTitle.classList.add('flex', 'items-center', 'gap-2');
+            authorTitle.innerHTML += `
+                <button onclick="openAuthorBrowser('artist')" 
+                        class="author-browse-btn ml-auto p-1 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded transition-colors"
+                        title="浏览所有作者">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            `;
+        }
+    }
+
     // Render Translators
     if (translatorList) {
         const translatorDisplayCount = translatorsExpanded ? sortedTranslators.length : 10;
@@ -1267,11 +1489,20 @@ function renderSidebar() {
                 : 'hover:bg-gray-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-red-600 dark:hover:text-red-400';
                 
             return `
-                <button onclick="toggleFilter('translator', '${translator.name}')" 
-                        class="w-full text-left px-2 py-1.5 text-xs rounded transition-colors flex justify-between items-center group ${activeClass}">
-                    <span class="truncate">${translator.name}</span>
-                    <span class="text-[10px] bg-gray-100 dark:bg-zinc-800 group-hover:bg-white dark:group-hover:bg-zinc-700 px-1.5 py-0.5 rounded-full transition-colors">${translator.count}</span>
-                </button>
+                <div class="flex items-center gap-1 group">
+                    <button onclick="toggleFilter('translator', '${translator.name}')" 
+                            class="flex-1 text-left px-2 py-1.5 text-xs rounded transition-colors flex justify-between items-center ${activeClass}">
+                        <span class="truncate">${translator.name}</span>
+                        <span class="text-[10px] bg-gray-100 dark:bg-zinc-800 group-hover:bg-white dark:group-hover:bg-zinc-700 px-1.5 py-0.5 rounded-full transition-colors">${translator.count}</span>
+                    </button>
+                    <button onclick="viewAuthorDetails('translator', '${translator.name}')" 
+                            title="查看译者详情"
+                            class="p-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-gray-100 dark:hover:bg-zinc-800 rounded">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </button>
+                </div>
             `;
         }).join('');
 
@@ -1287,6 +1518,25 @@ function renderSidebar() {
                     ${buttonText}
                 </button>
             `;
+        }
+
+        // 添加浏览所有译者按钮
+        const translatorSection = translatorList.parentElement;
+        if (translatorSection) {
+            const translatorTitle = translatorSection.querySelector('h3');
+            if (translatorTitle && !translatorTitle.querySelector('.translator-browse-btn')) {
+                // 先添加flex类到h3，确保按钮能正确对齐
+                translatorTitle.classList.add('flex', 'items-center', 'gap-2');
+                translatorTitle.innerHTML += `
+                    <button onclick="openAuthorBrowser('translator')" 
+                            class="translator-browse-btn ml-auto p-1 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded transition-colors"
+                            title="浏览所有译者">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                `;
+            }
         }
     }
 }
