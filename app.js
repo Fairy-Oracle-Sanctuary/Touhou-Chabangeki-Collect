@@ -2148,4 +2148,31 @@ function setupSubmitForm() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', init);
+// 回到顶部按钮功能
+function initBackToTop() {
+    const backToTopBtn = document.getElementById('backToTop');
+    
+    // 监听滚动事件
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+            backToTopBtn.classList.remove('opacity-0', 'invisible');
+            backToTopBtn.classList.add('opacity-100', 'visible');
+        } else {
+            backToTopBtn.classList.add('opacity-0', 'invisible');
+            backToTopBtn.classList.remove('opacity-100', 'visible');
+        }
+    });
+    
+    // 点击回到顶部
+    backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    init();
+    initBackToTop();
+});
