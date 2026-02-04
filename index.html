@@ -229,8 +229,8 @@
                             { value: 'favorites', label: '仅收藏' }
                         ],
                         sortOptions: [
-                            { value: 'date-desc', label: '最新添加' },
-                            { value: 'date-asc', label: '最早添加' },
+                            { value: 'date-desc', label: '最新更新' },
+                            { value: 'date-asc', label: '最早更新' },
                             { value: 'name-asc', label: '名称 A-Z' },
                             { value: 'name-desc', label: '名称 Z-A' }
                         ],
@@ -409,7 +409,7 @@
     </div>
 
     <!-- Detail Page -->
-    <div id="detailPage" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div id="detailPage" class="fixed inset-0 z-[60] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden">
         <div class="bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-zinc-800 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
             <!-- Detail Header -->
             <div class="relative">
@@ -853,6 +853,13 @@
             </div>
         </div>
     </footer>
+
+    <!-- 回到顶部按钮 -->
+    <button id="backToTop" class="fixed bottom-6 right-6 bg-red-500 hover:bg-red-600 text-white p-3 rounded-full shadow-lg transition-all duration-300 opacity-0 invisible z-40">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+        </svg>
+    </button>
 
     <script src="data.js"></script>
     <script src="app.js"></script>

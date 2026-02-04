@@ -118,10 +118,62 @@ class DataManagerGUI:
         tags = set()
         for i in self.data:
             tags.update(i.get("tags", []))
+        # 按首字母拼音排序
+        def get_pinyin_first_char(text):
+            # 简单的中文首字母提取实现
+            if not text:
+                return 'Z'
+            
+            first_char = text[0]
+            
+            # 如果是英文字母，直接返回大写
+            if first_char.isalpha() and ord(first_char) < 128:
+                return first_char.upper()
+            
+            # 简单的中文到拼音首字母映射（常见字）
+            pinyin_map = {
+                '啊': 'A', '爱': 'A', '安': 'A', '按': 'A',
+                '八': 'B', '白': 'B', '百': 'B', '博': 'B', '不': 'B',
+                '才': 'C', '彩': 'C', '草': 'C', '常': 'C', '成': 'C', '出': 'C',
+                '大': 'D', '的': 'D', '地': 'D', '第': 'D', '东': 'D', '都': 'D',
+                '而': 'E', '二': 'E',
+                '发': 'F', '法': 'F', '反': 'F', '风': 'F', '芙': 'F',
+                '个': 'G', '给': 'G', '古': 'G', '关': 'G', '光': 'G', '广': 'G',
+                '还': 'H', '海': 'H', '和': 'H', '黑': 'H', '红': 'H', '后': 'H', '魂': 'H',
+                '机': 'J', '基': 'J', '极': 'J', '记': 'J', '家': 'J', '见': 'J', '江': 'J', '今': 'J', '经': 'J', '就': 'J',
+                '可': 'K', '看': 'K', '空': 'K',
+                '来': 'L', '蓝': 'L', '老': 'L', '雷': 'L', '冷': 'L', '里': 'L', '恋': 'L', '灵': 'L', '六': 'L', '龙': 'L', '露': 'L',
+                '妈': 'M', '魔': 'M', '美': 'M', '梦': 'M', '迷': 'M', '命': 'M',
+                '那': 'N', '南': 'N', '能': 'N', '你': 'N', '年': 'N', '鸟': 'N',
+                '派': 'P', '判': 'P',
+                '七': 'Q', '奇': 'Q', '琪': 'Q', '起': 'Q', '千': 'Q', '前': 'Q', '枪': 'Q', '青': 'Q', '秋': 'Q', '去': 'Q',
+                '让': 'R', '人': 'R', '日': 'R', '如': 'R',
+                '三': 'S', '色': 'S', '杀': 'S', '山': 'S', '上': 'S', '神': 'S', '圣': 'S', '十': 'S', '时': 'S', '水': 'S', '说': 'S',
+                '她': 'T', '他': 'T', '天': 'T', '通': 'T', '同': 'T',
+                '外': 'W', '完': 'W', '王': 'W', '为': 'W', '文': 'W', '我': 'W', '无': 'W', '五': 'W',
+                '西': 'X', '希': 'X', '下': 'X', '仙': 'X', '小': 'X', '新': 'X', '星': 'X', '行': 'X',
+                '一': 'Y', '医': 'Y', '永': 'Y', '有': 'Y', '右': 'Y', '与': 'Y', '宇': 'Y', '雨': 'Y', '玉': 'Y', '月': 'Y',
+                '在': 'Z', '早': 'Z', '怎': 'Z', '阵': 'Z', '正': 'Z', '之': 'Z', '知': 'Z', '直': 'Z', '中': 'Z', '重': 'Z', '主': 'Z', '住': 'Z', '转': 'Z', '装': 'Z', '追': 'Z', '紫': 'Z', '自': 'Z',
+            }
+            
+            # 尝试从映射表中获取
+            if first_char in pinyin_map:
+                return pinyin_map[first_char]
+            
+            # 如果不在映射表中，尝试使用pinyin库
+            try:
+                import pinyin
+                return pinyin.get_pinyin(first_char)[0].upper()
+            except:
+                # 最后的备选方案：使用Unicode编码范围粗略判断
+                if '\u4e00' <= first_char <= '\u9fff':  # 中文字符范围
+                    return 'Z'  # 未知的汉字放在最后
+                return first_char.upper()
+        
         return {
             "authors": authors,
             "translators": translators,
-            "tags": sorted(list(tags)),
+            "tags": sorted(list(tags), key=get_pinyin_first_char),
         }
 
     def fill_treeview(self):
@@ -369,7 +421,9 @@ class AddEditDialog(tk.Toplevel):
     def __init__(self, parent, title, item, suggestions):
         super().__init__(parent)
         self.title(title)
-        self.item, self.suggestions, self.result = item, suggestions, None
+        self.item = item
+        self.suggestions = suggestions
+        self.result = None
         self.geometry("650x700")
         # self.grab_set()  # 模态锁定
 
@@ -459,9 +513,11 @@ class AddEditDialog(tk.Toplevel):
             else ""
         )
         self.vars["tags"] = tk.StringVar(value=tag_val)
-        ttk.Entry(f, textvariable=self.vars["tags"]).grid(
-            row=5, column=1, sticky=tk.EW, pady=5
-        )
+        tag_entry = ttk.Entry(f, textvariable=self.vars["tags"])
+        tag_entry.grid(row=5, column=1, sticky=tk.EW, pady=5)
+        
+        # 为tag输入框绑定自动补全
+        self._setup_tag_autocomplete(tag_entry)
 
         ttk.Label(f, text="快捷添加:", foreground="#777").grid(
             row=6, column=0, sticky=tk.NW, pady=5
@@ -531,6 +587,177 @@ class AddEditDialog(tk.Toplevel):
         if tag not in current:
             current.append(tag)
             self.vars["tags"].set(", ".join(current))
+    
+    def _setup_tag_autocomplete(self, entry_widget):
+        """为tag输入框设置自动补全功能"""
+        self.autocomplete_listbox = None
+        
+        def on_key_press(event):
+            # 获取当前输入的最后一个词
+            current_text = entry_widget.get()
+            cursor_pos = entry_widget.index(tk.INSERT)
+            
+            # 找到当前光标所在位置的词
+            text_before_cursor = current_text[:cursor_pos]
+            words = text_before_cursor.split(",")
+            current_word = words[-1].strip() if words else ""
+            
+            if len(current_word) < 1:
+                self._hide_autocomplete()
+                return
+            
+            # 查找匹配的标签
+            all_tags = self.suggestions.get("tags", [])
+            matches = [tag for tag in all_tags 
+                      if tag.lower().startswith(current_word.lower())]
+            
+            if matches:
+                self._show_autocomplete(entry_widget, matches, current_word)
+            else:
+                self._hide_autocomplete()
+        
+        def on_tab_press(event):
+            if not self.autocomplete_listbox:
+                return
+                
+            # 检查是否有选择项，如果没有则选择第一项
+            selection = self.autocomplete_listbox.curselection()
+            if not selection:
+                self.autocomplete_listbox.selection_set(0)
+                selection = (0,)
+            
+            if selection:
+                selected_tag = self.autocomplete_listbox.get(selection[0])
+                current_text = entry_widget.get()
+                cursor_pos = entry_widget.index(tk.INSERT)
+                
+                # 找到当前光标所在位置的词
+                text_before_cursor = current_text[:cursor_pos]
+                words = text_before_cursor.split(",")
+                
+                # 替换最后一个词
+                if len(words) > 1:
+                    words[-1] = selected_tag
+                    new_text = ",".join(words)
+                else:
+                    new_text = selected_tag
+                
+                entry_widget.delete(0, tk.END)
+                entry_widget.insert(0, new_text)
+                entry_widget.icursor(len(new_text))
+                
+                self._hide_autocomplete()
+                return "break"  # 阻止默认Tab行为
+        
+        def on_escape_press(event):
+            self._hide_autocomplete()
+            return "break"
+        
+        def on_focus_out(event):
+            # 延迟隐藏，以便点击列表项
+            self.after(100, self._hide_autocomplete)
+        
+        def on_arrow_key_press(event):
+            if not self.autocomplete_listbox:
+                return
+                
+            current_selection = self.autocomplete_listbox.curselection()
+            current_index = current_selection[0] if current_selection else -1
+            
+            if event.keysym == "Up":
+                # 向上选择
+                if current_index > 0:
+                    self.autocomplete_listbox.selection_clear(0, tk.END)
+                    self.autocomplete_listbox.selection_set(current_index - 1)
+                    self.autocomplete_listbox.see(current_index - 1)
+                return "break"
+            elif event.keysym == "Down":
+                # 向下选择
+                if current_index < self.autocomplete_listbox.size() - 1:
+                    self.autocomplete_listbox.selection_clear(0, tk.END)
+                    self.autocomplete_listbox.selection_set(current_index + 1)
+                    self.autocomplete_listbox.see(current_index + 1)
+                return "break"
+        
+        entry_widget.bind("<KeyRelease>", on_key_press)
+        entry_widget.bind("<Tab>", on_tab_press)
+        entry_widget.bind("<Escape>", on_escape_press)
+        entry_widget.bind("<FocusOut>", on_focus_out)
+        entry_widget.bind("<Up>", on_arrow_key_press)
+        entry_widget.bind("<Down>", on_arrow_key_press)
+    
+    def _show_autocomplete(self, entry_widget, matches, current_word):
+        """显示自动补全列表"""
+        if self.autocomplete_listbox:
+            self.autocomplete_listbox.destroy()
+        
+        # 创建列表框 - 使用self作为父窗口
+        self.autocomplete_listbox = tk.Listbox(
+            self,
+            height=min(6, len(matches)),
+            bg="white",
+            fg="black",
+            selectbackground="#0078d4",
+            selectforeground="white",
+            font=("Segoe UI", 9),
+            relief="solid",
+            borderwidth=1
+        )
+        
+        # 填充匹配项
+        for match in matches[:6]:  # 最多显示6个
+            self.autocomplete_listbox.insert(tk.END, match)
+        
+        # 默认选中第一项
+        if matches:
+            self.autocomplete_listbox.selection_set(0)
+        
+        # 计算位置 - 使用entry_widget的坐标
+        entry_widget.update_idletasks()  # 确保窗口已更新
+        entry_x = entry_widget.winfo_rootx()
+        entry_y = entry_widget.winfo_rooty()
+        entry_height = entry_widget.winfo_height()
+        entry_width = entry_widget.winfo_width()
+        
+        # 将列表框定位到输入框下方
+        self.autocomplete_listbox.place(
+            x=entry_x - self.winfo_rootx(),
+            y=entry_y - self.winfo_rooty() + entry_height,
+            width=entry_width
+        )
+        
+        # 绑定点击事件
+        def on_listbox_click(event):
+            selection = self.autocomplete_listbox.curselection()
+            if selection:
+                selected_tag = self.autocomplete_listbox.get(selection[0])
+                current_text = entry_widget.get()
+                cursor_pos = entry_widget.index(tk.INSERT)
+                
+                # 找到当前光标所在位置的词
+                text_before_cursor = current_text[:cursor_pos]
+                words = text_before_cursor.split(",")
+                
+                # 替换最后一个词
+                if len(words) > 1:
+                    words[-1] = selected_tag
+                    new_text = ",".join(words)
+                else:
+                    new_text = selected_tag
+                
+                entry_widget.delete(0, tk.END)
+                entry_widget.insert(0, new_text)
+                entry_widget.icursor(len(new_text))
+                
+                self._hide_autocomplete()
+        
+        self.autocomplete_listbox.bind("<ButtonRelease-1>", on_listbox_click)
+    
+    def _hide_autocomplete(self):
+        """隐藏自动补全列表"""
+        if self.autocomplete_listbox:
+            self.autocomplete_listbox.destroy()
+            self.autocomplete_listbox = None
 
     def on_save(self):
         if not self.vars["title"].get().strip():
