@@ -109,7 +109,7 @@ const dramas = [
         author: "みつば【mituba】",
         translator: "就是很一般",
         tags: ["博丽灵梦", "雾雨魔理沙", "东风谷早苗", "十六夜咲夜", "魂魄妖梦"],
-        isTranslated: false,
+        isTranslated: true,
         originalUrl: "https://www.youtube.com/playlist?list=PLmc6eO_qCE4najTjdUCtXDa0Agx8tzDON",
         translatedUrl: "https://space.bilibili.com/12621850/lists/6172948",
         description: "大家听说过水平思考谜题吗？\n也被称为\"海龟汤\"呢。",
@@ -167,5 +167,44 @@ const dramas = [
         description: "一个在油管上比较有趣的幻想入系列，但有着原创主人公、角色暴力表现。觉得不OK的慎入",
         thumbnail: "https://free.picui.cn/free/2026/02/03/6982161ba71d8.jpg",
         dateAdded: "2024-12-06"
+    },
+    {
+        id: 14,
+        title: "河童世界谚语剧场",
+        author: "須方のさんちゃん工房",
+        translator: "就是很一般",
+        tags: ["纯狐", "八云蓝", "小恶魔", "雾雨魔理沙", "神绮", "摩多罗隐岐奈", "宫出口瑞灵", "维缦浅间", "河城荷取", "依神女苑", "八云紫", "易者", "朱鹭子", "渡里妮娜", "洩矢诹访子"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/watch?v=tL5lu9jG9m8",
+        translatedUrl: "https://space.bilibili.com/12621850/lists/5104404",
+        description: "世界谚语科普",
+        thumbnail: "",
+        dateAdded: "2022-08-13"
+    },
+    {
+        id: 15,
+        title: "天才的我被IQ9的后辈琪露诺告白了",
+        author: "まったりさん",
+        translator: "就是很一般",
+        tags: ["琪露诺", "大妖精", "露米娅"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/watch?v=6cME-im2kDE",
+        translatedUrl: "https://space.bilibili.com/12621850/lists/7228361",
+        description: "这是啥子角色？",
+        thumbnail: "",
+        dateAdded: "2021-12-27"
+    },
+    {
+        id: 16,
+        title: "爱上可爱妖梦.....但是",
+        author: "まったりさん",
+        translator: "就是很一般",
+        tags: ["魂魄妖梦"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PL15bNp6jPccn24qH-xfKfS2XQTJY30Fuu",
+        translatedUrl: "https://space.bilibili.com/12621850/lists/6626365",
+        description: "魂魄妖梦，你毁了我的性取向",
+        thumbnail: "",
+        dateAdded: "2019-02-16"
     }
 ];
