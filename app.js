@@ -340,7 +340,7 @@ function showBatchOperationMessage(message) {
 // --- Personal Settings ---
 let userSettings = {
     cardLayout: 'grid',
-    itemsPerPage: 'all',
+    itemsPerPage: '12',
     defaultSort: 'date-desc',
     enableAnimations: true
 };
@@ -391,6 +391,15 @@ function applySettings() {
     const sortBy = document.getElementById('sortBy');
     if (sortBy && userSettings.defaultSort) {
         sortBy.value = userSettings.defaultSort;
+    }
+    
+    // Re-render dramas to apply itemsPerPage setting
+    if (typeof filteredDramas !== 'undefined') {
+        // Reset pagination when settings change
+        if (window.pagination) {
+            window.pagination.currentPage = 1;
+        }
+        renderDramas();
     }
 }
 
@@ -868,19 +877,25 @@ window.toggleFilter = function(type, value) {
     // We need a robust check to avoid partial matches
     const regex = new RegExp(`${type}="${value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`, 'i');
     
-    // For artists and translators, ensure only one is selected at a time
+    // For artists and translators, check if this specific artist/translator is already selected
     if (type === 'artist') {
-        // Remove all existing artist filters
-        currentInput = currentInput.replace(/artist="[^"]+"/gi, '').replace(/\s+/g, ' ').trim();
-        
-        // Add the new artist filter
-        currentInput = `${currentInput} ${filterString}`.trim();
+        if (regex.test(currentInput)) {
+            // Remove this specific artist filter (toggle off)
+            currentInput = currentInput.replace(regex, '').replace(/\s+/g, ' ').trim();
+        } else {
+            // Remove all existing artist filters and add the new one (only one artist at a time)
+            currentInput = currentInput.replace(/artist="[^"]+"/gi, '').replace(/\s+/g, ' ').trim();
+            currentInput = `${currentInput} ${filterString}`.trim();
+        }
     } else if (type === 'translator') {
-        // Remove all existing translator filters
-        currentInput = currentInput.replace(/translator="[^"]+"/gi, '').replace(/\s+/g, ' ').trim();
-        
-        // Add the new translator filter
-        currentInput = `${currentInput} ${filterString}`.trim();
+        if (regex.test(currentInput)) {
+            // Remove this specific translator filter (toggle off)
+            currentInput = currentInput.replace(regex, '').replace(/\s+/g, ' ').trim();
+        } else {
+            // Remove all existing translator filters and add the new one (only one translator at a time)
+            currentInput = currentInput.replace(/translator="[^"]+"/gi, '').replace(/\s+/g, ' ').trim();
+            currentInput = `${currentInput} ${filterString}`.trim();
+        }
     } else {
         // For other filter types (tags), keep the existing toggle behavior
         if (regex.test(currentInput)) {
@@ -1627,6 +1642,11 @@ function filterAndSortDramas() {
         }
     });
 
+    // Reset pagination to first page when filtering/sorting
+    if (window.pagination) {
+        window.pagination.currentPage = 1;
+    }
+
     renderDramas();
     renderSidebar(); // Re-render sidebar to update active states
 }
@@ -1806,13 +1826,34 @@ function renderDramas() {
     }
 
     noResults.classList.add('hidden');
-    resultsCount.textContent = `显示 ${filteredDramas.length} 个结果`;
+
+    // Initialize pagination if not exists
+    if (!window.pagination) {
+        window.pagination = { currentPage: 1 };
+    }
+
+    // Apply itemsPerPage setting
+    let pageSize = filteredDramas.length;
+    if (userSettings.itemsPerPage !== 'all') {
+        pageSize = parseInt(userSettings.itemsPerPage);
+    }
+
+    // Calculate pagination
+    const totalPages = Math.ceil(filteredDramas.length / pageSize);
+    const startIndex = (window.pagination.currentPage - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    const displayDramas = filteredDramas.slice(startIndex, endIndex);
+
+    // Update results count with pagination info
+    const startItem = startIndex + 1;
+    const endItem = Math.min(endIndex, filteredDramas.length);
+    resultsCount.textContent = `显示 ${startItem}-${endItem} 个结果 (共 ${filteredDramas.length} 个)`;
 
     // Add loading state briefly for better UX
     grid.innerHTML = '<div class="col-span-full flex justify-center py-8"><div class="spinner"></div></div>';
     
     setTimeout(() => {
-        grid.innerHTML = filteredDramas.map((drama, index) => `
+        grid.innerHTML = displayDramas.map((drama, index) => `
             <div class="drama-card group bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-zinc-800 hover:border-red-500/30 dark:hover:border-red-500/30 transition-colors duration-200 flex flex-col overflow-hidden cursor-pointer fade-in" 
                  style="animation-delay: ${index * 50}ms"
                  data-drama="${btoa(unescape(encodeURIComponent(JSON.stringify(drama))))}"
@@ -1892,8 +1933,100 @@ function renderDramas() {
                 </div>
             </div>
         `).join('');
+
+        // Add pagination controls if needed
+        if (userSettings.itemsPerPage !== 'all' && totalPages > 1) {
+            grid.innerHTML += `
+                <div class="col-span-full flex justify-center items-center gap-2 mt-6">
+                    <button onclick="changePage(${window.pagination.currentPage - 1})" 
+                            class="px-3 py-1.5 text-sm rounded border transition-colors ${
+                                window.pagination.currentPage === 1 
+                                    ? 'bg-gray-100 dark:bg-zinc-800 text-gray-400 dark:text-zinc-600 border-gray-200 dark:border-zinc-700 cursor-not-allowed' 
+                                    : 'bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800'
+                            }"
+                            ${window.pagination.currentPage === 1 ? 'disabled' : ''}>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                        上一页
+                    </button>
+                    
+                    <div class="flex items-center gap-1">
+                        ${Array.from({ length: totalPages }, (_, i) => i + 1).map(pageNum => `
+                            <button onclick="changePage(${pageNum})" 
+                                    class="px-3 py-1.5 text-sm rounded border transition-colors ${
+                                        pageNum === window.pagination.currentPage 
+                                            ? 'bg-red-600 text-white border-red-600' 
+                                            : 'bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800'
+                                    }">
+                                ${pageNum}
+                            </button>
+                        `).join('')}
+                    </div>
+                    
+                    <button onclick="changePage(${window.pagination.currentPage + 1})" 
+                            class="px-3 py-1.5 text-sm rounded border transition-colors ${
+                                window.pagination.currentPage === totalPages 
+                                    ? 'bg-gray-100 dark:bg-zinc-800 text-gray-400 dark:text-zinc-600 border-gray-200 dark:border-zinc-700 cursor-not-allowed' 
+                                    : 'bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800'
+                            }"
+                            ${window.pagination.currentPage === totalPages ? 'disabled' : ''}>
+                        下一页
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+                    
+                    <div class="flex items-center gap-2 ml-4">
+                        <span class="text-sm text-zinc-600 dark:text-zinc-400">跳转到</span>
+                        <input type="number" 
+                               id="gotoPage" 
+                               min="1" 
+                               max="${totalPages}" 
+                               value="${window.pagination.currentPage}"
+                               class="w-16 px-2 py-1 text-sm border border-gray-300 dark:border-zinc-700 rounded bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white"
+                               onkeypress="if(event.key === 'Enter') gotoPageSubmit(${totalPages})">
+                        <span class="text-sm text-zinc-600 dark:text-zinc-400">/ ${totalPages} 页</span>
+                        <button onclick="gotoPageSubmit(${totalPages})" 
+                                class="px-2 py-1 text-sm bg-red-600 text-white rounded hover:bg-red-700 transition-colors">
+                            跳转
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
     }, 100); // Small delay for loading animation
 }
+
+// Change page function
+window.changePage = function(pageNum) {
+    const pageSize = userSettings.itemsPerPage === 'all' ? filteredDramas.length : parseInt(userSettings.itemsPerPage);
+    const totalPages = Math.ceil(filteredDramas.length / pageSize);
+    
+    if (pageNum >= 1 && pageNum <= totalPages) {
+        window.pagination.currentPage = pageNum;
+        renderDramas();
+        // Scroll to top of grid
+        document.getElementById('dramaGrid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+};
+
+// Go to page submit function
+window.gotoPageSubmit = function(totalPages) {
+    const input = document.getElementById('gotoPage');
+    if (input) {
+        const pageNum = parseInt(input.value);
+        if (pageNum >= 1 && pageNum <= totalPages) {
+            changePage(pageNum);
+        } else {
+            // Show error feedback
+            input.classList.add('border-red-500');
+            setTimeout(() => {
+                input.classList.remove('border-red-500');
+            }, 2000);
+        }
+    }
+};
 
 function setupEventListeners() {
     document.getElementById('searchInput').addEventListener('input', filterAndSortDramas);
@@ -2039,14 +2172,14 @@ function setupEventListeners() {
         // Reset to defaults
         userSettings = {
             cardLayout: 'grid',
-            itemsPerPage: 'all',
+            itemsPerPage: '12',
             defaultSort: 'date-desc',
             enableAnimations: true
         };
         
         // Update form
         document.querySelector('input[name="cardLayout"][value="grid"]').checked = true;
-        document.getElementById('itemsPerPage').value = 'all';
+        document.getElementById('itemsPerPage').value = '12';
         document.getElementById('defaultSort').value = 'date-desc';
         document.getElementById('enableAnimations').checked = true;
         
