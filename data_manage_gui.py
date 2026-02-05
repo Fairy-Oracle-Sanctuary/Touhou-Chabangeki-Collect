@@ -242,6 +242,85 @@ class DataManagerGUI:
 
     def save_data_gui(self, silent=False):
         try:
+            # 先读取现有的data.js文件，保留authorLinks部分
+            author_links_content = ""
+            existing_links = {}
+            try:
+                with open("data.js", "r", encoding="utf-8") as f:
+                    existing_content = f.read()
+                    # 查找authorLinks部分
+                    match = re.search(r'const authorLinks = ({.*?});', existing_content, re.DOTALL)
+                    if match:
+                        links_str = match.group(1)
+                        print(f"原始authorLinks字符串: {repr(links_str[:200])}")
+                        
+                        # 最简单的方法：按行处理
+                        lines = links_str.split('\n')
+                        existing_links = {}
+                        
+                        for line in lines:
+                            line = line.strip()
+                            # 跳过空行和注释行
+                            if not line or line.startswith('//') or not line.startswith('"'):
+                                continue
+                            
+                            # 处理键值对
+                            if ':' in line and line.endswith(','):
+                                line = line.rstrip(',')  # 移除末尾逗号
+                                
+                            if ':' in line:
+                                try:
+                                    # 直接用JSON解析这一行
+                                    line_json = '{' + line + '}'
+                                    parsed = json.loads(line_json)
+                                    for key, value in parsed.items():
+                                        existing_links[key] = value
+                                except:
+                                    # 手动解析
+                                    parts = line.split(':', 1)
+                                    if len(parts) == 2:
+                                        key = parts[0].strip().strip('"')
+                                        value = parts[1].strip().strip('"')
+                                        if key:
+                                            existing_links[key] = value
+                        
+                        print(f"解析authorLinks成功，共有 {len(existing_links)} 个链接")
+                        author_links_content = f"const authorLinks = {match.group(1)};"
+            except Exception as e:
+                print(f"读取现有authorLinks时出错: {e}")
+            
+            # 自动检测新的作者和译者
+            detected_authors = set()
+            detected_translators = set()
+            
+            for item in self.data:
+                if item.get("author"):
+                    detected_authors.add(item["author"])
+                if item.get("translator"):
+                    detected_translators.add(item["translator"])
+            
+            # 更新authorLinks，添加新检测到的作者/译者
+            updated_links = existing_links.copy()
+            new_authors = 0
+            new_translators = 0
+            
+            for author in detected_authors:
+                if author not in updated_links:
+                    updated_links[author] = ""  # 空字符串表示需要手动添加链接
+                    new_authors += 1
+                    print(f"检测到新作者: {author}")
+            
+            for translator in detected_translators:
+                if translator not in updated_links:
+                    updated_links[translator] = ""  # 空字符串表示需要手动添加链接
+                    new_translators += 1
+                    print(f"检测到新译者: {translator}")
+            
+            # 生成新的authorLinks内容
+            if updated_links:
+                author_links_content = "const authorLinks = " + json.dumps(updated_links, ensure_ascii=False, indent=4) + ";"
+            
+            # 生成dramas数组内容
             content = "const dramas = ["
             for i, item in enumerate(self.data):
                 # 使用 json.dumps 确保所有字段中的特殊字符（引号、换行）被正确转义
@@ -259,11 +338,22 @@ class DataManagerGUI:
         thumbnail: {json.dumps(item["thumbnail"], ensure_ascii=False)},
         dateAdded: {json.dumps(item["dateAdded"], ensure_ascii=False)}
     }}{"," if i < len(self.data) - 1 else ""}"""
-            content += "\n];"
+            content += "\n];\n\n"
+            
+            # 添加authorLinks部分
+            if author_links_content:
+                content += author_links_content + "\n"
+            
+            # 写入文件
             with open("data.js", "w", encoding="utf-8") as f:
                 f.write(content)
+            
+            # 显示保存结果
             if not silent:
-                messagebox.showinfo("成功", "数据已成功同步到 data.js")
+                message = "数据已成功同步到 data.js"
+                if new_authors > 0 or new_translators > 0:
+                    message += f"\n\n自动检测到:\n- {new_authors} 个新作者\n- {new_translators} 个新译者\n\n已添加到authorLinks中，链接为空，请手动补充"
+                messagebox.showinfo("成功", message)
         except Exception as e:
             messagebox.showerror("错误", f"保存失败: {e}")
 
