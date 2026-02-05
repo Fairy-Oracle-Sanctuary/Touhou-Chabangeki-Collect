@@ -289,24 +289,24 @@ function generateTimeline() {
     Object.keys(groupedDramas).forEach(period => {
         const periodDramas = groupedDramas[period];
         timelineHTML += `
-            <div class="relative">
-                <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-300 dark:bg-zinc-600"></div>
-                <div class="relative flex items-start mb-6">
-                    <div class="absolute left-0 w-8 h-8 bg-red-600 rounded-full flex items-center justify-center text-white text-xs font-bold">
+            <div class="relative mb-8 sm:mb-6">
+                <div class="absolute left-2 sm:left-4 top-0 bottom-0 w-0.5 bg-gray-300 dark:bg-zinc-600"></div>
+                <div class="relative flex items-start mb-4 sm:mb-6">
+                    <div class="absolute left-0 sm:left-0 w-6 h-6 sm:w-8 sm:h-8 bg-red-600 rounded-full flex items-center justify-center text-white text-xs sm:text-sm font-bold">
                         ${periodDramas.length}
                     </div>
-                    <div class="ml-12">
-                        <h3 class="text-lg font-bold text-zinc-900 dark:text-white mb-3" id="period-${period}">${period}</h3>
-                        <div class="space-y-3">
+                    <div class="ml-8 sm:ml-10">
+                        <h3 class="text-base sm:text-lg font-bold text-zinc-900 dark:text-white mb-2 sm:mb-3" id="period-${period}">${period}</h3>
+                        <div class="space-y-2 sm:space-y-3">
                             ${periodDramas.map(drama => `
-                                <div class="bg-gray-50 dark:bg-zinc-800 rounded-lg p-3 hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors cursor-pointer" 
+                                <div class="bg-gray-50 dark:bg-zinc-800 rounded-lg p-2 sm:p-3 hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors cursor-pointer" 
                                      data-drama="${btoa(unescape(encodeURIComponent(JSON.stringify(drama))))}"
                                      onclick="openDetailFromData(this)">
-                                    <div class="flex items-start gap-3">
-                                        <img src="${drama.thumbnail}" alt="${drama.title}" class="w-16 h-12 object-cover rounded">
-                                        <div class="flex-1">
-                                            <h4 class="font-medium text-zinc-900 dark:text-white">${drama.title}</h4>
-                                            <p class="text-xs text-zinc-500 dark:text-zinc-400">${drama.author} • ${drama.isTranslated ? '已汉化' : '未汉化'}</p>
+                                    <div class="flex items-start gap-2 sm:gap-3">
+                                        <img src="${drama.thumbnail}" alt="${drama.title}" class="w-12 h-9 sm:w-16 sm:h-12 object-cover rounded">
+                                        <div class="flex-1 min-w-0">
+                                            <h4 class="text-sm sm:text-base font-medium text-zinc-900 dark:text-white">${drama.title}</h4>
+                                            <p class="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">${drama.author} • ${drama.isTranslated ? '已汉化' : '未汉化'}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -2944,7 +2944,128 @@ function initBackToTop() {
     });
 }
 
+// --- Touch Gesture Support ---
+function initTouchGestures() {
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchEndX = 0;
+    let touchEndY = 0;
+    
+    // Handle sidebar swipe gestures
+    const sidebar = document.getElementById('sidebar');
+    const mobileSidebarToggle = document.getElementById('mobileSidebarToggle');
+    
+    if (!sidebar || !mobileSidebarToggle) return;
+    
+    // Add swipe gesture to open sidebar
+    document.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+    
+    document.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        touchEndY = e.changedTouches[0].screenY;
+        handleSwipeGesture();
+    }, { passive: true });
+    
+    function handleSwipeGesture() {
+        const swipeThreshold = 50;
+        const horizontalDistance = touchEndX - touchStartX;
+        const verticalDistance = Math.abs(touchEndY - touchStartY);
+        
+        // Only handle horizontal swipes with minimal vertical movement
+        if (Math.abs(horizontalDistance) > swipeThreshold && verticalDistance < 100) {
+            const isMobile = window.innerWidth < 1024;
+            
+            if (isMobile) {
+                if (horizontalDistance > 0 && touchStartX < 50) {
+                    // Swipe right from left edge - open sidebar
+                    sidebar.classList.add('open');
+                    createSidebarOverlay();
+                } else if (horizontalDistance < 0 && sidebar.classList.contains('open')) {
+                    // Swipe left - close sidebar
+                    sidebar.classList.remove('open');
+                    removeSidebarOverlay();
+                }
+            }
+        }
+    }
+    
+    // Mobile sidebar toggle functionality
+    mobileSidebarToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        if (sidebar.classList.contains('open')) {
+            createSidebarOverlay();
+        } else {
+            removeSidebarOverlay();
+        }
+    });
+    
+    function createSidebarOverlay() {
+        let overlay = document.querySelector('.sidebar-overlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.className = 'sidebar-overlay';
+            overlay.addEventListener('click', () => {
+                sidebar.classList.remove('open');
+                removeSidebarOverlay();
+            });
+            document.body.appendChild(overlay);
+        }
+        setTimeout(() => overlay.classList.add('active'), 10);
+    }
+    
+    function removeSidebarOverlay() {
+        const overlay = document.querySelector('.sidebar-overlay');
+        if (overlay) {
+            overlay.classList.remove('active');
+            setTimeout(() => overlay.remove(), 300);
+        }
+    }
+    
+    // Handle mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    
+    if (mobileMenuBtn && mobileMenu) {
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!mobileMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+    }
+    
+    // Sync mobile menu buttons with desktop buttons
+    const mobileButtons = {
+        'mobileBatchActionsBtn': 'batchActionsBtn',
+        'mobileSettingsBtn': 'settingsBtn',
+        'mobileShortcutsBtn': 'shortcutsBtn',
+        'mobileSubmitBtn': 'submitBtn',
+        'mobileThemeToggle': 'themeToggle'
+    };
+    
+    Object.entries(mobileButtons).forEach(([mobileId, desktopId]) => {
+        const mobileBtn = document.getElementById(mobileId);
+        const desktopBtn = document.getElementById(desktopId);
+        
+        if (mobileBtn && desktopBtn) {
+            mobileBtn.addEventListener('click', () => {
+                desktopBtn.click();
+                // Close mobile menu after action
+                if (mobileMenu) mobileMenu.classList.add('hidden');
+            });
+        }
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     init();
     initBackToTop();
+    initTouchGestures();
 });
