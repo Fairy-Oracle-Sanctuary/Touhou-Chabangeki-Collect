@@ -124,11 +124,146 @@ window.showTimelineModal = function() {
     
     // Generate timeline content
     generateTimeline();
+    
+    // Populate year options
+    populateYearOptions();
+};
+
+// Populate year options based on available data
+function populateYearOptions() {
+    const yearSelect = document.getElementById('yearSelect');
+    if (!yearSelect) {
+        console.error('yearSelect element not found');
+        return;
+    }
+    
+    const years = new Set();
+    
+    dramas.forEach(drama => {
+        const year = new Date(drama.dateAdded).getFullYear();
+        years.add(year);
+    });
+    
+    const sortedYears = Array.from(years).sort((a, b) => b - a);
+    
+    yearSelect.innerHTML = '<option value="">选择年份</option>' + 
+        sortedYears.map(year => `<option value="${year}">${year}年</option>`).join('');
+    
+    console.log('Populated year options:', sortedYears);
+}
+
+// Jump to specific time
+window.jumpToTime = function() {
+    const yearSelect = document.getElementById('yearSelect');
+    const monthSelect = document.getElementById('monthSelect');
+    
+    if (!yearSelect) {
+        console.error('yearSelect element not found');
+        return;
+    }
+    
+    if (!monthSelect) {
+        console.error('monthSelect element not found');
+        return;
+    }
+    
+    const selectedYear = yearSelect.value;
+    const selectedMonth = monthSelect.value;
+    
+    if (!selectedYear) {
+        alert('请选择年份');
+        return;
+    }
+    
+    // Build target period string
+    let targetPeriod = `${selectedYear}年`;
+    let targetId = `period-${selectedYear}年`;
+    
+    if (selectedMonth) {
+        targetPeriod += `${selectedMonth}月`;
+        targetId = `period-${selectedYear}年${selectedMonth}月`;
+    }
+    
+    console.log('Jumping to:', targetPeriod, 'ID:', targetId);
+    
+    // Find the target element by ID
+    const targetElement = document.getElementById(targetId);
+    
+    if (targetElement) {
+        targetElement.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start' 
+        });
+        
+        // Highlight the target section
+        targetElement.classList.add('bg-yellow-100', 'dark:bg-yellow-900/30', 'rounded-lg', 'p-2', '-m-2', 'transition-all', 'duration-300');
+        
+        // Remove highlight after 2 seconds
+        setTimeout(() => {
+            targetElement.classList.remove('bg-yellow-100', 'dark:bg-yellow-900/30', 'rounded-lg', 'p-2', '-m-2', 'transition-all', 'duration-300');
+        }, 2000);
+    } else {
+        alert(`未找到 ${targetPeriod} 的作品`);
+    }
+};
+
+// Scroll to top of timeline
+window.scrollToTop = function() {
+    const timelineContent = document.getElementById('timelineContent');
+    if (!timelineContent) {
+        console.error('timelineContent element not found in scrollToTop');
+        return;
+    }
+    
+    console.log('Scrolling to top of timeline');
+    timelineContent.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'start' 
+    });
+};
+
+// Scroll to bottom of timeline
+window.scrollToBottom = function() {
+    const timelineContent = document.getElementById('timelineContent');
+    if (!timelineContent) {
+        console.error('timelineContent element not found in scrollToBottom');
+        return;
+    }
+    
+    console.log('Scrolling to bottom of timeline');
+    
+    // Use smooth scrolling to bottom
+    timelineContent.scrollTo({
+        top: timelineContent.scrollHeight,
+        behavior: 'smooth'
+    });
+    
+    // Also scroll the modal content to make sure button stays visible
+    const modalContent = timelineContent.closest('.overflow-y-auto');
+    if (modalContent) {
+        setTimeout(() => {
+            modalContent.scrollTo({
+                top: modalContent.scrollHeight,
+                behavior: 'smooth'
+            });
+        }, 100); // Small delay to ensure timeline scroll starts first
+    }
 };
 
 // Generate timeline content
 function generateTimeline() {
     const timelineContent = document.getElementById('timelineContent');
+    if (!timelineContent) {
+        console.error('timelineContent element not found');
+        return;
+    }
+    
+    if (!dramas || dramas.length === 0) {
+        timelineContent.innerHTML = '<p class="text-zinc-500 dark:text-zinc-400">暂无作品数据</p>';
+        return;
+    }
+    
+    console.log('Generating timeline with', dramas.length, 'dramas');
     
     // Sort dramas by date
     const sortedDramas = [...dramas].sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
@@ -147,6 +282,8 @@ function generateTimeline() {
         groupedDramas[key].push(drama);
     });
     
+    console.log('Grouped dramas:', Object.keys(groupedDramas));
+    
     // Generate timeline HTML
     let timelineHTML = '';
     Object.keys(groupedDramas).forEach(period => {
@@ -159,7 +296,7 @@ function generateTimeline() {
                         ${periodDramas.length}
                     </div>
                     <div class="ml-12">
-                        <h3 class="text-lg font-bold text-zinc-900 dark:text-white mb-3">${period}</h3>
+                        <h3 class="text-lg font-bold text-zinc-900 dark:text-white mb-3" id="period-${period}">${period}</h3>
                         <div class="space-y-3">
                             ${periodDramas.map(drama => `
                                 <div class="bg-gray-50 dark:bg-zinc-800 rounded-lg p-3 hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors cursor-pointer" 
@@ -182,6 +319,7 @@ function generateTimeline() {
     });
     
     timelineContent.innerHTML = timelineHTML;
+    console.log('Timeline generated successfully');
 }
 
 // --- Related Works Recommendation ---
@@ -497,9 +635,27 @@ function initializeCharts() {
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            onClick: function(event, elements) {
+                if (elements.length > 0) {
+                    showFullMonthlyTrend();
+                }
+            },
             plugins: {
                 legend: {
                     display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        title: function(context) {
+                            return `${context[0].label} 月`;
+                        },
+                        label: function(context) {
+                            return `发布作品: ${context.parsed.y} 个`;
+                        },
+                        afterLabel: function() {
+                            return '点击查看完整趋势';
+                        }
+                    }
                 }
             },
             scales: {
@@ -596,7 +752,7 @@ function initializeCharts() {
 }
 
 // Get monthly data for trend chart
-function getMonthlyData() {
+function getMonthlyData(showAll = false) {
     const monthlyCount = {};
     const currentYear = new Date().getFullYear();
     
@@ -612,15 +768,177 @@ function getMonthlyData() {
         monthlyCount[key]++;
     });
     
-    // Sort by date and get last 6 months
+    // Sort by date
     const sortedMonths = Object.keys(monthlyCount).sort();
-    const lastSixMonths = sortedMonths.slice(-6);
+    
+    // Get data based on parameter
+    const displayMonths = showAll ? sortedMonths : sortedMonths.slice(-6);
     
     return {
-        labels: lastSixMonths,
-        data: lastSixMonths.map(month => monthlyCount[month] || 0)
+        labels: displayMonths,
+        data: displayMonths.map(month => monthlyCount[month] || 0),
+        allData: sortedMonths.map(month => monthlyCount[month] || 0),
+        allLabels: sortedMonths
     };
 }
+
+// Show full monthly trend modal
+window.showFullMonthlyTrend = function() {
+    const monthlyData = getMonthlyData(true);
+    
+    const modal = document.createElement('div');
+    modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+    modal.innerHTML = `
+        <div class="bg-white dark:bg-zinc-900 rounded-xl max-w-6xl w-full max-h-[90vh] overflow-hidden shadow-2xl">
+            <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-zinc-700">
+                <h2 class="text-2xl font-bold text-zinc-900 dark:text-white">
+                    📊 完整月度发布趋势
+                </h2>
+                <button onclick="this.closest('.fixed').remove()" 
+                        class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
+                <div class="mb-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
+                            <div class="text-sm text-blue-600 dark:text-blue-400 mb-1">总发布数量</div>
+                            <div class="text-2xl font-bold text-blue-900 dark:text-blue-100">
+                                ${monthlyData.allData.reduce((sum, count) => sum + count, 0)}
+                            </div>
+                        </div>
+                        <div class="bg-green-50 dark:bg-green-900/20 rounded-lg p-4">
+                            <div class="text-sm text-green-600 dark:text-green-400 mb-1">活跃月份</div>
+                            <div class="text-2xl font-bold text-green-900 dark:text-green-100">
+                                ${monthlyData.allData.filter(count => count > 0).length}
+                            </div>
+                        </div>
+                        <div class="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4">
+                            <div class="text-sm text-purple-600 dark:text-purple-400 mb-1">平均每月</div>
+                            <div class="text-2xl font-bold text-purple-900 dark:text-purple-100">
+                                ${(monthlyData.allData.reduce((sum, count) => sum + count, 0) / monthlyData.allData.length).toFixed(1)}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="relative h-96 bg-white dark:bg-zinc-800 rounded-lg p-4">
+                        <canvas id="fullMonthlyChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <h3 class="text-lg font-semibold text-zinc-900 dark:text-white mb-4">📅 详细月度数据</h3>
+                    <div class="max-h-64 overflow-y-auto border border-gray-200 dark:border-zinc-700 rounded-lg">
+                        <table class="w-full text-sm">
+                            <thead class="bg-gray-50 dark:bg-zinc-800 sticky top-0">
+                                <tr>
+                                    <th class="px-4 py-2 text-left text-zinc-700 dark:text-zinc-300">月份</th>
+                                    <th class="px-4 py-2 text-right text-zinc-700 dark:text-zinc-300">发布数量</th>
+                                    <th class="px-4 py-2 text-right text-zinc-700 dark:text-zinc-300">占比</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${monthlyData.allLabels.map((month, index) => {
+                                    const count = monthlyData.allData[index];
+                                    const total = monthlyData.allData.reduce((sum, c) => sum + c, 0);
+                                    const percentage = total > 0 ? ((count / total) * 100).toFixed(1) : 0;
+                                    return `
+                                        <tr class="border-t border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800">
+                                            <td class="px-4 py-2 text-zinc-900 dark:text-zinc-100">${month}</td>
+                                            <td class="px-4 py-2 text-right font-medium text-zinc-900 dark:text-zinc-100">
+                                                ${count}
+                                            </td>
+                                            <td class="px-4 py-2 text-right text-zinc-600 dark:text-zinc-400">
+                                                ${percentage}%
+                                            </td>
+                                        </tr>
+                                    `;
+                                }).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Create the full chart
+    setTimeout(() => {
+        const ctx = document.getElementById('fullMonthlyChart').getContext('2d');
+        const textColor = getComputedStyle(document.body).getPropertyValue('--text-color') || '#374151';
+        const gridColor = getComputedStyle(document.body).getPropertyValue('--grid-color') || '#e5e7eb';
+        
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: monthlyData.allLabels,
+                datasets: [{
+                    label: '发布数量',
+                    data: monthlyData.allData,
+                    borderColor: 'rgb(59, 130, 246)',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                    pointBackgroundColor: 'rgb(59, 130, 246)',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        labels: { color: textColor }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        borderColor: 'rgb(59, 130, 246)',
+                        borderWidth: 1,
+                        callbacks: {
+                            label: function(context) {
+                                return `发布数量: ${context.parsed.y}`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: { 
+                            color: textColor,
+                            maxRotation: 45,
+                            minRotation: 45
+                        },
+                        grid: { 
+                            color: gridColor,
+                            drawBorder: false
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: { color: textColor },
+                        grid: { 
+                            color: gridColor,
+                            drawBorder: false
+                        }
+                    }
+                }
+            }
+        });
+    }, 100);
+};
 
 // Get top authors data
 function getTopAuthorsData() {

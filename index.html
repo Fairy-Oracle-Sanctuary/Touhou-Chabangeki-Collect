@@ -670,6 +670,44 @@
             
             <!-- Timeline Modal Content -->
             <div class="p-6">
+                <!-- Quick Jump Controls -->
+                <div class="mb-6 p-4 bg-gray-50 dark:bg-zinc-800 rounded-lg sticky top-0 z-10">
+                    <div class="flex items-center gap-4 flex-wrap">
+                        <div class="flex items-center gap-2">
+                            <label class="text-sm font-medium text-zinc-700 dark:text-zinc-300">快速跳转到:</label>
+                            <select id="yearSelect" class="px-3 py-1.5 text-sm border border-gray-300 dark:border-zinc-600 rounded bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white">
+                                <option value="">选择年份</option>
+                            </select>
+                            <select id="monthSelect" class="px-3 py-1.5 text-sm border border-gray-300 dark:border-zinc-600 rounded bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white">
+                                <option value="">选择月份</option>
+                                <option value="01">1月</option>
+                                <option value="02">2月</option>
+                                <option value="03">3月</option>
+                                <option value="04">4月</option>
+                                <option value="05">5月</option>
+                                <option value="06">6月</option>
+                                <option value="07">7月</option>
+                                <option value="08">8月</option>
+                                <option value="09">9月</option>
+                                <option value="10">10月</option>
+                                <option value="11">11月</option>
+                                <option value="12">12月</option>
+                            </select>
+                            <button onclick="jumpToTime()" class="px-4 py-1.5 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+                                跳转
+                            </button>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="scrollToTop()" class="px-3 py-1.5 text-sm bg-gray-600 text-white rounded hover:bg-gray-700 transition-colors">
+                                回到顶部
+                            </button>
+                            <button onclick="scrollToBottom()" class="px-3 py-1.5 text-sm bg-gray-600 text-white rounded hover:bg-gray-700 transition-colors">
+                                回到底部
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
                 <div id="timelineContent" class="space-y-6">
                     <!-- Timeline items will be dynamically generated here -->
                 </div>
@@ -777,9 +815,23 @@
                     
                     <!-- Monthly Trend Chart -->
                     <div class="bg-gray-50 dark:bg-zinc-800 rounded-lg p-4">
-                        <h3 class="text-sm font-bold text-zinc-900 dark:text-white mb-4">月度发布趋势</h3>
-                        <div class="relative h-48">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-sm font-bold text-zinc-900 dark:text-white">月度发布趋势</h3>
+                            <button onclick="showFullMonthlyTrend()" 
+                                    class="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors flex items-center gap-1">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
+                                </svg>
+                                查看完整趋势
+                            </button>
+                        </div>
+                        <div class="relative h-48 cursor-pointer" onclick="showFullMonthlyTrend()" title="点击查看完整月度发布趋势">
                             <canvas id="monthlyChart"></canvas>
+                            <div class="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 bg-black bg-opacity-10 transition-opacity rounded-lg">
+                                <div class="bg-white dark:bg-zinc-800 px-3 py-1 rounded text-sm font-medium text-zinc-900 dark:text-white shadow-lg">
+                                    点击查看完整趋势
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
