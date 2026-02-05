@@ -921,6 +921,84 @@ const dramas = [
         description: "",
         thumbnail: "https://free.picui.cn/free/2026/02/05/6984486330771.jpg",
         dateAdded: "2024-09-20"
+    },
+    {
+        id: 72,
+        title: "讨厌男人的觉，只对我表现出爱意？！",
+        author: "ツキミ草【ゆっくり】",
+        translator: "孤独红人馆",
+        tags: ["古明地觉", "博丽灵梦"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PLuabzLomQRYWTM81MwVOowDWlPl35BQA3",
+        translatedUrl: "https://space.bilibili.com/269144656/lists/5691537",
+        description: "",
+        thumbnail: "https://free.picui.cn/free/2026/02/05/69844c68c0b4c.jpg",
+        dateAdded: "2024-12-30"
+    },
+    {
+        id: 73,
+        title: "捡到了被丢弃在纸箱里的少女",
+        author: "みとは ゆっくり製作所",
+        translator: "孤独红人馆",
+        tags: ["多多良小伞", "古明地恋", "芙兰朵露", "古明地觉"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PLVBIKA03FhZNMTGMmoiNvd2Z-0lndVwEu",
+        translatedUrl: "https://space.bilibili.com/269144656/lists/6185918",
+        description: "",
+        thumbnail: "https://free.picui.cn/free/2026/02/05/69844d21bca6e.jpg",
+        dateAdded: "2025-05-12"
+    },
+    {
+        id: 74,
+        title: "东方深想录",
+        author: "刹那 / Setsuna",
+        translator: "孤独红人馆",
+        tags: ["幻想入", "芙兰朵露", "蕾米莉亚", "博丽灵梦", "铃仙", "十六夜咲夜", "雾雨魔理沙", "爱丽丝", "射命丸文", "帕秋莉", "魂魄妖梦", "魂魄妖忌", "西行寺幽幽子"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PLbHQ_4GWYYBw_GstrSRD3iXeb2Xm8OALM",
+        translatedUrl: "https://space.bilibili.com/269144656/lists/5792751",
+        description: "",
+        thumbnail: "https://free.picui.cn/free/2026/02/05/69844dfde6bd1.jpg",
+        dateAdded: "2023-07-09"
+    },
+    {
+        id: 75,
+        title: "恋爱修罗场！？",
+        author: "エレキワイズ",
+        translator: "孤独红人馆",
+        tags: ["射命丸文", "犬走椛", "神绮", "雾雨魔理沙", "爱丽丝", "宇佐见莲子", "姬海棠果"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PLsGwA474Pdf4LA6ffmdi1GhrPmwpYFynZ",
+        translatedUrl: "https://space.bilibili.com/269144656/lists/6726286",
+        description: "",
+        thumbnail: "https://free.picui.cn/free/2026/02/05/69844ef9032a3.jpg",
+        dateAdded: "2020-09-26"
+    },
+    {
+        id: 76,
+        title: "东方罪宝录",
+        author: "ゆっくりダイヤ",
+        translator: "孤独红人馆",
+        tags: ["十六夜咲夜", "红美铃", "雾雨魔理沙", "蕾米莉亚", "芙兰朵露", "博丽灵梦", "八云紫"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PLwR9AUMdH1nDqjotGxbAEisUuxkmdiEfr",
+        translatedUrl: "https://space.bilibili.com/269144656/lists/6498268",
+        description: "",
+        thumbnail: "https://free.picui.cn/free/2026/02/05/69844f8adc9a0.jpg",
+        dateAdded: "2023-03-25"
+    },
+    {
+        id: 77,
+        title: "孤独红人馆烤制的短篇合集",
+        author: "",
+        translator: "孤独红人馆",
+        tags: [],
+        isTranslated: true,
+        originalUrl: "",
+        translatedUrl: "https://space.bilibili.com/269144656/lists/6217334",
+        description: "",
+        thumbnail: "https://free.picui.cn/free/2026/02/05/69845045de985.jpg",
+        dateAdded: "2025-08-01"
     }
 ];
 
@@ -978,5 +1056,9 @@ const authorLinks = {
     "るちょ": "https://www.youtube.com/@%E3%82%8B%E3%81%A1%E3%82%87",
     "ゆっくりコスモス": "https://www.youtube.com/@%E3%82%86%E3%81%A3%E3%81%8F%E3%82%8A%E3%82%B3%E3%82%B9%E3%83%A2%E3%82%B9",
     "えーり": "https://www.youtube.com/@yukkuri_Eiri",
-    "らうさん": "https://www.youtube.com/@rau3046"
+    "らうさん": "https://www.youtube.com/@rau3046",
+    "ツキミ草【ゆっくり】": "https://www.youtube.com/@%E3%83%84%E3%82%AD%E3%83%9F%E8%8D%89",
+    "刹那 / Setsuna": "https://www.youtube.com/@Setsuna-Setsuna",
+    "エレキワイズ": "",
+    "ゆっくりダイヤ": ""
 };
