@@ -338,8 +338,15 @@ function getRelatedWorks(currentDrama, limit = 6) {
         }
         
         // Same translator (high weight)
-        if (drama.translator && currentDrama.translator && drama.translator === currentDrama.translator) {
-            score += 8;
+        if (drama.translator && currentDrama.translator) {
+            const dramaTranslators = getTranslators(drama);
+            const currentTranslators = getTranslators(currentDrama);
+            const hasCommonTranslator = dramaTranslators.some(translator => 
+                currentTranslators.includes(translator)
+            );
+            if (hasCommonTranslator) {
+                score += 8;
+            }
         }
         
         // Same tags (medium weight)
@@ -958,13 +965,23 @@ function getTopAuthorsData() {
     };
 }
 
+// 辅助函数：获取译者的数组（支持多译者）
+function getTranslators(drama) {
+    if (!drama.translator) return [];
+    // 支持多种分隔符：, 、、&和
+    return drama.translator.split(/[,、&和]\s*/).filter(t => t.trim());
+}
+
 // Get top translators data
 function getTopTranslatorsData() {
     const translatorCounts = {};
     
     dramas.forEach(drama => {
         if (drama.isTranslated && drama.translator) {
-            translatorCounts[drama.translator] = (translatorCounts[drama.translator] || 0) + 1;
+            const translators = getTranslators(drama);
+            translators.forEach(translator => {
+                translatorCounts[translator] = (translatorCounts[translator] || 0) + 1;
+            });
         }
     });
     
@@ -1110,12 +1127,15 @@ function getStats() {
         
         // Count Translators and collect their tags
         if (drama.translator) {
-            translatorCounts[drama.translator] = (translatorCounts[drama.translator] || 0) + 1;
-            if (!translatorTags[drama.translator]) {
-                translatorTags[drama.translator] = {};
-            }
-            drama.tags.forEach(tag => {
-                translatorTags[drama.translator][tag] = (translatorTags[drama.translator][tag] || 0) + 1;
+            const translators = getTranslators(drama);
+            translators.forEach(translator => {
+                translatorCounts[translator] = (translatorCounts[translator] || 0) + 1;
+                if (!translatorTags[translator]) {
+                    translatorTags[translator] = {};
+                }
+                drama.tags.forEach(tag => {
+                    translatorTags[translator][tag] = (translatorTags[translator][tag] || 0) + 1;
+                });
             });
         }
     });
@@ -1311,7 +1331,10 @@ function viewAuthorDetails(type, name) {
                             </div>
                             <div class="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-500 mb-2">
                                 ${type === 'artist' ? 
-                                    `<span>译者: ${drama.translator}</span>` : 
+                                    (() => {
+                                        const translators = getTranslators(drama);
+                                        return `<span>译者: ${translators.length > 0 ? translators.join('、') : '无'}</span>`;
+                                    })() : 
                                     `<span>作者: ${drama.author}</span>`
                                 }
                                 <span>•</span>
@@ -1473,8 +1496,13 @@ function initSearchAutocomplete() {
         // 搜索译者
         const translatorCounts = {};
         dramas.forEach(drama => {
-            if (drama.translator && drama.translator.toLowerCase().includes(inputLower)) {
-                translatorCounts[drama.translator] = (translatorCounts[drama.translator] || 0) + 1;
+            if (drama.translator) {
+                const translators = getTranslators(drama);
+                translators.forEach(translator => {
+                    if (translator.toLowerCase().includes(inputLower)) {
+                        translatorCounts[translator] = (translatorCounts[translator] || 0) + 1;
+                    }
+                });
             }
         });
         Object.entries(translatorCounts).forEach(([translator, count]) => {
@@ -1920,19 +1948,21 @@ function filterAndSortDramas() {
             if (!hasAllArtists) return false;
         }
 
-        // 4. Check Translators (AND logic: must match ALL searched translators - usually implies only one translator can be selected effectively unless data changes)
+        // 4. Check Translators (AND logic: must match ALL searched translators)
         if (searchTranslators.length > 0) {
+            const translators = getTranslators(drama);
             const hasAllTranslators = searchTranslators.every(searchTranslator => 
-                drama.translator && drama.translator.toLowerCase() === searchTranslator
+                translators.some(translator => translator.toLowerCase() === searchTranslator)
             );
             if (!hasAllTranslators) return false;
         }
 
         // 5. Check Fuzzy Term (if exists)
         if (fuzzyTerm) {
+            const translators = getTranslators(drama);
             const matchesFuzzy = drama.title.toLowerCase().includes(fuzzyTerm) ||
                                  drama.author.toLowerCase().includes(fuzzyTerm) ||
-                                 (drama.translator && drama.translator.toLowerCase().includes(fuzzyTerm)) ||
+                                 translators.some(translator => translator.toLowerCase().includes(fuzzyTerm)) ||
                                  drama.tags.some(tag => tag.toLowerCase().includes(fuzzyTerm)) ||
                                  drama.description.toLowerCase().includes(fuzzyTerm);
             if (!matchesFuzzy) return false;
@@ -2002,13 +2032,17 @@ function openDetail(drama) {
     detailDate.textContent = drama.dateAdded;
     
     // 译者链接 - 优先跳转到主页，如果没有则使用筛选功能
-    if (drama.translator) {
-        const translatorLink = authorLinks[drama.translator];
-        if (translatorLink) {
-            detailTranslator.innerHTML = `<a href="${translatorLink}" target="_blank" rel="noopener noreferrer" class="hover:text-red-600 dark:hover:text-red-400 transition-colors hover:underline cursor-pointer">${drama.translator}</a>`;
-        } else {
-            detailTranslator.innerHTML = `<button onclick="toggleFilter('translator', '${drama.translator}')" class="hover:text-red-600 dark:hover:text-red-400 transition-colors hover:underline cursor-pointer">${drama.translator}</button>`;
-        }
+    const translators = getTranslators(drama);
+    if (translators.length > 0) {
+        const translatorHtml = translators.map(translator => {
+            const translatorLink = authorLinks[translator];
+            if (translatorLink) {
+                return `<a href="${translatorLink}" target="_blank" rel="noopener noreferrer" class="hover:text-red-600 dark:hover:text-red-400 transition-colors hover:underline cursor-pointer">${translator}</a>`;
+            } else {
+                return `<button onclick="toggleFilter('translator', '${translator}')" class="hover:text-red-600 dark:hover:text-red-400 transition-colors hover:underline cursor-pointer">${translator}</button>`;
+            }
+        }).join('、');
+        detailTranslator.innerHTML = translatorHtml;
     } else {
         detailTranslator.textContent = '无';
     }
@@ -2200,7 +2234,10 @@ function renderDramas() {
                             </button>
                             <span>•</span>
                             <span>${drama.dateAdded}</span>
-                            ${drama.translator ? `<span>•</span><span>${drama.translator}</span>` : ''}
+                            ${(() => {
+                                const translators = getTranslators(drama);
+                                return translators.length > 0 ? `<span>•</span><span>${translators.join('、')}</span>` : '';
+                            })()}
                         </div>
                     </div>
 
@@ -2618,7 +2655,10 @@ function setupSubmitForm() {
         dramas.forEach(drama => {
             authors.add(drama.author);
             if (drama.translator) {
-                translators.add(drama.translator);
+                const dramaTranslators = getTranslators(drama);
+                dramaTranslators.forEach(translator => {
+                    translators.add(translator);
+                });
             }
             drama.tags.forEach(tag => {
                 tags.add(tag);
