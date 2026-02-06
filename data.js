@@ -9,7 +9,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL-pkvuGg-eTBtbPiC-dhheSrl0GaAeifd",
         translatedUrl: "https://space.bilibili.com/33819012/lists/6789016",
         description: "来演话剧吧！博丽同学！",
-        thumbnail: "https://free.picui.cn/free/2026/02/04/6982e5c6bfe56.jpg",
+        thumbnail: "",
         dateAdded: "2025-02-10"
     },
     {
@@ -20,9 +20,9 @@ const dramas = [
         tags: ["小野塚小町", "圣白莲", "命莲", "八意永琳", "射命丸文", "琪露诺", "大妖精", "多多良小伞", "娜兹玲", "村纱水蜜", "云居一轮", "幽谷响子", "河城荷取", "水桥帕露西", "封兽鵺", "若鹭姬", "露米娅", "上白泽慧音", "星熊勇仪", "伊吹萃香", "铃仙", "博丽灵梦", "魂魄妖梦", "芙兰朵露", "四季映姬"],
         isTranslated: true,
         originalUrl: "https://www.youtube.com/playlist?list=PLxioisTzjlBa1NoKDTH1nkAHgOwAHzhma",
-        translatedUrl: "https://space.bilibili.com/12621850/lists/4882608",
+        translatedUrl: "https://cdn.jsdelivr.net/gh/Fairy-Oracle-Sanctuary/Touhou-Chabangeki-Collect@main/images/1.jpg",
         description: "你是我活过的证明。",
-        thumbnail: "https://free.picui.cn/free/2026/02/02/69806ad0158cd.jpg",
+        thumbnail: "",
         dateAdded: "2023-06-18"
     },
     {
@@ -35,7 +35,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLxioisTzjlBZ63LCFxhe0uDIma4lgCMfC",
         translatedUrl: "https://space.bilibili.com/12621850/lists/5066012",
         description: "死而未绝，络续不绝之缘。",
-        thumbnail: "https://free.picui.cn/free/2026/02/03/6981d3f9b3b3c.jpg",
+        thumbnail: "",
         dateAdded: "2024-08-24"
     },
     {
@@ -48,7 +48,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLxioisTzjlBaXcAkHQes8-dkINhSlG-Aj",
         translatedUrl: "https://space.bilibili.com/12621850/lists/6561665",
         description: "一群变态似乎在拯救世界。",
-        thumbnail: "https://free.picui.cn/free/2026/02/03/6981d3f9c7f83.jpg",
+        thumbnail: "",
         dateAdded: "2025-08-17"
     },
     {
@@ -61,7 +61,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLxioisTzjlBYrCViDpMBfFOEy1R4xNi1t",
         translatedUrl: "",
         description: "夜明けまでに、呪いを解く方法を思い出せ。",
-        thumbnail: "https://free.picui.cn/free/2026/02/03/6981d3f9caf1f.jpg",
+        thumbnail: "",
         dateAdded: "2022-08-10"
     },
     {
@@ -74,7 +74,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLiZP5uzNOuqyLnTRnyb4ZT5LuoVlBxnyE",
         translatedUrl: "https://space.bilibili.com/12621850/lists/5251532",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/03/69821120d59cb.jpg",
+        thumbnail: "",
         dateAdded: "2021-03-24"
     },
     {
@@ -87,7 +87,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLmc6eO_qCE4najTjdUCtXDa0Agx8tzDON",
         translatedUrl: "https://space.bilibili.com/12621850/lists/6172948",
         description: "大家听说过水平思考谜题吗？\n也被称为\"海龟汤\"呢。",
-        thumbnail: "https://free.picui.cn/free/2026/02/03/69821120e2371.jpg",
+        thumbnail: "",
         dateAdded: "2026-02-03"
     },
     {
@@ -100,7 +100,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLeIWlGzrNsQUtLMAjpHAw4AN2U9j6-xwn",
         translatedUrl: "https://space.bilibili.com/12621850/lists/5962069",
         description: "你听说过百元行的故事吗？",
-        thumbnail: "https://free.picui.cn/free/2026/02/03/698211211d834.jpg",
+        thumbnail: "",
         dateAdded: "2024-07-25"
     },
     {
@@ -113,7 +113,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL15bNp6jPcclvKXISMZ2fy8POHkEd3sSA",
         translatedUrl: "https://space.bilibili.com/12621850/lists/5264242",
         description: "短篇故事，大概100集",
-        thumbnail: "https://free.picui.cn/free/2026/02/03/6982161b1d56a.jpg",
+        thumbnail: "",
         dateAdded: "2024-07-31"
     },
     {
@@ -126,7 +126,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL2h240ZAgAYEaeVipLKlDJaK-FswRZMuu",
         translatedUrl: "https://space.bilibili.com/12621850/lists/5697073",
         description: "非常有意思的战斗向茶剧",
-        thumbnail: "https://free.picui.cn/free/2026/02/03/6982161b519de.jpg",
+        thumbnail: "",
         dateAdded: "2024-03-07"
     },
     {
@@ -139,7 +139,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=boGrjUJpBVo",
         translatedUrl: "https://space.bilibili.com/12621850/lists/5116051",
         description: "一个在油管上比较有趣的幻想入系列，但有着原创主人公、角色暴力表现。觉得不OK的慎入",
-        thumbnail: "https://free.picui.cn/free/2026/02/03/6982161ba71d8.jpg",
+        thumbnail: "",
         dateAdded: "2024-12-06"
     },
     {
@@ -152,7 +152,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=tL5lu9jG9m8",
         translatedUrl: "https://space.bilibili.com/12621850/lists/5104404",
         description: "世界谚语科普",
-        thumbnail: "https://free.picui.cn/free/2026/02/04/6982d83f1e9d1.jpg",
+        thumbnail: "",
         dateAdded: "2022-08-13"
     },
     {
@@ -165,7 +165,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=6cME-im2kDE",
         translatedUrl: "https://space.bilibili.com/12621850/lists/7228361",
         description: "这是啥子角色？",
-        thumbnail: "https://free.picui.cn/free/2026/02/04/6982d83f047d8.jpg",
+        thumbnail: "",
         dateAdded: "2021-12-27"
     },
     {
@@ -178,7 +178,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL15bNp6jPccn24qH-xfKfS2XQTJY30Fuu",
         translatedUrl: "https://space.bilibili.com/12621850/lists/6626365",
         description: "魂魄妖梦，你毁了我的性取向",
-        thumbnail: "https://free.picui.cn/free/2026/02/04/6982d83f0bb27.jpg",
+        thumbnail: "",
         dateAdded: "2019-02-16"
     },
     {
@@ -191,7 +191,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLFU-QWGTBq-4SsfGQuJBNzmvZtTzN3FoJ",
         translatedUrl: "https://space.bilibili.com/499929312/lists/6324095",
         description: "学校的优等生竟和吸血鬼夜游！？",
-        thumbnail: "https://free.picui.cn/free/2026/02/03/6981d3f9f2bff.jpg",
+        thumbnail: "",
         dateAdded: "2022-09-09"
     },
     {
@@ -204,7 +204,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL4PMLGSCaH8AF_vC-FcV9DTDU5XPCatxG",
         translatedUrl: "https://space.bilibili.com/499929312/lists/6267690",
         description: "莫名其妙就要和吸血鬼同居了！？",
-        thumbnail: "https://free.picui.cn/free/2026/02/03/6981d3f9ea961.jpg",
+        thumbnail: "",
         dateAdded: "2020-05-29"
     },
     {
@@ -217,7 +217,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLmc6eO_qCE4nYR7tYmTsppAF1CTxhcrTP",
         translatedUrl: "https://space.bilibili.com/499929312/lists/6449310",
         description: "佛前樱散祈缘契，愿渡来生共世人。",
-        thumbnail: "https://free.picui.cn/free/2026/02/04/6982deaa68f9e.jpg",
+        thumbnail: "",
         dateAdded: "2018-10-14"
     },
     {
@@ -230,7 +230,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLwnprYHAfPHaqEZqQFi2nQiPLg5Igo3mT",
         translatedUrl: "https://space.bilibili.com/499929312/lists/6466841",
         description: "无刀可放心食用",
-        thumbnail: "https://free.picui.cn/free/2026/02/04/6982deaa910d9.jpg",
+        thumbnail: "",
         dateAdded: "2025-07-24"
     },
     {
@@ -243,7 +243,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLn5zMpk5-YR-Qzz5RcosD3oA5MbuMk23V",
         translatedUrl: "https://space.bilibili.com/499929312/lists/6525221",
         description: "mmd和茶番剧二合一",
-        thumbnail: "https://free.picui.cn/free/2026/02/04/6982deaa90602.jpg",
+        thumbnail: "",
         dateAdded: "2024-07-31"
     },
     {
@@ -256,7 +256,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLkONYltbNkGdPwu1CVug0NyOROBUShYqh",
         translatedUrl: "https://space.bilibili.com/499929312/lists/6809460",
         description: "繧?▲縺上ｊ縺励※縺?▲縺ｦ縺ｭ?",
-        thumbnail: "https://free.picui.cn/free/2026/02/04/6982e2f69a815.jpg",
+        thumbnail: "",
         dateAdded: "2023-10-01"
     },
     {
@@ -269,7 +269,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLwnprYHAfPHZ0bKlsSRE1CQYkWNYw5L6U",
         translatedUrl: "https://space.bilibili.com/499929312/lists/6702992",
         description: "帕秋莉厨必看系列",
-        thumbnail: "https://free.picui.cn/free/2026/02/04/6982e2f6802e3.jpg",
+        thumbnail: "",
         dateAdded: "2025-09-12"
     },
     {
@@ -282,7 +282,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLwsFUfY3oQWJ3GsyshggcsJbI6_X8hRD0",
         translatedUrl: "https://space.bilibili.com/499929312/lists/7221002",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/04/6982e2f69d767.jpg",
+        thumbnail: "",
         dateAdded: "2024-08-23"
     },
     {
@@ -295,7 +295,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=y6Kwj56KTCE",
         translatedUrl: "https://space.bilibili.com/87123918/lists/4535137",
         description: "如果你最珍视的人明天就要离世了，你会怎么做？",
-        thumbnail: "https://free.picui.cn/free/2026/02/04/6982fea9ce0dc.jpg",
+        thumbnail: "",
         dateAdded: "2021-06-07"
     },
     {
@@ -308,7 +308,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=7_eM4AAt3XM",
         translatedUrl: "https://space.bilibili.com/87123918/lists/4845021",
         description: "我这人啊，就是爱瞎操心",
-        thumbnail: "https://free.picui.cn/free/2026/02/04/6982fea9d8c61.jpg",
+        thumbnail: "",
         dateAdded: "2022-10-09"
     },
     {
@@ -321,7 +321,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=SoOBZO_n5gU",
         translatedUrl: "https://space.bilibili.com/87123918/lists/5078005",
         description: "想要出去就只能○○的房间",
-        thumbnail: "https://free.picui.cn/free/2026/02/04/6982feaa04b7b.jpg",
+        thumbnail: "",
         dateAdded: "2023-11-07"
     },
     {
@@ -334,7 +334,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=t-vZgFACfmw",
         translatedUrl: "https://space.bilibili.com/87123918/lists/4780455",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/04/6983041b835ce.jpg",
+        thumbnail: "",
         dateAdded: "2021-11-14"
     },
     {
@@ -347,7 +347,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=NNAi4rWxy4k",
         translatedUrl: "https://space.bilibili.com/87123918/lists/4396885",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/04/6983041bc47bb.jpg",
+        thumbnail: "",
         dateAdded: "2022-08-05"
     },
     {
@@ -360,7 +360,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLl_rWSOGGXM8ULORk8_P5JQJEc4AIEz4W",
         translatedUrl: "https://space.bilibili.com/87123918/lists/4409450",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/04/6983041cde7bd.jpg",
+        thumbnail: "",
         dateAdded: "2020-09-02"
     },
     {
@@ -373,7 +373,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=qrRNO2w6JqE",
         translatedUrl: "https://space.bilibili.com/87123918/lists/5117741",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/04/69830537aa06c.jpg",
+        thumbnail: "",
         dateAdded: "2025-02-03"
     },
     {
@@ -386,7 +386,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=U_hPtTKAMlM",
         translatedUrl: "https://space.bilibili.com/87123918/lists/5574603",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/04/6983073da92d7.jpg",
+        thumbnail: "",
         dateAdded: "2022-10-02"
     },
     {
@@ -399,7 +399,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLVBIKA03FhZPjrYJAJ4Qb3bXCZAyE8jyv",
         translatedUrl: "https://space.bilibili.com/87123918/lists/4758726",
         description: "雨爱的秘密，会一直延续~",
-        thumbnail: "https://free.picui.cn/free/2026/02/04/6983081bbf01f.jpg",
+        thumbnail: "",
         dateAdded: "2023-01-13"
     },
     {
@@ -412,7 +412,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=c6mxNbdWinY",
         translatedUrl: "https://space.bilibili.com/87123918/lists/4415038",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/04/698308f1f0a80.jpg",
+        thumbnail: "",
         dateAdded: "2024-08-18"
     },
     {
@@ -425,7 +425,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=6KldaHy1u0I",
         translatedUrl: "https://space.bilibili.com/87123918/lists/5409881",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/04/698309dceb812.jpg",
+        thumbnail: "",
         dateAdded: "2025-03-03"
     },
     {
@@ -438,7 +438,7 @@ const dramas = [
         originalUrl: "https://www.nicovideo.jp/watch/sm28681278",
         translatedUrl: "https://space.bilibili.com/87123918/lists/5224003",
         description: "莫问来生伴谁侧，樱花落处即相逢。",
-        thumbnail: "https://free.picui.cn/free/2026/02/04/69830b90345c5.jpg",
+        thumbnail: "",
         dateAdded: "2016-04-23"
     },
     {
@@ -451,7 +451,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL3rAsEOjJPkNOjHdzZr77LpCrL1C69gKP",
         translatedUrl: "https://space.bilibili.com/87123918/lists/6936080",
         description: "想起了…",
-        thumbnail: "https://free.picui.cn/free/2026/02/04/69830c59609bd.jpg",
+        thumbnail: "",
         dateAdded: "2020-10-01"
     },
     {
@@ -464,7 +464,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL5Ezg2qezOuyorGr52XSbjp9DQbJQ3mBS",
         translatedUrl: "https://www.bilibili.com/video/BV1mxdSYeE62",
         description: "恋恋可爱捏（",
-        thumbnail: "https://free.picui.cn/free/2026/02/04/69830d4c75b9c.jpg",
+        thumbnail: "",
         dateAdded: "2020-05-14"
     },
     {
@@ -477,7 +477,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/shorts/S7oAsAhm0NU",
         translatedUrl: "https://www.bilibili.com/video/BV1jDdbYoEca",
         description: "蕾米可爱捏",
-        thumbnail: "https://free.picui.cn/free/2026/02/04/69830dbf3a157.jpg",
+        thumbnail: "",
         dateAdded: "2024-03-10"
     },
     {
@@ -490,7 +490,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL5Ezg2qezOux8cq6dLe9S47gQJkk_uuZz",
         translatedUrl: "https://www.bilibili.com/video/BV1emAseZEwa",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/04/69830ec01ab5c.jpg",
+        thumbnail: "",
         dateAdded: "2020-06-14"
     },
     {
@@ -503,7 +503,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL5Ezg2qezOuzcuFHQqi6LQQpGDJUGiTPz",
         translatedUrl: "https://www.bilibili.com/video/BV1wFRVYXE9m",
         description: "以baka小队为主角的系列~",
-        thumbnail: "https://free.picui.cn/free/2026/02/04/698310463f030.jpg",
+        thumbnail: "",
         dateAdded: "2024-03-02"
     },
     {
@@ -516,7 +516,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL5Ezg2qezOuxc9DJkmjOcEkTYfUehOCXb",
         translatedUrl: "https://www.bilibili.com/video/BV1mtPveLEjJ",
         description: "在无数重复的时间线中，我的声音定能再度围绕你左右。",
-        thumbnail: "https://free.picui.cn/free/2026/02/04/698310e9572ff.jpg",
+        thumbnail: "",
         dateAdded: "2024-08-30"
     },
     {
@@ -529,7 +529,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL5Ezg2qezOuwb0u1PD_ipY9UREG6ig5fJ",
         translatedUrl: "https://www.bilibili.com/video/BV1ZEdZY3ERs",
         description: "可以看到蕾米花式破防的一集（",
-        thumbnail: "https://free.picui.cn/free/2026/02/04/698311780ffef.jpg",
+        thumbnail: "",
         dateAdded: "2024-09-21"
     },
     {
@@ -542,7 +542,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=ienoNid46dM&list=PLPIDlOi7aH3EiGs9HnU3Rg52r4j587qsI&index=6",
         translatedUrl: "https://www.bilibili.com/video/BV16A6QBCEqD/?vd_source=29215d7e01e2e3b79461f647961a787f",
         description: "与铃仙在酒吧的小故事",
-        thumbnail: "https://free.picui.cn/free/2026/02/03/6981d4bbb3958.jpg",
+        thumbnail: "",
         dateAdded: "2025-06-20"
     },
     {
@@ -555,7 +555,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=LqAzlj1yJGA",
         translatedUrl: "https://space.bilibili.com/109338384/lists/6835169",
         description: "留学回来之后，青梅竹马的帕露西居然退学了，还当了家里蹲？！",
-        thumbnail: "https://free.picui.cn/free/2026/02/05/69841acba1394.jpg",
+        thumbnail: "",
         dateAdded: "2020-05-14"
     },
     {
@@ -568,7 +568,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=6H-RJpUbXbE",
         translatedUrl: "https://space.bilibili.com/109338384/lists/6859688",
         description: "。我重生了，回到了我初中一年级入学的时候，这次，我要改变我的命运，不再成为一个40岁一事无成碌碌无为的社畜",
-        thumbnail: "https://free.picui.cn/free/2026/02/05/69842889d0f3b.jpg",
+        thumbnail: "",
         dateAdded: "2019-03-15"
     },
     {
@@ -581,7 +581,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLkbhAsj-moQyC4JME0vR2_OrKR2r8GNFt",
         translatedUrl: "https://space.bilibili.com/109338384/lists/7099795",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/05/6984294e7a9cf.jpg",
+        thumbnail: "",
         dateAdded: "2021-06-18"
     },
     {
@@ -594,7 +594,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLsU0BZFJZhxU18cReRmpsGDqJD8AwDL9D",
         translatedUrl: "https://space.bilibili.com/109338384/lists/6834497",
         description: "与可爱的奴隶少女觉开启了同居生活……",
-        thumbnail: "https://free.picui.cn/free/2026/02/05/69842a173c351.jpg",
+        thumbnail: "",
         dateAdded: "2022-07-01"
     },
     {
@@ -607,7 +607,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL3YhIU0YsQWPDaRyBdd1Owi4Fidnj6n3L",
         translatedUrl: "https://space.bilibili.com/109338384/lists/6829056",
         description: "为了防止新的义妹进入到我家，我对自己的家进行了要塞计划，可惜被老爹直接叫停，然而当我一打开门，遇到的却是……",
-        thumbnail: "https://free.picui.cn/free/2026/02/05/69842ad15237b.jpg",
+        thumbnail: "",
         dateAdded: "2023-05-15"
     },
     {
@@ -620,7 +620,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL15bNp6jPcclXhofki7-qmExJa24NPwia",
         translatedUrl: "https://space.bilibili.com/109338384/lists/7238326",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/05/69842b8505879.jpg",
+        thumbnail: "",
         dateAdded: "2018-05-30"
     },
     {
@@ -633,7 +633,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLPIDlOi7aH3Fk5iGBIjN_iBSQFUWHOrsd",
         translatedUrl: "https://space.bilibili.com/109338384/lists/7150145",
         description: "幻想乡……真是厉害啊",
-        thumbnail: "https://free.picui.cn/free/2026/02/05/69842c049c789.jpg",
+        thumbnail: "",
         dateAdded: "2021-10-19"
     },
     {
@@ -646,7 +646,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=oooMSfHdcbY",
         translatedUrl: "https://www.bilibili.com/video/BV1b3U7BUEpY",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/05/69842cdb6b705.jpg",
+        thumbnail: "",
         dateAdded: "2023-11-04"
     },
     {
@@ -659,7 +659,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLIbahIQ3NnZtSsbNwlFXr5a3RsEgfuwhX",
         translatedUrl: "https://www.bilibili.com/video/BV1J6i3BHEV6",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/05/69842d7f25a5e.jpg",
+        thumbnail: "",
         dateAdded: "2023-12-10"
     },
     {
@@ -672,7 +672,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/@TouhouYandere8901",
         translatedUrl: "https://space.bilibili.com/2065248047/lists/1619296",
         description: "入坑东方必看作",
-        thumbnail: "https://free.picui.cn/free/2026/02/05/69842ec45cb06.jpg",
+        thumbnail: "",
         dateAdded: "2021-08-17"
     },
     {
@@ -685,7 +685,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLMqWBRhqHwItIaeEd64Ym8kld9AxB--Q5",
         translatedUrl: "https://space.bilibili.com/2065248047/lists/1885948",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/05/698431cec7e19.jpg",
+        thumbnail: "",
         dateAdded: "2021-11-02"
     },
     {
@@ -698,7 +698,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLwVn04n1IKXuNrDa7luvafJtZqJLrS6VP",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/6831118",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/05/698438f4644e0.jpg",
+        thumbnail: "",
         dateAdded: "2023-04-18"
     },
     {
@@ -711,7 +711,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL0y_WAo04qpoPSPJzyG5e00ZDK7zDROfT",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/6831140",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/05/69843a0880c1f.jpg",
+        thumbnail: "",
         dateAdded: "2020-06-24"
     },
     {
@@ -724,7 +724,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLueexuf60TEYtkvqS3kpCtfUwY31zpDmu",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/6831143",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/05/698440dccbd95.jpg",
+        thumbnail: "",
         dateAdded: "2022-07-10"
     },
     {
@@ -737,7 +737,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLpSzC1-Y_uEF1Ru4IDjPXeXD_N-ZuHwO8",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/6837350",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/05/698441497c0b1.jpg",
+        thumbnail: "",
         dateAdded: "2020-12-29"
     },
     {
@@ -750,7 +750,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLDnwQpBnibfJtE-9aDJK6gW4IyH9GeAJi",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/6847416?type=season",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/05/698441da18c66.jpg",
+        thumbnail: "",
         dateAdded: "2025-08-24"
     },
     {
@@ -763,7 +763,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLAhdzhAf7V75BY4JESOW4ApKBdL3xhObR",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/6866081",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/05/6984428d9d6f4.jpg",
+        thumbnail: "",
         dateAdded: "2024-09-14"
     },
     {
@@ -776,7 +776,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL2X7X36J6V_7ejg7TDX983ZPYfpT7oDNf",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/6884763",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/05/698443173298c.jpg",
+        thumbnail: "",
         dateAdded: "2024-12-18"
     },
     {
@@ -789,7 +789,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL15bNp6jPcckBBa2XYhkNyAgF4UXgWVUQ",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/6886121",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/05/698443801ae49.jpg",
+        thumbnail: "",
         dateAdded: "2019-08-07"
     },
     {
@@ -802,7 +802,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL2X7X36J6V_5mB4A0gda1yms9PZatnShM",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/6894045?type=season",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/05/6984443be003d.jpg",
+        thumbnail: "",
         dateAdded: "2024-06-14"
     },
     {
@@ -815,7 +815,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLEitLOfPT9XvigVfXwqKqT4avo7BmjJ_8",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/6904781",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/05/698444af316a6.jpg",
+        thumbnail: "",
         dateAdded: "2023-08-22"
     },
     {
@@ -828,7 +828,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL2X7X36J6V_6RiAuIEo_IbTHSMGAhkhKS",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/6910538",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/05/698445069ca35.jpg",
+        thumbnail: "",
         dateAdded: "2025-06-11"
     },
     {
@@ -841,7 +841,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL2X7X36J6V_43iJW3K6PYwomcyjuCJI0N",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/7229554",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/05/69844578c663a.jpg",
+        thumbnail: "",
         dateAdded: "2025-07-19"
     },
     {
@@ -854,7 +854,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL2X7X36J6V_5MZ8j-gDJYsVoMTrUsaYDk",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/7296370",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/05/698445d0e1b92.jpg",
+        thumbnail: "",
         dateAdded: "2025-11-18"
     },
     {
@@ -867,7 +867,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL0y_WAo04qppy-nGEFpoU3jOCL7YcmPUk",
         translatedUrl: "https://www.bilibili.com/video/BV1suU1B9EtN",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/05/69844644b6413.jpg",
+        thumbnail: "",
         dateAdded: "2021-06-03"
     },
     {
@@ -880,7 +880,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLAhdzhAf7V75gG27SRl0pDGPlgbzcVICh",
         translatedUrl: "https://www.bilibili.com/video/BV1FjUpBDEhK",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/05/698446f92860a.jpg",
+        thumbnail: "",
         dateAdded: "2020-11-13"
     },
     {
@@ -893,7 +893,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL0y_WAo04qpqB__1sa_Lfg_fpDrJr713j",
         translatedUrl: "https://www.bilibili.com/video/BV1t7U9BnEXb",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/05/69844758ecb57.jpg",
+        thumbnail: "",
         dateAdded: "2021-04-26"
     },
     {
@@ -906,7 +906,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL0y_WAo04qpoZV7cdhvAm1uvHwpWon7OM",
         translatedUrl: "https://www.bilibili.com/video/BV17MSnBGEMy",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/05/698447cf38833.jpg",
+        thumbnail: "",
         dateAdded: "2022-03-08"
     },
     {
@@ -919,7 +919,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=71RQTEyXIJM",
         translatedUrl: "https://www.bilibili.com/video/BV1ifrDBgEsk",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/05/6984486330771.jpg",
+        thumbnail: "",
         dateAdded: "2024-09-20"
     },
     {
@@ -932,7 +932,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLuabzLomQRYWTM81MwVOowDWlPl35BQA3",
         translatedUrl: "https://space.bilibili.com/269144656/lists/5691537",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/05/69844c68c0b4c.jpg",
+        thumbnail: "",
         dateAdded: "2024-12-30"
     },
     {
@@ -945,7 +945,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLVBIKA03FhZNMTGMmoiNvd2Z-0lndVwEu",
         translatedUrl: "https://space.bilibili.com/269144656/lists/6185918",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/05/69844d21bca6e.jpg",
+        thumbnail: "",
         dateAdded: "2025-05-12"
     },
     {
@@ -958,7 +958,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLbHQ_4GWYYBw_GstrSRD3iXeb2Xm8OALM",
         translatedUrl: "https://space.bilibili.com/269144656/lists/5792751",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/05/69844dfde6bd1.jpg",
+        thumbnail: "",
         dateAdded: "2023-07-09"
     },
     {
@@ -971,7 +971,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLsGwA474Pdf4LA6ffmdi1GhrPmwpYFynZ",
         translatedUrl: "https://space.bilibili.com/269144656/lists/6726286",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/05/69844ef9032a3.jpg",
+        thumbnail: "",
         dateAdded: "2020-09-26"
     },
     {
@@ -984,7 +984,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLwR9AUMdH1nDqjotGxbAEisUuxkmdiEfr",
         translatedUrl: "https://space.bilibili.com/269144656/lists/6498268",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/05/69844f8adc9a0.jpg",
+        thumbnail: "",
         dateAdded: "2023-03-25"
     },
     {
@@ -997,7 +997,7 @@ const dramas = [
         originalUrl: "",
         translatedUrl: "https://space.bilibili.com/269144656/lists/6217334",
         description: "",
-        thumbnail: "https://free.picui.cn/free/2026/02/05/69845045de985.jpg",
+        thumbnail: "",
         dateAdded: "2025-08-01"
     }
 ];

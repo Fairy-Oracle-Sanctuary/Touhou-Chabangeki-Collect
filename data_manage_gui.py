@@ -60,6 +60,9 @@ class DataManagerGUI:
         ttk.Button(btn_bar, text="删除选中项", command=self.delete_item).pack(
             side=tk.LEFT, padx=2
         )
+        ttk.Button(btn_bar, text="清除所有缩略图", command=self.clear_all_thumbnails).pack(
+            side=tk.LEFT, padx=2
+        )
         ttk.Button(btn_bar, text="强制保存", command=self.save_data_gui).pack(
             side=tk.RIGHT, padx=2
         )
@@ -430,6 +433,39 @@ class DataManagerGUI:
                 messagebox.showinfo("成功", "从JSON导入条目成功")
             except Exception as e:
                 messagebox.showerror("错误", f"JSON解析失败: {e}")
+
+    def clear_all_thumbnails(self):
+        """一键清除所有条目的thumbnail值"""
+        if not self.data:
+            messagebox.showinfo("提示", "当前没有数据条目")
+            return
+        
+        # 统计有多少条目有缩略图
+        items_with_thumbnails = sum(1 for item in self.data if item.get("thumbnail"))
+        
+        if items_with_thumbnails == 0:
+            messagebox.showinfo("提示", "所有条目都没有缩略图")
+            return
+        
+        # 确认对话框
+        confirm_msg = f"确定要清除所有 {items_with_thumbnails} 个条目的缩略图吗？\n\n此操作不可撤销！"
+        if messagebox.askyesno("确认清除", confirm_msg, icon="warning"):
+            # 清除所有thumbnail值
+            cleared_count = 0
+            for item in self.data:
+                if item.get("thumbnail"):
+                    item["thumbnail"] = ""
+                    cleared_count += 1
+            
+            # 刷新显示并保存
+            self.fill_treeview()
+            self.save_data_gui(silent=True)
+            
+            # 显示成功消息
+            messagebox.showinfo(
+                "成功", 
+                f"已成功清除 {cleared_count} 个条目的缩略图\n\n数据已自动保存到 data.js"
+            )
 
 
 class JsonImportDialog(tk.Toplevel):
