@@ -63,6 +63,9 @@ class DataManagerGUI:
         ttk.Button(btn_bar, text="清除所有缩略图", command=self.clear_all_thumbnails).pack(
             side=tk.LEFT, padx=2
         )
+        ttk.Button(btn_bar, text="生成缩略图URL", command=self.generate_thumbnail_urls).pack(
+            side=tk.LEFT, padx=2
+        )
         ttk.Button(btn_bar, text="强制保存", command=self.save_data_gui).pack(
             side=tk.RIGHT, padx=2
         )
@@ -466,6 +469,56 @@ class DataManagerGUI:
                 "成功", 
                 f"已成功清除 {cleared_count} 个条目的缩略图\n\n数据已自动保存到 data.js"
             )
+
+    def generate_thumbnail_urls(self):
+        """根据ID自动生成缩略图URL"""
+        if not self.data:
+            messagebox.showinfo("提示", "当前没有数据条目")
+            return
+        
+        # 创建生成URL对话框
+        dialog = ThumbnailUrlDialog(self.root)
+        self.root.wait_window(dialog)
+        
+        if dialog.result:
+            url_template, start_id, end_id, update_empty_only = dialog.result
+            
+            # 统计将要更新的条目
+            items_to_update = []
+            for item in self.data:
+                if start_id <= item['id'] <= end_id:
+                    if update_empty_only:
+                        if not item.get("thumbnail"):
+                            items_to_update.append(item)
+                    else:
+                        items_to_update.append(item)
+            
+            if not items_to_update:
+                messagebox.showinfo("提示", "没有找到需要更新的条目")
+                return
+            
+            # 确认对话框
+            confirm_msg = f"确定要更新 {len(items_to_update)} 个条目的缩略图URL吗？\n\n"
+            confirm_msg += f"URL格式: {url_template.replace('{id}', 'ID')}\n"
+            confirm_msg += f"ID范围: {start_id}-{end_id}"
+            
+            if messagebox.askyesno("确认更新", confirm_msg):
+                # 执行更新
+                updated_count = 0
+                for item in items_to_update:
+                    new_url = url_template.format(id=item['id'])
+                    if item.get("thumbnail") != new_url:
+                        item["thumbnail"] = new_url
+                        updated_count += 1
+                
+                # 刷新显示并保存
+                self.fill_treeview()
+                self.save_data_gui(silent=True)
+                
+                messagebox.showinfo(
+                    "成功", 
+                    f"已成功更新 {updated_count} 个条目的缩略图URL\n\n数据已自动保存到 data.js"
+                )
 
 
 class JsonImportDialog(tk.Toplevel):
@@ -1177,6 +1230,175 @@ class LinkEditDialog(tk.Toplevel):
             return
         
         self.result = (name, link)
+        self.destroy()
+
+
+class ThumbnailUrlDialog(tk.Toplevel):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.title("生成缩略图URL")
+        self.geometry("600x400")
+        self.result = None
+        
+        # 主框架
+        main_frame = ttk.Frame(self, padding="20")
+        main_frame.pack(fill=tk.BOTH, expand=True)
+        
+        # URL格式选择
+        format_frame = ttk.LabelFrame(main_frame, text="URL格式", padding="10")
+        format_frame.pack(fill=tk.X, pady=(0, 20))
+        
+        self.url_format = tk.StringVar(value="cloudinary")
+        
+        ttk.Radiobutton(format_frame, text="Cloudinary", 
+                      variable=self.url_format, value="cloudinary",
+                      command=self.update_url_preview).pack(anchor=tk.W)
+        ttk.Radiobutton(format_frame, text="GitHub + jsDelivr", 
+                      variable=self.url_format, value="github",
+                      command=self.update_url_preview).pack(anchor=tk.W)
+        ttk.Radiobutton(format_frame, text="自定义URL", 
+                      variable=self.url_format, value="custom",
+                      command=self.update_url_preview).pack(anchor=tk.W)
+        
+        # URL配置
+        config_frame = ttk.LabelFrame(main_frame, text="URL配置", padding="10")
+        config_frame.pack(fill=tk.X, pady=(0, 20))
+        
+        # Cloudinary配置
+        self.cloud_frame = ttk.Frame(config_frame)
+        ttk.Label(self.cloud_frame, text="云名称:").grid(row=0, column=0, sticky=tk.W, pady=2)
+        self.cloud_name = tk.StringVar(value="do6rggmy6")
+        ttk.Entry(self.cloud_frame, textvariable=self.cloud_name).grid(row=0, column=1, sticky=tk.EW, pady=2)
+        
+        ttk.Label(self.cloud_frame, text="版本号:").grid(row=1, column=0, sticky=tk.W, pady=2)
+        self.cloud_version = tk.StringVar(value="v1770352189")
+        ttk.Entry(self.cloud_frame, textvariable=self.cloud_version).grid(row=1, column=1, sticky=tk.EW, pady=2)
+        
+        ttk.Label(self.cloud_frame, text="文件夹:").grid(row=2, column=0, sticky=tk.W, pady=2)
+        self.cloud_folder = tk.StringVar(value="touhou/thumbnails")
+        ttk.Entry(self.cloud_frame, textvariable=self.cloud_folder).grid(row=2, column=1, sticky=tk.EW, pady=2)
+        
+        self.cloud_frame.columnconfigure(1, weight=1)
+        
+        # GitHub配置
+        self.github_frame = ttk.Frame(config_frame)
+        ttk.Label(self.github_frame, text="用户名:").grid(row=0, column=0, sticky=tk.W, pady=2)
+        self.github_user = tk.StringVar(value="Fairy-Oracle-Sanctuary")
+        ttk.Entry(self.github_frame, textvariable=self.github_user).grid(row=0, column=1, sticky=tk.EW, pady=2)
+        
+        ttk.Label(self.github_frame, text="仓库名:").grid(row=1, column=0, sticky=tk.W, pady=2)
+        self.github_repo = tk.StringVar(value="Touhou-Chabangeki-Collect")
+        ttk.Entry(self.github_frame, textvariable=self.github_repo).grid(row=1, column=1, sticky=tk.EW, pady=2)
+        
+        ttk.Label(self.github_frame, text="文件夹:").grid(row=2, column=0, sticky=tk.W, pady=2)
+        self.github_folder = tk.StringVar(value="images")
+        ttk.Entry(self.github_frame, textvariable=self.github_folder).grid(row=2, column=1, sticky=tk.EW, pady=2)
+        
+        self.github_frame.columnconfigure(1, weight=1)
+        
+        # 自定义配置
+        self.custom_frame = ttk.Frame(config_frame)
+        ttk.Label(self.custom_frame, text="基础URL:").grid(row=0, column=0, sticky=tk.W, pady=2)
+        self.custom_base = tk.StringVar(value="https://example.com/images/")
+        ttk.Entry(self.custom_frame, textvariable=self.custom_base).grid(row=0, column=1, sticky=tk.EW, pady=2)
+        
+        self.custom_frame.columnconfigure(1, weight=1)
+        
+        # 范围选择
+        range_frame = ttk.LabelFrame(main_frame, text="ID范围", padding="10")
+        range_frame.pack(fill=tk.X, pady=(0, 20))
+        
+        range_input_frame = ttk.Frame(range_frame)
+        range_input_frame.pack(fill=tk.X)
+        
+        ttk.Label(range_input_frame, text="从:").pack(side=tk.LEFT)
+        self.start_id = tk.StringVar(value="1")
+        ttk.Entry(range_input_frame, textvariable=self.start_id, width=8).pack(side=tk.LEFT, padx=(5, 10))
+        
+        ttk.Label(range_input_frame, text="到:").pack(side=tk.LEFT)
+        self.end_id = tk.StringVar(value="70")
+        ttk.Entry(range_input_frame, textvariable=self.end_id, width=8).pack(side=tk.LEFT, padx=(5, 10))
+        
+        # 选项
+        self.update_empty_only = tk.BooleanVar(value=True)
+        ttk.Checkbutton(range_frame, text="仅更新空的缩略图", 
+                      variable=self.update_empty_only).pack(anchor=tk.W, pady=(10, 0))
+        
+        # URL预览
+        preview_frame = ttk.LabelFrame(main_frame, text="URL预览", padding="10")
+        preview_frame.pack(fill=tk.X, pady=(0, 20))
+        
+        self.preview_label = ttk.Label(preview_frame, text="请选择URL格式", 
+                                   font=("Microsoft YaHei", 9), wraplength=550)
+        self.preview_label.pack(anchor=tk.W)
+        
+        # 按钮
+        btn_frame = ttk.Frame(main_frame)
+        btn_frame.pack(fill=tk.X)
+        
+        ttk.Button(btn_frame, text="确定", command=self.ok).pack(side=tk.RIGHT, padx=(5, 0))
+        ttk.Button(btn_frame, text="取消", command=self.destroy).pack(side=tk.RIGHT)
+        
+        # 初始化显示
+        self.update_url_preview()
+    
+    def update_url_preview(self):
+        """更新URL预览"""
+        format_type = self.url_format.get()
+        
+        # 隐藏所有配置框架
+        self.cloud_frame.pack_forget()
+        self.github_frame.pack_forget()
+        self.custom_frame.pack_forget()
+        
+        if format_type == "cloudinary":
+            self.cloud_frame.pack(fill=tk.X, pady=(5, 0))
+            url = f"https://res.cloudinary.com/{self.cloud_name.get()}/image/upload/{self.cloud_version.get()}/{self.cloud_folder.get()}/{{id}}.jpg"
+        elif format_type == "github":
+            self.github_frame.pack(fill=tk.X, pady=(5, 0))
+            url = f"https://cdn.jsdelivr.net/gh/{self.github_user.get()}/{self.github_repo.get()}/main/{self.github_folder.get()}/{{id}}.jpg"
+        else:  # custom
+            self.custom_frame.pack(fill=tk.X, pady=(5, 0))
+            base = self.custom_base.get()
+            if not base.endswith('/'):
+                base += '/'
+            url = f"{base}{{id}}.jpg"
+        
+        example_url = url.format(id=1)
+        self.preview_label.config(text=f"示例URL: {example_url}")
+    
+    def get_url_template(self):
+        """获取URL模板"""
+        format_type = self.url_format.get()
+        
+        if format_type == "cloudinary":
+            return f"https://res.cloudinary.com/{self.cloud_name.get()}/image/upload/{self.cloud_version.get()}/{self.cloud_folder.get()}/{{id}}.jpg"
+        elif format_type == "github":
+            return f"https://cdn.jsdelivr.net/gh/{self.github_user.get()}/{self.github_repo.get()}/main/{self.github_folder.get()}/{{id}}.jpg"
+        else:  # custom
+            base = self.custom_base.get()
+            if not base.endswith('/'):
+                base += '/'
+            return f"{base}{{id}}.jpg"
+    
+    def ok(self):
+        """确定按钮"""
+        try:
+            start_id = int(self.start_id.get())
+            end_id = int(self.end_id.get())
+            
+            if start_id < 1 or end_id < start_id:
+                messagebox.showerror("错误", "请输入有效的ID范围")
+                return
+                
+        except ValueError:
+            messagebox.showerror("错误", "请输入有效的数字")
+            return
+        
+        url_template = self.get_url_template()
+        update_empty_only = self.update_empty_only.get()
+        
+        self.result = (url_template, start_id, end_id, update_empty_only)
         self.destroy()
 
 
