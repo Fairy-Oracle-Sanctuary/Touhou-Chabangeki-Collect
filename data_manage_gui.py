@@ -121,9 +121,19 @@ class DataManagerGUI:
 
     def get_suggestions(self):
         authors = sorted(list(set(i["author"] for i in self.data if i.get("author"))))
-        translators = sorted(
-            list(set(i["translator"] for i in self.data if i.get("translator")))
-        )
+        
+        # 处理多译者
+        translators_set = set()
+        for i in self.data:
+            if i.get("translator"):
+                # 支持多种分隔符：, 、、&和
+                drama_translators = re.split(r"[,、&和]\s*", i["translator"])
+                for translator in drama_translators:
+                    translator = translator.strip()
+                    if translator:
+                        translators_set.add(translator)
+        
+        translators = sorted(list(translators_set))
         tags = set()
         for i in self.data:
             tags.update(i.get("tags", []))
@@ -303,7 +313,12 @@ class DataManagerGUI:
                 if item.get("author"):
                     detected_authors.add(item["author"])
                 if item.get("translator"):
-                    detected_translators.add(item["translator"])
+                    # 处理多译者：使用正则表达式分割
+                    drama_translators = re.split(r"[,、&和]\s*", item["translator"])
+                    for translator in drama_translators:
+                        translator = translator.strip()
+                        if translator:
+                            detected_translators.add(translator)
             
             # 更新authorLinks，添加新检测到的作者/译者
             updated_links = existing_links.copy()
@@ -317,7 +332,8 @@ class DataManagerGUI:
                     print(f"检测到新作者: {author}")
             
             for translator in detected_translators:
-                if translator not in updated_links:
+                # 过滤掉包含分隔符的条目（这些是多译者组合）
+                if not re.search(r"[,、&和]", translator) and translator not in updated_links:
                     updated_links[translator] = ""  # 空字符串表示需要手动添加链接
                     new_translators += 1
                     print(f"检测到新译者: {translator}")
@@ -661,6 +677,25 @@ class AddEditDialog(tk.Toplevel):
             side=tk.LEFT, fill=tk.X, expand=True, padx=(10, 0)
         )
 
+    def _create_tooltip(self, widget, text):
+        """为控件创建工具提示"""
+        def on_enter(event):
+            tooltip = tk.Toplevel()
+            tooltip.wm_overrideredirect(True)
+            tooltip.wm_geometry(f"+{event.x_root+10}+{event.y_root+10}")
+            label = tk.Label(tooltip, text=text, background="lightyellow", 
+                           relief=tk.SOLID, borderwidth=1, font=("Microsoft YaHei", 9))
+            label.pack()
+            widget.tooltip = tooltip
+
+        def on_leave(event):
+            if hasattr(widget, 'tooltip'):
+                widget.tooltip.destroy()
+                del widget.tooltip
+
+        widget.bind("<Enter>", on_enter)
+        widget.bind("<Leave>", on_leave)
+
     def init_form(self):
         f = ttk.Frame(self.scrollable_frame, padding=20)
         f.pack(fill=tk.BOTH, expand=True)
@@ -688,6 +723,11 @@ class AddEditDialog(tk.Toplevel):
                     values=self.suggestions.get(f"{key}s", []),
                 )
                 cb.grid(row=i, column=1, sticky=tk.EW, pady=5)
+                # 为译者字段添加提示
+                if key == "translator":
+                    cb.insert(0, "")  # 确保是空的
+                    # 添加工具提示
+                    self._create_tooltip(cb, "多个译者请用逗号、顿号、&或和分隔")
             else:
                 ttk.Entry(f, textvariable=self.vars[key]).grid(
                     row=i, column=1, sticky=tk.EW, pady=5
@@ -1237,12 +1277,33 @@ class ThumbnailUrlDialog(tk.Toplevel):
     def __init__(self, parent):
         super().__init__(parent)
         self.title("生成缩略图URL")
-        self.geometry("600x400")
+        self.geometry("600x500")  # 增加高度以适应滚动条
         self.result = None
         
-        # 主框架
-        main_frame = ttk.Frame(self, padding="20")
-        main_frame.pack(fill=tk.BOTH, expand=True)
+        # 主框架 - 使用Canvas和滚动条
+        canvas = tk.Canvas(self)
+        scrollbar = ttk.Scrollbar(self, orient="vertical", command=canvas.yview)
+        main_frame = ttk.Frame(canvas)
+        
+        # 配置滚动条
+        scrollbar.pack(side="right", fill="y")
+        canvas.pack(side="left", fill="both", expand=True)
+        canvas.create_window((0, 0), window=main_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+        
+        # 更新滚动区域
+        def configure_scroll_region(event=None):
+            canvas.configure(scrollregion=canvas.bbox("all"))
+        
+        # 绑定鼠标滚轮事件到整个窗口
+        def on_mousewheel(event):
+            canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+        
+        # 绑定到canvas、main_frame和顶级窗口
+        canvas.bind('<MouseWheel>', on_mousewheel)
+        main_frame.bind('<MouseWheel>', on_mousewheel)
+        self.bind('<MouseWheel>', on_mousewheel)
+        main_frame.bind('<Configure>', configure_scroll_region)
         
         # URL格式选择
         format_frame = ttk.LabelFrame(main_frame, text="URL格式", padding="10")
