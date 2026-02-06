@@ -4,3 +4,4 @@ node_modules/
 .vscode/
 .idea/
 cover/
+upload_thumbnails.py

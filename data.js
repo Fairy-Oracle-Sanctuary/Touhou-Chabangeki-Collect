@@ -1,19 +1,6 @@
 const dramas = [
     {
         id: 1,
-        title: "这里是幻想高中话剧部！",
-        author: "OKOME",
-        translator: "一脚踢飞毛布",
-        tags: ["秋静叶", "博丽灵梦", "鬼人正邪", "上白泽慧音", "八云紫", "魂魄妖忌", "魂魄妖梦", "雾雨魔理沙", "西行寺幽幽子"],
-        isTranslated: true,
-        originalUrl: "https://www.youtube.com/playlist?list=PL-pkvuGg-eTBtbPiC-dhheSrl0GaAeifd",
-        translatedUrl: "https://space.bilibili.com/33819012/lists/6789016",
-        description: "来演话剧吧！博丽同学！",
-        thumbnail: "",
-        dateAdded: "2025-02-10"
-    },
-    {
-        id: 2,
         title: "死神与少年",
         author: "ささきの茶釜",
         translator: "就是很一般",
@@ -22,11 +9,11 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLxioisTzjlBa1NoKDTH1nkAHgOwAHzhma",
         translatedUrl: "https://cdn.jsdelivr.net/gh/Fairy-Oracle-Sanctuary/Touhou-Chabangeki-Collect@main/images/1.jpg",
         description: "你是我活过的证明。",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/1.jpg",
         dateAdded: "2023-06-18"
     },
     {
-        id: 3,
+        id: 2,
         title: "幻想死洛谭",
         author: "ささきの茶釜",
         translator: "就是很一般",
@@ -35,11 +22,11 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLxioisTzjlBZ63LCFxhe0uDIma4lgCMfC",
         translatedUrl: "https://space.bilibili.com/12621850/lists/5066012",
         description: "死而未绝，络续不绝之缘。",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/2.jpg",
         dateAdded: "2024-08-24"
     },
     {
-        id: 4,
+        id: 3,
         title: "幻想心狼殿",
         author: "ささきの茶釜",
         translator: "就是很一般",
@@ -48,11 +35,11 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLxioisTzjlBaXcAkHQes8-dkINhSlG-Aj",
         translatedUrl: "https://space.bilibili.com/12621850/lists/6561665",
         description: "一群变态似乎在拯救世界。",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/3.jpg",
         dateAdded: "2025-08-17"
     },
     {
-        id: 5,
+        id: 4,
         title: "騒がしすぎて怖くない夜廻三",
         author: "ささきの茶釜",
         translator: "",
@@ -61,141 +48,11 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLxioisTzjlBYrCViDpMBfFOEy1R4xNi1t",
         translatedUrl: "",
         description: "夜明けまでに、呪いを解く方法を思い出せ。",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/4.jpg",
         dateAdded: "2022-08-10"
     },
     {
-        id: 6,
-        title: "幻想怪異録",
-        author: "ラングリィ",
-        translator: "就是很一般",
-        tags: ["十六夜咲夜", "蕾米莉亚", "芙兰朵露", "博丽灵梦", "雾雨魔理沙", "水桥帕露西", "藤原妹红"],
-        isTranslated: true,
-        originalUrl: "https://www.youtube.com/playlist?list=PLiZP5uzNOuqyLnTRnyb4ZT5LuoVlBxnyE",
-        translatedUrl: "https://space.bilibili.com/12621850/lists/5251532",
-        description: "",
-        thumbnail: "",
-        dateAdded: "2021-03-24"
-    },
-    {
-        id: 7,
-        title: "东方海龟汤",
-        author: "みつば【mituba】",
-        translator: "就是很一般",
-        tags: ["博丽灵梦", "雾雨魔理沙", "东风谷早苗", "十六夜咲夜", "魂魄妖梦"],
-        isTranslated: true,
-        originalUrl: "https://www.youtube.com/playlist?list=PLmc6eO_qCE4najTjdUCtXDa0Agx8tzDON",
-        translatedUrl: "https://space.bilibili.com/12621850/lists/6172948",
-        description: "大家听说过水平思考谜题吗？\n也被称为\"海龟汤\"呢。",
-        thumbnail: "",
-        dateAdded: "2026-02-03"
-    },
-    {
-        id: 8,
-        title: "欠了100亿的我被蕾米莉亚用100元买下了",
-        author: "まったりさん",
-        translator: "就是很一般",
-        tags: ["蕾米莉亚", "芙兰朵露", "十六夜咲夜"],
-        isTranslated: true,
-        originalUrl: "https://www.youtube.com/playlist?list=PLeIWlGzrNsQUtLMAjpHAw4AN2U9j6-xwn",
-        translatedUrl: "https://space.bilibili.com/12621850/lists/5962069",
-        description: "你听说过百元行的故事吗？",
-        thumbnail: "",
-        dateAdded: "2024-07-25"
-    },
-    {
-        id: 9,
-        title: "那些年我与小石头的恋爱攻防战",
-        author: "まったりさん",
-        translator: "就是很一般",
-        tags: ["古明地恋"],
-        isTranslated: true,
-        originalUrl: "https://www.youtube.com/playlist?list=PL15bNp6jPcclvKXISMZ2fy8POHkEd3sSA",
-        translatedUrl: "https://space.bilibili.com/12621850/lists/5264242",
-        description: "短篇故事，大概100集",
-        thumbnail: "",
-        dateAdded: "2024-07-31"
-    },
-    {
-        id: 10,
-        title: "创世神似乎在自己的世界挑战强者的样子",
-        author: "DAIゆっくり",
-        translator: "就是很一般",
-        tags: ["八云紫", "蕾米莉亚", "芙兰朵露", "博丽灵梦", "古明地恋", "十六夜咲夜", "犬走椛", "雾雨魔理沙", "洩矢诹访子", "西行寺幽幽子", "魂魄妖梦", "上白泽慧音", "秦心"],
-        isTranslated: true,
-        originalUrl: "https://www.youtube.com/playlist?list=PL2h240ZAgAYEaeVipLKlDJaK-FswRZMuu",
-        translatedUrl: "https://space.bilibili.com/12621850/lists/5697073",
-        description: "非常有意思的战斗向茶剧",
-        thumbnail: "",
-        dateAdded: "2024-03-07"
-    },
-    {
-        id: 11,
-        title: "冷漠读心男幻想入",
-        author: "白熱の親指",
-        translator: "就是很一般",
-        tags: ["博丽灵梦", "雾雨魔理沙", "露米娅", "东风谷早苗", "古明地恋", "八云紫", "幻想入"],
-        isTranslated: true,
-        originalUrl: "https://www.youtube.com/watch?v=boGrjUJpBVo",
-        translatedUrl: "https://space.bilibili.com/12621850/lists/5116051",
-        description: "一个在油管上比较有趣的幻想入系列，但有着原创主人公、角色暴力表现。觉得不OK的慎入",
-        thumbnail: "",
-        dateAdded: "2024-12-06"
-    },
-    {
-        id: 12,
-        title: "河童世界谚语剧场",
-        author: "須方のさんちゃん工房",
-        translator: "就是很一般",
-        tags: ["纯狐", "八云蓝", "小恶魔", "雾雨魔理沙", "神绮", "摩多罗隐岐奈", "宫出口瑞灵", "维缦浅间", "河城荷取", "依神女苑", "八云紫", "易者", "朱鹭子", "渡里妮娜", "洩矢诹访子"],
-        isTranslated: true,
-        originalUrl: "https://www.youtube.com/watch?v=tL5lu9jG9m8",
-        translatedUrl: "https://space.bilibili.com/12621850/lists/5104404",
-        description: "世界谚语科普",
-        thumbnail: "",
-        dateAdded: "2022-08-13"
-    },
-    {
-        id: 13,
-        title: "天才的我被IQ9的后辈琪露诺告白了",
-        author: "まったりさん",
-        translator: "就是很一般",
-        tags: ["琪露诺", "大妖精", "露米娅"],
-        isTranslated: true,
-        originalUrl: "https://www.youtube.com/watch?v=6cME-im2kDE",
-        translatedUrl: "https://space.bilibili.com/12621850/lists/7228361",
-        description: "这是啥子角色？",
-        thumbnail: "",
-        dateAdded: "2021-12-27"
-    },
-    {
-        id: 14,
-        title: "爱上可爱妖梦.....但是",
-        author: "まったりさん",
-        translator: "就是很一般",
-        tags: ["魂魄妖梦"],
-        isTranslated: true,
-        originalUrl: "https://www.youtube.com/playlist?list=PL15bNp6jPccn24qH-xfKfS2XQTJY30Fuu",
-        translatedUrl: "https://space.bilibili.com/12621850/lists/6626365",
-        description: "魂魄妖梦，你毁了我的性取向",
-        thumbnail: "",
-        dateAdded: "2019-02-16"
-    },
-    {
-        id: 15,
-        title: "红月夜的契约——与蕾米莉亚的彻夜醉迷",
-        author: "不知火桃",
-        translator: "Baby_2016",
-        tags: ["蕾米莉亚", "古明地觉"],
-        isTranslated: true,
-        originalUrl: "https://www.youtube.com/playlist?list=PLFU-QWGTBq-4SsfGQuJBNzmvZtTzN3FoJ",
-        translatedUrl: "https://space.bilibili.com/499929312/lists/6324095",
-        description: "学校的优等生竟和吸血鬼夜游！？",
-        thumbnail: "",
-        dateAdded: "2022-09-09"
-    },
-    {
-        id: 16,
+        id: 5,
         title: "吸血鬼と同棲⁉",
         author: "ねんねまるゆっくり",
         translator: "Baby_2016",
@@ -204,8 +61,151 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL4PMLGSCaH8AF_vC-FcV9DTDU5XPCatxG",
         translatedUrl: "https://space.bilibili.com/499929312/lists/6267690",
         description: "莫名其妙就要和吸血鬼同居了！？",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/5.jpg",
         dateAdded: "2020-05-29"
+    },
+    {
+        id: 6,
+        title: "红月夜的契约——与蕾米莉亚的彻夜醉迷",
+        author: "不知火桃",
+        translator: "Baby_2016",
+        tags: ["蕾米莉亚", "古明地觉"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PLFU-QWGTBq-4SsfGQuJBNzmvZtTzN3FoJ",
+        translatedUrl: "https://space.bilibili.com/499929312/lists/6324095",
+        description: "学校的优等生竟和吸血鬼夜游！？",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/6.jpg",
+        dateAdded: "2022-09-09"
+    },
+    {
+        id: 7,
+        title: "Bunny girl",
+        author: "MISAKI 3518",
+        translator: "寄遗忘之物于流年",
+        tags: ["铃仙"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/watch?v=ienoNid46dM&list=PLPIDlOi7aH3EiGs9HnU3Rg52r4j587qsI&index=6",
+        translatedUrl: "https://www.bilibili.com/video/BV16A6QBCEqD/?vd_source=29215d7e01e2e3b79461f647961a787f",
+        description: "与铃仙在酒吧的小故事",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/7.jpg",
+        dateAdded: "2025-06-20"
+    },
+    {
+        id: 8,
+        title: "幻想怪異録",
+        author: "ラングリィ",
+        translator: "就是很一般",
+        tags: ["十六夜咲夜", "蕾米莉亚", "芙兰朵露", "博丽灵梦", "雾雨魔理沙", "水桥帕露西", "藤原妹红"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PLiZP5uzNOuqyLnTRnyb4ZT5LuoVlBxnyE",
+        translatedUrl: "https://space.bilibili.com/12621850/lists/5251532",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/8.jpg",
+        dateAdded: "2021-03-24"
+    },
+    {
+        id: 9,
+        title: "东方海龟汤",
+        author: "みつば【mituba】",
+        translator: "就是很一般",
+        tags: ["博丽灵梦", "雾雨魔理沙", "东风谷早苗", "十六夜咲夜", "魂魄妖梦"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PLmc6eO_qCE4najTjdUCtXDa0Agx8tzDON",
+        translatedUrl: "https://space.bilibili.com/12621850/lists/6172948",
+        description: "大家听说过水平思考谜题吗？\n也被称为\"海龟汤\"呢。",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/9.jpg",
+        dateAdded: "2026-02-03"
+    },
+    {
+        id: 10,
+        title: "欠了100亿的我被蕾米莉亚用100元买下了",
+        author: "まったりさん",
+        translator: "就是很一般",
+        tags: ["蕾米莉亚", "芙兰朵露", "十六夜咲夜"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PLeIWlGzrNsQUtLMAjpHAw4AN2U9j6-xwn",
+        translatedUrl: "https://space.bilibili.com/12621850/lists/5962069",
+        description: "你听说过百元行的故事吗？",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/10.jpg",
+        dateAdded: "2024-07-25"
+    },
+    {
+        id: 11,
+        title: "那些年我与小石头的恋爱攻防战",
+        author: "まったりさん",
+        translator: "就是很一般",
+        tags: ["古明地恋"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PL15bNp6jPcclvKXISMZ2fy8POHkEd3sSA",
+        translatedUrl: "https://space.bilibili.com/12621850/lists/5264242",
+        description: "短篇故事，大概100集",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/11.jpg",
+        dateAdded: "2024-07-31"
+    },
+    {
+        id: 12,
+        title: "创世神似乎在自己的世界挑战强者的样子",
+        author: "DAIゆっくり",
+        translator: "就是很一般",
+        tags: ["八云紫", "蕾米莉亚", "芙兰朵露", "博丽灵梦", "古明地恋", "十六夜咲夜", "犬走椛", "雾雨魔理沙", "洩矢诹访子", "西行寺幽幽子", "魂魄妖梦", "上白泽慧音", "秦心"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PL2h240ZAgAYEaeVipLKlDJaK-FswRZMuu",
+        translatedUrl: "https://space.bilibili.com/12621850/lists/5697073",
+        description: "非常有意思的战斗向茶剧",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/12.jpg",
+        dateAdded: "2024-03-07"
+    },
+    {
+        id: 13,
+        title: "冷漠读心男幻想入",
+        author: "白熱の親指",
+        translator: "就是很一般",
+        tags: ["博丽灵梦", "雾雨魔理沙", "露米娅", "东风谷早苗", "古明地恋", "八云紫", "幻想入"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/watch?v=boGrjUJpBVo",
+        translatedUrl: "https://space.bilibili.com/12621850/lists/5116051",
+        description: "一个在油管上比较有趣的幻想入系列，但有着原创主人公、角色暴力表现。觉得不OK的慎入",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/13.jpg",
+        dateAdded: "2024-12-06"
+    },
+    {
+        id: 14,
+        title: "河童世界谚语剧场",
+        author: "須方のさんちゃん工房",
+        translator: "就是很一般",
+        tags: ["纯狐", "八云蓝", "小恶魔", "雾雨魔理沙", "神绮", "摩多罗隐岐奈", "宫出口瑞灵", "维缦浅间", "河城荷取", "依神女苑", "八云紫", "易者", "朱鹭子", "渡里妮娜", "洩矢诹访子"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/watch?v=tL5lu9jG9m8",
+        translatedUrl: "https://space.bilibili.com/12621850/lists/5104404",
+        description: "世界谚语科普",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/14.jpg",
+        dateAdded: "2022-08-13"
+    },
+    {
+        id: 15,
+        title: "天才的我被IQ9的后辈琪露诺告白了",
+        author: "まったりさん",
+        translator: "就是很一般",
+        tags: ["琪露诺", "大妖精", "露米娅"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/watch?v=6cME-im2kDE",
+        translatedUrl: "https://space.bilibili.com/12621850/lists/7228361",
+        description: "这是啥子角色？",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/15.jpg",
+        dateAdded: "2021-12-27"
+    },
+    {
+        id: 16,
+        title: "爱上可爱妖梦.....但是",
+        author: "まったりさん",
+        translator: "就是很一般",
+        tags: ["魂魄妖梦"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PL15bNp6jPccn24qH-xfKfS2XQTJY30Fuu",
+        translatedUrl: "https://space.bilibili.com/12621850/lists/6626365",
+        description: "魂魄妖梦，你毁了我的性取向",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/16.jpg",
+        dateAdded: "2019-02-16"
     },
     {
         id: 17,
@@ -217,7 +217,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLmc6eO_qCE4nYR7tYmTsppAF1CTxhcrTP",
         translatedUrl: "https://space.bilibili.com/499929312/lists/6449310",
         description: "佛前樱散祈缘契，愿渡来生共世人。",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/17.jpg",
         dateAdded: "2018-10-14"
     },
     {
@@ -230,7 +230,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLwnprYHAfPHaqEZqQFi2nQiPLg5Igo3mT",
         translatedUrl: "https://space.bilibili.com/499929312/lists/6466841",
         description: "无刀可放心食用",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/18.jpg",
         dateAdded: "2025-07-24"
     },
     {
@@ -243,24 +243,11 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLn5zMpk5-YR-Qzz5RcosD3oA5MbuMk23V",
         translatedUrl: "https://space.bilibili.com/499929312/lists/6525221",
         description: "mmd和茶番剧二合一",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/19.jpg",
         dateAdded: "2024-07-31"
     },
     {
         id: 20,
-        title: "拯救被欺凌男孩的天使妹妹",
-        author: "シク−Siku−   ゆっくり",
-        translator: "Baby_2016",
-        tags: ["蕾米莉亚", "芙兰朵露", "十六夜咲夜", "洩矢诹访子", "吉吊八千慧", "博丽灵梦", "八坂神奈子", "幻想入"],
-        isTranslated: true,
-        originalUrl: "https://www.youtube.com/playlist?list=PLkONYltbNkGdPwu1CVug0NyOROBUShYqh",
-        translatedUrl: "https://space.bilibili.com/499929312/lists/6809460",
-        description: "繧?▲縺上ｊ縺励※縺?▲縺ｦ縺ｭ?",
-        thumbnail: "",
-        dateAdded: "2023-10-01"
-    },
-    {
-        id: 21,
         title: "谈了一场如魔法般的恋爱",
         author: "幻夢 ゆっくり茶番劇",
         translator: "Baby_2016",
@@ -269,8 +256,21 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLwnprYHAfPHZ0bKlsSRE1CQYkWNYw5L6U",
         translatedUrl: "https://space.bilibili.com/499929312/lists/6702992",
         description: "帕秋莉厨必看系列",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/20.jpg",
         dateAdded: "2025-09-12"
+    },
+    {
+        id: 21,
+        title: "拯救被欺凌男孩的天使妹妹",
+        author: "シク−Siku−   ゆっくり",
+        translator: "Baby_2016",
+        tags: ["蕾米莉亚", "芙兰朵露", "十六夜咲夜", "洩矢诹访子", "吉吊八千慧", "博丽灵梦", "八坂神奈子", "幻想入"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PLkONYltbNkGdPwu1CVug0NyOROBUShYqh",
+        translatedUrl: "https://space.bilibili.com/499929312/lists/6809460",
+        description: "繧?▲縺上ｊ縺励※縺?▲縺ｦ縺ｭ?",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/21.jpg",
+        dateAdded: "2023-10-01"
     },
     {
         id: 22,
@@ -282,11 +282,24 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLwsFUfY3oQWJ3GsyshggcsJbI6_X8hRD0",
         translatedUrl: "https://space.bilibili.com/499929312/lists/7221002",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/22.jpg",
         dateAdded: "2024-08-23"
     },
     {
         id: 23,
+        title: "这里是幻想高中话剧部！",
+        author: "OKOME",
+        translator: "一脚踢飞毛布",
+        tags: ["秋静叶", "博丽灵梦", "鬼人正邪", "上白泽慧音", "八云紫", "魂魄妖忌", "魂魄妖梦", "雾雨魔理沙", "西行寺幽幽子"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PL-pkvuGg-eTBtbPiC-dhheSrl0GaAeifd",
+        translatedUrl: "https://space.bilibili.com/33819012/lists/6789016",
+        description: "来演话剧吧！博丽同学！",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/23.jpg",
+        dateAdded: "2025-02-10"
+    },
+    {
+        id: 24,
         title: "博丽灵梦消失的那一天",
         author: "みつば【mituba】",
         translator: "幻想入的Jier",
@@ -295,11 +308,11 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=y6Kwj56KTCE",
         translatedUrl: "https://space.bilibili.com/87123918/lists/4535137",
         description: "如果你最珍视的人明天就要离世了，你会怎么做？",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/24.jpg",
         dateAdded: "2021-06-07"
     },
     {
-        id: 24,
+        id: 25,
         title: "满脑子黄色废料的心酱",
         author: "不知火桃",
         translator: "幻想入的Jier",
@@ -308,11 +321,11 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=7_eM4AAt3XM",
         translatedUrl: "https://space.bilibili.com/87123918/lists/4845021",
         description: "我这人啊，就是爱瞎操心",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/25.jpg",
         dateAdded: "2022-10-09"
     },
     {
-        id: 25,
+        id: 26,
         title: "○○空间",
         author: "KOTATU",
         translator: "幻想入的Jier",
@@ -321,11 +334,11 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=SoOBZO_n5gU",
         translatedUrl: "https://space.bilibili.com/87123918/lists/5078005",
         description: "想要出去就只能○○的房间",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/26.jpg",
         dateAdded: "2023-11-07"
     },
     {
-        id: 26,
+        id: 27,
         title: "【みるもるの家】作者的茶番剧合集",
         author: "みるもるの家",
         translator: "幻想入的Jier",
@@ -334,11 +347,11 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=t-vZgFACfmw",
         translatedUrl: "https://space.bilibili.com/87123918/lists/4780455",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/27.jpg",
         dateAdded: "2021-11-14"
     },
     {
-        id: 27,
+        id: 28,
         title: "Super_Nakachan作者的贴贴合集",
         author: "Super_Nakachan",
         translator: "幻想入的Jier",
@@ -347,11 +360,11 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=NNAi4rWxy4k",
         translatedUrl: "https://space.bilibili.com/87123918/lists/4396885",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/28.jpg",
         dateAdded: "2022-08-05"
     },
     {
-        id: 28,
+        id: 29,
         title: "病娇芙兰对我展开了猛烈追求！？",
         author: "転生さん",
         translator: "幻想入的Jier",
@@ -360,11 +373,11 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLl_rWSOGGXM8ULORk8_P5JQJEc4AIEz4W",
         translatedUrl: "https://space.bilibili.com/87123918/lists/4409450",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/29.jpg",
         dateAdded: "2020-09-02"
     },
     {
-        id: 29,
+        id: 30,
         title: "【月田瑞希】的桃子文茶番剧合集",
         author: "月田瑞希",
         translator: "幻想入的Jier",
@@ -373,11 +386,11 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=qrRNO2w6JqE",
         translatedUrl: "https://space.bilibili.com/87123918/lists/5117741",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/30.jpg",
         dateAdded: "2025-02-03"
     },
     {
-        id: 30,
+        id: 31,
         title: "【東方キャラと恋愛するノベル動画ch】的茶番剧合集",
         author: "東方キャラと恋愛するノベル動画ch",
         translator: "幻想入的Jier",
@@ -386,11 +399,11 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=U_hPtTKAMlM",
         translatedUrl: "https://space.bilibili.com/87123918/lists/5574603",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/31.jpg",
         dateAdded: "2022-10-02"
     },
     {
-        id: 31,
+        id: 32,
         title: "始于小伞的恋物语",
         author: "みとは ゆっくり製作所",
         translator: "幻想入的Jier",
@@ -399,11 +412,11 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLVBIKA03FhZPjrYJAJ4Qb3bXCZAyE8jyv",
         translatedUrl: "https://space.bilibili.com/87123918/lists/4758726",
         description: "雨爱的秘密，会一直延续~",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/32.jpg",
         dateAdded: "2023-01-13"
     },
     {
-        id: 32,
+        id: 33,
         title: "〆タケ作者的纯爱超甜合集",
         author: "〆タケ",
         translator: "幻想入的Jier",
@@ -412,11 +425,11 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=c6mxNbdWinY",
         translatedUrl: "https://space.bilibili.com/87123918/lists/4415038",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/33.jpg",
         dateAdded: "2024-08-18"
     },
     {
-        id: 33,
+        id: 34,
         title: "【ゆっくり紫月】的百合向茶番剧合集",
         author: "ゆっくり紫月",
         translator: "幻想入的Jier",
@@ -425,11 +438,11 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=6KldaHy1u0I",
         translatedUrl: "https://space.bilibili.com/87123918/lists/5409881",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/34.jpg",
         dateAdded: "2025-03-03"
     },
     {
-        id: 34,
+        id: 35,
         title: "古今西行歌枕",
         author: "森の民やむぅ",
         translator: "幻想入的Jier",
@@ -438,11 +451,11 @@ const dramas = [
         originalUrl: "https://www.nicovideo.jp/watch/sm28681278",
         translatedUrl: "https://space.bilibili.com/87123918/lists/5224003",
         description: "莫问来生伴谁侧，樱花落处即相逢。",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/35.jpg",
         dateAdded: "2016-04-23"
     },
     {
-        id: 35,
+        id: 36,
         title: "xxx变成病娇了……？",
         author: "れくしぃちきん@ゆっくり茶番劇",
         translator: "幻想入的Jier",
@@ -451,11 +464,11 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL3rAsEOjJPkNOjHdzZr77LpCrL1C69gKP",
         translatedUrl: "https://space.bilibili.com/87123918/lists/6936080",
         description: "想起了…",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/36.jpg",
         dateAdded: "2020-10-01"
     },
     {
-        id: 36,
+        id: 37,
         title: "青梅竹马的恋恋想让我心动",
         author: "アスター",
         translator: "幻想入的Jier",
@@ -464,11 +477,11 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL5Ezg2qezOuyorGr52XSbjp9DQbJQ3mBS",
         translatedUrl: "https://www.bilibili.com/video/BV1mxdSYeE62",
         description: "恋恋可爱捏（",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/37.jpg",
         dateAdded: "2020-05-14"
     },
     {
-        id: 37,
+        id: 38,
         title: "进来让蕾咪强控你26秒",
         author: "アスター",
         translator: "幻想入的Jier",
@@ -477,11 +490,11 @@ const dramas = [
         originalUrl: "https://www.youtube.com/shorts/S7oAsAhm0NU",
         translatedUrl: "https://www.bilibili.com/video/BV1jDdbYoEca",
         description: "蕾米可爱捏",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/38.jpg",
         dateAdded: "2024-03-10"
     },
     {
-        id: 38,
+        id: 39,
         title: "无法吃人的食人妖怪",
         author: "アスター",
         translator: "幻想入的Jier",
@@ -490,11 +503,11 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL5Ezg2qezOux8cq6dLe9S47gQJkk_uuZz",
         translatedUrl: "https://www.bilibili.com/video/BV1emAseZEwa",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/39.jpg",
         dateAdded: "2020-06-14"
     },
     {
-        id: 39,
+        id: 40,
         title: "渺小之人的伟大勇气",
         author: "アスター",
         translator: "幻想入的Jier",
@@ -503,11 +516,11 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL5Ezg2qezOuzcuFHQqi6LQQpGDJUGiTPz",
         translatedUrl: "https://www.bilibili.com/video/BV1wFRVYXE9m",
         description: "以baka小队为主角的系列~",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/40.jpg",
         dateAdded: "2024-03-02"
     },
     {
-        id: 40,
+        id: 41,
         title: "平凡的我与、天才般的你",
         author: "アスター",
         translator: "幻想入的Jier",
@@ -516,11 +529,11 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL5Ezg2qezOuxc9DJkmjOcEkTYfUehOCXb",
         translatedUrl: "https://www.bilibili.com/video/BV1mtPveLEjJ",
         description: "在无数重复的时间线中，我的声音定能再度围绕你左右。",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/41.jpg",
         dateAdded: "2024-08-30"
     },
     {
-        id: 41,
+        id: 42,
         title: "世界上最难操作的游戏",
         author: "アスター",
         translator: "幻想入的Jier",
@@ -529,21 +542,8 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL5Ezg2qezOuwb0u1PD_ipY9UREG6ig5fJ",
         translatedUrl: "https://www.bilibili.com/video/BV1ZEdZY3ERs",
         description: "可以看到蕾米花式破防的一集（",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/42.jpg",
         dateAdded: "2024-09-21"
-    },
-    {
-        id: 42,
-        title: "Bunny girl",
-        author: "MISAKI 3518",
-        translator: "寄遗忘之物于流年",
-        tags: ["铃仙"],
-        isTranslated: true,
-        originalUrl: "https://www.youtube.com/watch?v=ienoNid46dM&list=PLPIDlOi7aH3EiGs9HnU3Rg52r4j587qsI&index=6",
-        translatedUrl: "https://www.bilibili.com/video/BV16A6QBCEqD/?vd_source=29215d7e01e2e3b79461f647961a787f",
-        description: "与铃仙在酒吧的小故事",
-        thumbnail: "",
-        dateAdded: "2025-06-20"
     },
     {
         id: 43,
@@ -555,7 +555,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=LqAzlj1yJGA",
         translatedUrl: "https://space.bilibili.com/109338384/lists/6835169",
         description: "留学回来之后，青梅竹马的帕露西居然退学了，还当了家里蹲？！",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/43.jpg",
         dateAdded: "2020-05-14"
     },
     {
@@ -568,7 +568,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=6H-RJpUbXbE",
         translatedUrl: "https://space.bilibili.com/109338384/lists/6859688",
         description: "。我重生了，回到了我初中一年级入学的时候，这次，我要改变我的命运，不再成为一个40岁一事无成碌碌无为的社畜",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/44.jpg",
         dateAdded: "2019-03-15"
     },
     {
@@ -581,7 +581,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLkbhAsj-moQyC4JME0vR2_OrKR2r8GNFt",
         translatedUrl: "https://space.bilibili.com/109338384/lists/7099795",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/45.jpg",
         dateAdded: "2021-06-18"
     },
     {
@@ -594,7 +594,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLsU0BZFJZhxU18cReRmpsGDqJD8AwDL9D",
         translatedUrl: "https://space.bilibili.com/109338384/lists/6834497",
         description: "与可爱的奴隶少女觉开启了同居生活……",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/46.jpg",
         dateAdded: "2022-07-01"
     },
     {
@@ -607,7 +607,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL3YhIU0YsQWPDaRyBdd1Owi4Fidnj6n3L",
         translatedUrl: "https://space.bilibili.com/109338384/lists/6829056",
         description: "为了防止新的义妹进入到我家，我对自己的家进行了要塞计划，可惜被老爹直接叫停，然而当我一打开门，遇到的却是……",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/47.jpg",
         dateAdded: "2023-05-15"
     },
     {
@@ -620,7 +620,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL15bNp6jPcclXhofki7-qmExJa24NPwia",
         translatedUrl: "https://space.bilibili.com/109338384/lists/7238326",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/48.jpg",
         dateAdded: "2018-05-30"
     },
     {
@@ -633,7 +633,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLPIDlOi7aH3Fk5iGBIjN_iBSQFUWHOrsd",
         translatedUrl: "https://space.bilibili.com/109338384/lists/7150145",
         description: "幻想乡……真是厉害啊",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/49.jpg",
         dateAdded: "2021-10-19"
     },
     {
@@ -646,7 +646,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=oooMSfHdcbY",
         translatedUrl: "https://www.bilibili.com/video/BV1b3U7BUEpY",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/50.jpg",
         dateAdded: "2023-11-04"
     },
     {
@@ -659,7 +659,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLIbahIQ3NnZtSsbNwlFXr5a3RsEgfuwhX",
         translatedUrl: "https://www.bilibili.com/video/BV1J6i3BHEV6",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/51.jpg",
         dateAdded: "2023-12-10"
     },
     {
@@ -672,7 +672,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/@TouhouYandere8901",
         translatedUrl: "https://space.bilibili.com/2065248047/lists/1619296",
         description: "入坑东方必看作",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/52.jpg",
         dateAdded: "2021-08-17"
     },
     {
@@ -685,7 +685,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLMqWBRhqHwItIaeEd64Ym8kld9AxB--Q5",
         translatedUrl: "https://space.bilibili.com/2065248047/lists/1885948",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/53.jpg",
         dateAdded: "2021-11-02"
     },
     {
@@ -698,7 +698,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLwVn04n1IKXuNrDa7luvafJtZqJLrS6VP",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/6831118",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/54.jpg",
         dateAdded: "2023-04-18"
     },
     {
@@ -711,7 +711,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL0y_WAo04qpoPSPJzyG5e00ZDK7zDROfT",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/6831140",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/55.jpg",
         dateAdded: "2020-06-24"
     },
     {
@@ -724,7 +724,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLueexuf60TEYtkvqS3kpCtfUwY31zpDmu",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/6831143",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/56.jpg",
         dateAdded: "2022-07-10"
     },
     {
@@ -737,7 +737,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLpSzC1-Y_uEF1Ru4IDjPXeXD_N-ZuHwO8",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/6837350",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/57.jpg",
         dateAdded: "2020-12-29"
     },
     {
@@ -750,7 +750,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLDnwQpBnibfJtE-9aDJK6gW4IyH9GeAJi",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/6847416?type=season",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/58.jpg",
         dateAdded: "2025-08-24"
     },
     {
@@ -763,7 +763,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLAhdzhAf7V75BY4JESOW4ApKBdL3xhObR",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/6866081",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/59.jpg",
         dateAdded: "2024-09-14"
     },
     {
@@ -776,7 +776,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL2X7X36J6V_7ejg7TDX983ZPYfpT7oDNf",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/6884763",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/60.jpg",
         dateAdded: "2024-12-18"
     },
     {
@@ -789,7 +789,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL15bNp6jPcckBBa2XYhkNyAgF4UXgWVUQ",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/6886121",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/61.jpg",
         dateAdded: "2019-08-07"
     },
     {
@@ -802,7 +802,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL2X7X36J6V_5mB4A0gda1yms9PZatnShM",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/6894045?type=season",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/62.jpg",
         dateAdded: "2024-06-14"
     },
     {
@@ -815,7 +815,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLEitLOfPT9XvigVfXwqKqT4avo7BmjJ_8",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/6904781",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/63.jpg",
         dateAdded: "2023-08-22"
     },
     {
@@ -828,7 +828,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL2X7X36J6V_6RiAuIEo_IbTHSMGAhkhKS",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/6910538",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/64.jpg",
         dateAdded: "2025-06-11"
     },
     {
@@ -841,7 +841,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL2X7X36J6V_43iJW3K6PYwomcyjuCJI0N",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/7229554",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/65.jpg",
         dateAdded: "2025-07-19"
     },
     {
@@ -854,7 +854,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL2X7X36J6V_5MZ8j-gDJYsVoMTrUsaYDk",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/7296370",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/66.jpg",
         dateAdded: "2025-11-18"
     },
     {
@@ -867,7 +867,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL0y_WAo04qppy-nGEFpoU3jOCL7YcmPUk",
         translatedUrl: "https://www.bilibili.com/video/BV1suU1B9EtN",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/67.jpg",
         dateAdded: "2021-06-03"
     },
     {
@@ -880,7 +880,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLAhdzhAf7V75gG27SRl0pDGPlgbzcVICh",
         translatedUrl: "https://www.bilibili.com/video/BV1FjUpBDEhK",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/68.jpg",
         dateAdded: "2020-11-13"
     },
     {
@@ -893,7 +893,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL0y_WAo04qpqB__1sa_Lfg_fpDrJr713j",
         translatedUrl: "https://www.bilibili.com/video/BV1t7U9BnEXb",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/69.jpg",
         dateAdded: "2021-04-26"
     },
     {
@@ -906,7 +906,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL0y_WAo04qpoZV7cdhvAm1uvHwpWon7OM",
         translatedUrl: "https://www.bilibili.com/video/BV17MSnBGEMy",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/70.jpg",
         dateAdded: "2022-03-08"
     },
     {
@@ -919,7 +919,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=71RQTEyXIJM",
         translatedUrl: "https://www.bilibili.com/video/BV1ifrDBgEsk",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/71.jpg",
         dateAdded: "2024-09-20"
     },
     {
@@ -932,7 +932,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLuabzLomQRYWTM81MwVOowDWlPl35BQA3",
         translatedUrl: "https://space.bilibili.com/269144656/lists/5691537",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/72.jpg",
         dateAdded: "2024-12-30"
     },
     {
@@ -945,7 +945,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLVBIKA03FhZNMTGMmoiNvd2Z-0lndVwEu",
         translatedUrl: "https://space.bilibili.com/269144656/lists/6185918",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/73.jpg",
         dateAdded: "2025-05-12"
     },
     {
@@ -958,7 +958,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLbHQ_4GWYYBw_GstrSRD3iXeb2Xm8OALM",
         translatedUrl: "https://space.bilibili.com/269144656/lists/5792751",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/74.jpg",
         dateAdded: "2023-07-09"
     },
     {
@@ -971,7 +971,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLsGwA474Pdf4LA6ffmdi1GhrPmwpYFynZ",
         translatedUrl: "https://space.bilibili.com/269144656/lists/6726286",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/75.jpg",
         dateAdded: "2020-09-26"
     },
     {
@@ -984,7 +984,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLwR9AUMdH1nDqjotGxbAEisUuxkmdiEfr",
         translatedUrl: "https://space.bilibili.com/269144656/lists/6498268",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/76.jpg",
         dateAdded: "2023-03-25"
     },
     {
@@ -997,7 +997,7 @@ const dramas = [
         originalUrl: "",
         translatedUrl: "https://space.bilibili.com/269144656/lists/6217334",
         description: "",
-        thumbnail: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/77.jpg",
         dateAdded: "2025-08-01"
     }
 ];
