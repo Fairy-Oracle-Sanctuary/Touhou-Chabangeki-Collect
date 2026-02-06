@@ -1,5 +1,21 @@
 let filteredDramas = [...dramas];
 
+// --- Newcomer Watching List ---
+// 精选适合新观众入门的优质作品，按ID排序
+const newcomerList = [
+    // 茶釜四部曲
+    { id: 1, reason: "ささきの茶釜经典系列，超级精彩的演出，老牌汉化者'就是很一般'亲自操刀烤制，神作——\n“罪可以被审判，但是爱无法被审判。”" },
+    { id: 2, reason: "承接上一季的故事，更复杂的主线，更多的人物登场\n“你所爱的人以及爱你的人都会回应你的呼唤。”" },
+    { id: 3, reason: "幻想心狼殿，还在更新中~\n推荐理由自然就是茶釜出品必是精品了()" },
+
+    // 病娇
+    { id: 52, reason: "带很多人入坑东方的作品，如果对病娇不敢兴趣可以跳过哦"},
+
+    //这里是幻想高中话剧部！
+    { id: 23, reason: "同样是神级演出，出自OKOME大佬之手，还有译者毛布的神级翻译，目前正在更新中~\n“来演话剧吧！博丽同学！”"}
+    
+];
+
 // --- Favorites Management ---
 function getFavorites() {
     try {
@@ -1016,12 +1032,15 @@ function setupKeyboardShortcuts() {
         if (e.key === 'Escape') {
             const detailPage = document.getElementById('detailPage');
             const submitModal = document.getElementById('submitModal');
+            const newcomerModal = document.getElementById('newcomerModal');
             const searchInput = document.getElementById('searchInput');
             
             if (!detailPage.classList.contains('hidden')) {
                 closeDetail();
             } else if (!submitModal.classList.contains('hidden')) {
                 closeSubmitModalFunc();
+            } else if (!newcomerModal.classList.contains('hidden')) {
+                closeNewcomerModal();
             } else if (searchInput.value.trim()) {
                 searchInput.value = '';
                 searchInput.dispatchEvent(new Event('input'));
@@ -1037,6 +1056,12 @@ function setupKeyboardShortcuts() {
                 e.preventDefault();
                 submitForm.dispatchEvent(new Event('submit'));
             }
+        }
+        
+        // Ctrl+N to show newcomer list
+        if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
+            e.preventDefault();
+            showNewcomerModal();
         }
     });
 }
@@ -3086,6 +3111,7 @@ function initTouchGestures() {
         'mobileBatchActionsBtn': 'batchActionsBtn',
         'mobileSettingsBtn': 'settingsBtn',
         'mobileShortcutsBtn': 'shortcutsBtn',
+        'mobileNewcomerBtn': 'newcomerBtn',
         'mobileSubmitBtn': 'submitBtn',
         'mobileThemeToggle': 'themeToggle'
     };
@@ -3101,6 +3127,130 @@ function initTouchGestures() {
                 if (mobileMenu) mobileMenu.classList.add('hidden');
             });
         }
+    });
+}
+
+// --- Newcomer List Functions ---
+function showNewcomerModal() {
+    const modal = document.getElementById('newcomerModal');
+    modal.classList.remove('hidden');
+    generateNewcomerList();
+}
+
+function closeNewcomerModal() {
+    const modal = document.getElementById('newcomerModal');
+    modal.classList.add('hidden');
+}
+
+function generateNewcomerList() {
+    const content = document.getElementById('newcomerListContent');
+    
+    // 按照代码中的原始顺序显示，不进行ID排序
+    const sortedList = newcomerList;
+    
+    // 生成HTML内容
+    content.innerHTML = sortedList.map((item, index) => {
+        const drama = dramas.find(d => d.id === item.id);
+        if (!drama) return '';
+        
+        const translators = getTranslators(drama);
+        const translatorDisplay = translators.length > 0 ? translators.join('、') : '无';
+        
+        return `
+            <div class="bg-white dark:bg-zinc-800 rounded-lg border border-gray-200 dark:border-zinc-700 p-4 hover:shadow-md transition-shadow group" data-drama-id="${drama.id}">
+                <div class="flex items-start gap-4">
+                    <!-- 序号 -->
+                    <div class="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                        ${index + 1}
+                    </div>
+                    
+                    <!-- 作品信息 -->
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-zinc-900 dark:text-white mb-1 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
+                                    ${drama.title}
+                                </h3>
+                                <div class="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400 mb-2">
+                                    <span>ID: ${drama.id}</span>
+                                    <span>•</span>
+                                    <button onclick="toggleFilter('artist', '${drama.author}'); event.stopPropagation();" 
+                                            class="hover:text-red-600 dark:hover:text-red-400 transition-colors hover:underline">
+                                        ${drama.author}
+                                    </button>
+                                    <span>•</span>
+                                    <span>${drama.dateAdded}</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-xs text-zinc-600 dark:text-zinc-400 mb-3">
+                                    <span class="px-2 py-0.5 rounded ${drama.isTranslated ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'}">
+                                        ${drama.isTranslated ? '已汉化' : '未汉化'}
+                                    </span>
+                                    ${translatorDisplay !== '无' ? `<span>译者: ${translatorDisplay}</span>` : ''}
+                                </div>
+                                <!-- 推荐理由 -->
+                                <div class="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-lg p-3 border border-green-200 dark:border-green-800">
+                                    <div class="flex items-start gap-2">
+                                        <svg class="w-4 h-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                                        </svg>
+                                        <div>
+                                            <p class="text-sm font-medium text-green-800 dark:text-green-200 mb-1">推荐理由</p>
+                                            <p class="text-xs text-green-700 dark:text-green-300 whitespace-pre-line">${item.reason}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 操作按钮 -->
+                            <div class="flex flex-col gap-2">
+                                <!-- 查看详情按钮 -->
+                                <button class="newcomer-detail-btn px-3 py-1.5 text-xs bg-red-600 hover:bg-red-700 text-white rounded transition-colors flex items-center gap-1" data-drama-id="${drama.id}">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                    </svg>
+                                    详情
+                                </button>
+                                
+                                <!-- 缩略图 -->
+                                <div class="w-20 h-14 bg-gray-100 dark:bg-zinc-700 rounded overflow-hidden">
+                                    <img src="${drama.thumbnail}" alt="${drama.title}" 
+                                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                         onerror="handleImageError(this, '${drama.title}')">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 标签 -->
+                        <div class="flex flex-wrap gap-1.5 mt-3">
+                            ${drama.tags.slice(0, 4).map(tag => `
+                                <span class="px-2 py-0.5 text-xs rounded bg-gray-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-gray-200 dark:border-zinc-700">
+                                    #${tag}
+                                </span>
+                            `).join('')}
+                            ${drama.tags.length > 4 ? `
+                                <span class="px-2 py-0.5 text-xs rounded bg-gray-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-500 border border-gray-200 dark:border-zinc-700">
+                                    +${drama.tags.length - 4}
+                                </span>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+    
+    // 添加事件监听器处理详情按钮点击
+    content.querySelectorAll('.newcomer-detail-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const dramaId = parseInt(btn.dataset.dramaId);
+            const drama = dramas.find(d => d.id === dramaId);
+            if (drama) {
+                openDetail(drama);
+                // 不关闭推荐页面，让详情页面显示在推荐页面上层
+            }
+        });
     });
 }
 
