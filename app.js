@@ -595,7 +595,50 @@ window.showChartsModal = function() {
     }, 100);
 };
 
-// Initialize all charts
+// --- Lazy Loading for Images ---
+let imageObserver = null;
+
+function setupLazyLoading() {
+    // Use Intersection Observer for better performance
+    if ('IntersectionObserver' in window) {
+        imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    const src = img.dataset.src;
+                    
+                    if (src) {
+                        // Start loading the image
+                        img.src = src;
+                        
+                        // Remove from observer once loading starts
+                        observer.unobserve(img);
+                    }
+                }
+            });
+        }, {
+            rootMargin: '50px', // Start loading 50px before image comes into view
+            threshold: 0.1
+        });
+    }
+}
+
+function observeLazyImages() {
+    const lazyImages = document.querySelectorAll('img[data-src]');
+    
+    if (imageObserver) {
+        lazyImages.forEach(img => imageObserver.observe(img));
+    } else {
+        // Fallback for browsers that don't support Intersection Observer
+        lazyImages.forEach(img => {
+            if (img.dataset.src) {
+                img.src = img.dataset.src;
+            }
+        });
+    }
+}
+
+// --- Initialize all charts ---
 function initializeCharts() {
     const isDarkMode = document.documentElement.classList.contains('dark');
     const textColor = isDarkMode ? '#e5e7eb' : '#374151';
@@ -2236,8 +2279,15 @@ function renderDramas() {
                  data-drama="${btoa(unescape(encodeURIComponent(JSON.stringify(drama))))}"
                  onclick="openDetailFromData(this)">
                 <!-- Thumbnail Container -->
-                <div class="relative aspect-video overflow-hidden bg-gray-100 dark:bg-zinc-800">
-                    <img src="${drama.thumbnail}" alt="${drama.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="handleImageError(this, '${drama.title}')">
+                <div class="relative aspect-video overflow-hidden bg-gray-100 dark:bg-zinc-800 lazy-image-container">
+                    <!-- Loading skeleton -->
+                    <div class="absolute inset-0 image-skeleton"></div>
+                    <img src="" alt="${drama.title}" 
+                         class="lazy-image w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                         data-src="${drama.thumbnail}"
+                         loading="lazy"
+                         onerror="handleImageError(this, '${drama.title}')"
+                         onload="this.classList.add('loaded'); this.previousElementSibling.style.display='none';">
                     
                     <!-- Status Badge -->
                     <div class="absolute top-2 right-2">
@@ -2375,6 +2425,9 @@ function renderDramas() {
                 </div>
             `;
         }
+        
+        // Start observing new lazy images after render
+        setTimeout(() => observeLazyImages(), 50);
     }, 100); // Small delay for loading animation
 }
 
@@ -2630,6 +2683,9 @@ function init() {
         document.body.classList.add('fade-in');
         document.body.style.opacity = '1';
         
+        // Setup lazy loading first
+        setupLazyLoading();
+        
         // Load user settings first
         loadUserSettings();
         
@@ -2641,6 +2697,9 @@ function init() {
         setupKeyboardShortcuts(); // Setup keyboard shortcuts
         initSearchAutocomplete(); // Initialize search autocomplete
         setupSubmitForm();
+        
+        // Start observing lazy images after initial render
+        observeLazyImages();
     }, 100); // Small delay to ensure Alpine.js is ready
 }
 
