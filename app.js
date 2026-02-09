@@ -611,6 +611,11 @@ function setupLazyLoading() {
                         // Start loading the image
                         img.src = src;
                         
+                        // Set up error handling for the actual load attempt
+                        img.onerror = function() {
+                            handleImageError(img, img.alt);
+                        };
+                        
                         // Remove from observer once loading starts
                         observer.unobserve(img);
                     }
@@ -633,6 +638,10 @@ function observeLazyImages() {
         lazyImages.forEach(img => {
             if (img.dataset.src) {
                 img.src = img.dataset.src;
+                // Set up error handling for the actual load attempt
+                img.onerror = function() {
+                    handleImageError(img, img.alt);
+                };
             }
         });
     }
@@ -1746,6 +1755,11 @@ window.selectAutocompleteSuggestion = function(type, value) {
 // 处理图片加载失败
 function handleImageError(img, title) {
     try {
+        // 如果是延迟加载的图片且src为空，说明还未开始加载，不处理错误
+        if (img.classList.contains('lazy-image') && (!img.src || img.src === '')) {
+            return;
+        }
+        
         // 尝试从YouTube链接提取缩略图
         if (img.src && img.src.includes('youtube.com')) {
             const videoIdMatch = img.src.match(/[?&]v=([^&]+)/);
@@ -2286,7 +2300,6 @@ function renderDramas() {
                          class="lazy-image w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
                          data-src="${drama.thumbnail}"
                          loading="lazy"
-                         onerror="handleImageError(this, '${drama.title}')"
                          onload="this.classList.add('loaded'); this.previousElementSibling.style.display='none';">
                     
                     <!-- Status Badge -->
