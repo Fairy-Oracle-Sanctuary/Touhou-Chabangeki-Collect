@@ -440,6 +440,7 @@
                             { value: 'all', label: '全部状态' },
                             { value: 'translated', label: '已汉化' },
                             { value: 'untranslated', label: '未汉化' },
+                            { value: 'domestic', label: '国产' },
                             { value: 'favorites', label: '仅收藏' }
                         ],
                         sortOptions: [
@@ -559,6 +560,10 @@
                         <div class="flex justify-between">
                             <span class="text-zinc-500 dark:text-zinc-400">未汉化</span>
                             <span class="font-medium text-amber-600 dark:text-amber-500" id="untranslatedCount">0</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-zinc-500 dark:text-zinc-400">国产</span>
+                            <span class="font-medium text-blue-600 dark:text-blue-500" id="domesticCount">0</span>
                         </div>
                         <div class="flex justify-between items-center">
                             <span class="text-zinc-500 dark:text-zinc-400">已收藏</span>
@@ -802,6 +807,10 @@
                             <label class="flex items-center gap-2 cursor-pointer">
                                 <input type="radio" name="isTranslated" value="false" required class="text-red-600 focus:ring-red-500">
                                 <span class="text-sm text-zinc-700 dark:text-zinc-300">未汉化</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="radio" name="isDomestic" value="true" required class="text-red-600 focus:ring-red-500">
+                                <span class="text-sm text-zinc-700 dark:text-zinc-300">国产</span>
                             </label>
                         </div>
                     </div>

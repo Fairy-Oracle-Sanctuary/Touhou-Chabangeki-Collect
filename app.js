@@ -1,5 +1,28 @@
 let filteredDramas = [...dramas];
 
+// --- Status Helper Functions ---
+function getDramaStatus(drama) {
+    if (drama.isDomestic) {
+        return {
+            text: '国产',
+            class: 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-400 border-blue-200 dark:border-blue-800',
+            badgeClass: 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-400'
+        };
+    } else if (drama.isTranslated) {
+        return {
+            text: '已汉化',
+            class: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800',
+            badgeClass: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-400'
+        };
+    } else {
+        return {
+            text: '未汉化',
+            class: 'bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-400 border-amber-200 dark:border-amber-800',
+            badgeClass: 'bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-400'
+        };
+    }
+}
+
 // --- Newcomer Watching List ---
 // 精选适合新观众入门的优质作品，按ID排序
 const newcomerList = [
@@ -322,7 +345,7 @@ function generateTimeline() {
                                         <img src="${drama.thumbnail}" alt="${drama.title}" class="w-12 h-9 sm:w-16 sm:h-12 object-cover rounded">
                                         <div class="flex-1 min-w-0">
                                             <h4 class="text-sm sm:text-base font-medium text-zinc-900 dark:text-white">${drama.title}</h4>
-                                            <p class="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">${drama.author} • ${drama.isTranslated ? '已汉化' : '未汉化'}</p>
+                                            <p class="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">${drama.author} • ${getDramaStatus(drama).text}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -406,8 +429,8 @@ function renderRelatedWorks(currentDrama) {
                     <h4 class="text-sm font-medium text-zinc-900 dark:text-white truncate">${drama.title}</h4>
                     <p class="text-xs text-zinc-500 dark:text-zinc-400">${drama.author}</p>
                     <div class="flex items-center gap-2 mt-1">
-                        <span class="px-1.5 py-0.5 rounded text-[8px] font-medium ${drama.isTranslated ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-400' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-400'}">
-                            ${drama.isTranslated ? '已汉化' : '未汉化'}
+                        <span class="px-1.5 py-0.5 rounded text-[8px] font-medium ${getDramaStatus(drama).badgeClass}">
+                            ${getDramaStatus(drama).text}
                         </span>
                         ${isFavorite(drama.id) ? '<svg class="w-3 h-3 text-red-500 fill-current" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>' : ''}
                     </div>
@@ -661,8 +684,9 @@ function initializeCharts() {
     
     // Translation Progress Pie Chart
     const translationCtx = document.getElementById('translationChart').getContext('2d');
-    const translatedCount = dramas.filter(d => d.isTranslated).length;
-    const untranslatedCount = dramas.length - translatedCount;
+    const translatedCount = dramas.filter(d => d.isTranslated && !d.isDomestic).length;
+    const untranslatedCount = dramas.filter(d => !d.isTranslated && !d.isDomestic).length;
+    const domesticCount = dramas.filter(d => d.isDomestic).length;
     const percentage = Math.round((translatedCount / dramas.length) * 100);
     
     document.getElementById('translationPercentage').textContent = percentage + '%';
@@ -670,10 +694,10 @@ function initializeCharts() {
     translationChartInstance = new Chart(translationCtx, {
         type: 'doughnut',
         data: {
-            labels: ['已汉化', '未汉化'],
+            labels: ['已汉化', '未汉化', '国产'],
             datasets: [{
-                data: [translatedCount, untranslatedCount],
-                backgroundColor: ['#10b981', '#f59e0b'],
+                data: [translatedCount, untranslatedCount, domesticCount],
+                backgroundColor: ['#10b981', '#f59e0b', '#3b82f6'],
                 borderColor: isDarkMode ? '#1f2937' : '#ffffff',
                 borderWidth: 2
             }]
@@ -1045,7 +1069,7 @@ function getTopTranslatorsData() {
     const translatorCounts = {};
     
     dramas.forEach(drama => {
-        if (drama.isTranslated && drama.translator) {
+        if (drama.isTranslated && drama.translator && !drama.isDomestic) {
             const translators = getTranslators(drama);
             translators.forEach(translator => {
                 translatorCounts[translator] = (translatorCounts[translator] || 0) + 1;
@@ -1164,13 +1188,15 @@ function initTheme() {
 
 function updateStats() {
     const total = dramas.length;
-    const translated = dramas.filter(d => d.isTranslated).length;
-    const untranslated = total - translated;
+    const translated = dramas.filter(d => d.isTranslated && !d.isDomestic).length;
+    const untranslated = dramas.filter(d => !d.isTranslated && !d.isDomestic).length;
+    const domestic = dramas.filter(d => d.isDomestic).length;
     const favorites = getFavorites().length;
 
     document.getElementById('totalCount').textContent = total;
     document.getElementById('translatedCount').textContent = translated;
     document.getElementById('untranslatedCount').textContent = untranslated;
+    document.getElementById('domesticCount').textContent = domestic;
     
     // Add favorites count if element exists
     const favoritesElement = document.getElementById('favoritesCount');
@@ -1402,8 +1428,8 @@ function viewAuthorDetails(type, name) {
                         <div class="border border-gray-200 dark:border-zinc-700 rounded-lg p-4 hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors cursor-pointer" onclick="openDetail(${drama.id}); this.closest('.fixed').remove();">
                             <div class="flex justify-between items-start mb-2">
                                 <h3 class="font-medium text-zinc-900 dark:text-zinc-100">${drama.title}</h3>
-                                <span class="text-xs px-2 py-1 rounded ${drama.isTranslated ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' : 'bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-zinc-400'}">
-                                    ${drama.isTranslated ? '已翻译' : '未翻译'}
+                                <span class="text-xs px-2 py-1 rounded ${getDramaStatus(drama).class}">
+                                    ${getDramaStatus(drama).text}
                                 </span>
                             </div>
                             <div class="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-500 mb-2">
@@ -2009,8 +2035,9 @@ function filterAndSortDramas() {
     filteredDramas = dramas.filter(drama => {
         // 1. Check Status
         const matchesStatus = statusFilter === 'all' ||
-                             (statusFilter === 'translated' && drama.isTranslated) ||
-                             (statusFilter === 'untranslated' && !drama.isTranslated) ||
+                             (statusFilter === 'translated' && drama.isTranslated && !drama.isDomestic) ||
+                             (statusFilter === 'untranslated' && !drama.isTranslated && !drama.isDomestic) ||
+                             (statusFilter === 'domestic' && drama.isDomestic) ||
                              (statusFilter === 'favorites' && isFavorite(drama.id));
         if (!matchesStatus) return false;
 
@@ -2098,8 +2125,8 @@ function openDetail(drama) {
     detailThumbnail.src = drama.thumbnail;
     detailThumbnail.alt = drama.title;
     
-    detailStatus.className = `px-2 py-0.5 rounded text-[10px] font-medium shadow-sm ${drama.isTranslated ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-400 border border-amber-200 dark:border-amber-800'}`;
-    detailStatus.textContent = drama.isTranslated ? '已汉化' : '未汉化';
+    detailStatus.className = `px-2 py-0.5 rounded text-[10px] font-medium shadow-sm ${getDramaStatus(drama).class}`;
+    detailStatus.textContent = getDramaStatus(drama).text;
     
     detailTitle.textContent = drama.title;
     
@@ -2304,8 +2331,8 @@ function renderDramas() {
                     
                     <!-- Status Badge -->
                     <div class="absolute top-2 right-2">
-                        <span class="px-2 py-0.5 rounded text-[10px] font-medium shadow-sm ${drama.isTranslated ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-400 border border-amber-200 dark:border-amber-800'}">
-                            ${drama.isTranslated ? '已汉化' : '未汉化'}
+                        <span class="px-2 py-0.5 rounded text-[10px] font-medium shadow-sm ${getDramaStatus(drama).class}">
+                            ${getDramaStatus(drama).text}
                         </span>
                     </div>
                 </div>
@@ -2359,7 +2386,7 @@ function renderDramas() {
                             <span class="text-xs">${isFavorite(drama.id) ? '已收藏' : '收藏'}</span>
                         </button>
                         
-                        ${drama.isTranslated && drama.translatedUrl ? `
+                        ${drama.isTranslated && drama.translatedUrl && !drama.isDomestic ? `
                             <a href="${drama.translatedUrl}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();"
                                class="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded bg-red-600 hover:bg-red-700 text-white text-xs font-medium transition-colors">
                                 <span>观看汉化</span>
@@ -2367,9 +2394,9 @@ function renderDramas() {
                         ` : ''}
                         
                         <a href="${drama.originalUrl}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();"
-                           class="${drama.isTranslated ? 'px-2.5' : 'flex-1'} flex items-center justify-center gap-1.5 py-1.5 rounded border border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-xs font-medium transition-colors"
+                           class="${(drama.isTranslated && drama.translatedUrl && !drama.isDomestic) ? 'px-2.5' : 'flex-1'} flex items-center justify-center gap-1.5 py-1.5 rounded border border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-xs font-medium transition-colors"
                            title="查看原版">
-                            ${!drama.isTranslated ? '<span>查看原版</span>' : ''}
+                            ${(!drama.isTranslated || drama.isDomestic) ? '<span>查看原版</span>' : ''}
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                         </a>
                     </div>
@@ -2916,6 +2943,8 @@ function setupSubmitForm() {
         // Get form data
         const formData = new FormData(submitForm);
         const formValues = Object.fromEntries(formData);
+        const isTranslated = formData.get('isTranslated') === 'true';
+        const isDomestic = formData.has('isDomestic') && formData.get('isDomestic') === 'true';
 
         // Validate form data
         const errors = [];
@@ -2963,20 +2992,15 @@ function setupSubmitForm() {
             return;
         }
 
-        // Process tags
-        const tags = formValues.tags
-            ? formValues.tags.split(',').map(tag => tag.trim()).filter(tag => tag)
-            : [];
-
-        // Create drama object
-        const newId = dramas.length > 0 ? Math.max(...dramas.map(d => d.id)) + 1 : 1;
-        const newDrama = {
-            id: newId, // Safe ID generation
+        // Create drama data object
+        const dramaData = {
+            id: Date.now(), // Temporary ID
             title: formValues.title.trim(),
             author: formValues.author.trim(),
             translator: formValues.translator ? formValues.translator.trim() : '',
-            tags: tags,
-            isTranslated: formValues.isTranslated === 'true',
+            tags: formValues.tags ? formValues.tags.split(/[,，、]/).map(tag => tag.trim()).filter(tag => tag) : [],
+            isTranslated: isTranslated,
+            isDomestic: isDomestic,
             originalUrl: formValues.originalUrl.trim(),
             translatedUrl: formValues.translatedUrl ? formValues.translatedUrl.trim() : '',
             description: formValues.description ? formValues.description.trim() : '',
@@ -2987,7 +3011,7 @@ function setupSubmitForm() {
         // Validate JSON generation
         try {
             // Generate JSON
-            const jsonString = JSON.stringify(newDrama, null, 2);
+            const jsonString = JSON.stringify(dramaData, null, 2);
             jsonCode.textContent = jsonString;
             jsonOutput.classList.remove('hidden');
 
