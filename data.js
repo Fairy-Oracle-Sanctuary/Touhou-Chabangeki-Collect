@@ -1317,17 +1317,31 @@ const dramas = [
     },
     {
         id: 95,
-        title: "测试国产作品",
-        author: "测试作者",
+        title: "我与鬼的约定？！！",
+        author: "快乐的小顺",
         translator: "",
-        tags: ["测试标签"],
+        tags: ["伊吹萃香"],
         isTranslated: false,
         isDomestic: true,
-        originalUrl: "https://example.com",
+        originalUrl: "https://space.bilibili.com/478979846/lists/5762210",
         translatedUrl: "",
-        description: "这是一个测试用的国产作品，用于验证国产筛选功能。",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770978235/touhou/thumbnails/1.jpg",
-        dateAdded: "2025-02-13"
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770980258/touhou/thumbnails/95.webp",
+        dateAdded: "2025-07-02"
+    },
+    {
+        id: 96,
+        title: "萃恋芙心",
+        author: "快乐的小顺",
+        translator: "",
+        tags: ["伊吹萃香", "古明地恋", "芙兰朵露"],
+        isTranslated: false,
+        isDomestic: true,
+        originalUrl: "https://space.bilibili.com/478979846/lists/6415865",
+        translatedUrl: "",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770980258/touhou/thumbnails/96.webp",
+        dateAdded: "2025-09-25"
     }
 ];
 
@@ -1396,5 +1410,6 @@ const authorLinks = {
     "ゆっくりむむ": "https://www.youtube.com/@mumumu0410",
     "こよせ": "https://www.youtube.com/@koyose_ch",
     "TheUsualHeartFade123": "https://space.bilibili.com/5838316",
-    "ゆっくりトポロジー": "https://www.youtube.com/@yukkuri.topology"
+    "ゆっくりトポロジー": "https://www.youtube.com/@yukkuri.topology",
+    "快乐的小顺": "https://space.bilibili.com/478979846"
 };
