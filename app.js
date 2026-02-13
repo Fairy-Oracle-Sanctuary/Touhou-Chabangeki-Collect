@@ -166,6 +166,12 @@ window.showTimelineModal = function() {
     
     // Populate year options
     populateYearOptions();
+    
+    // Add year change listener to update month options
+    const yearSelect = document.getElementById('yearSelect');
+    yearSelect.addEventListener('change', (e) => {
+        populateMonthOptions(e.target.value);
+    });
 };
 
 // Populate year options based on available data
@@ -191,6 +197,39 @@ function populateYearOptions() {
     console.log('Populated year options:', sortedYears);
 }
 
+// Populate month options based on selected year
+function populateMonthOptions(selectedYear) {
+    const monthSelect = document.getElementById('monthSelect');
+    if (!monthSelect) {
+        console.error('monthSelect element not found');
+        return;
+    }
+    
+    // Reset month options
+    monthSelect.innerHTML = '<option value="">选择月份</option>';
+    
+    if (!selectedYear) {
+        return;
+    }
+    
+    const months = new Set();
+    
+    dramas.forEach(drama => {
+        const year = new Date(drama.dateAdded).getFullYear();
+        if (year == selectedYear) {
+            const month = new Date(drama.dateAdded).getMonth() + 1;
+            months.add(month.toString().padStart(2, '0'));
+        }
+    });
+    
+    const sortedMonths = Array.from(months).sort((a, b) => parseInt(a) - parseInt(b));
+    
+    monthSelect.innerHTML = '<option value="">选择月份</option>' + 
+        sortedMonths.map(month => `<option value="${month}">${parseInt(month)}月</option>`).join('');
+    
+    console.log('Populated month options for year', selectedYear, ':', sortedMonths);
+}
+
 // Jump to specific time
 window.jumpToTime = function() {
     const yearSelect = document.getElementById('yearSelect');
@@ -214,18 +253,20 @@ window.jumpToTime = function() {
         return;
     }
     
-    // Build target period string
+    // Build target period string and ID
     let targetPeriod = `${selectedYear}年`;
     let targetId = `period-${selectedYear}年`;
     
     if (selectedMonth) {
+        // Ensure month format matches timeline generation (no parseInt, keep as string)
         targetPeriod += `${selectedMonth}月`;
         targetId = `period-${selectedYear}年${selectedMonth}月`;
     }
     
     console.log('Jumping to:', targetPeriod, 'ID:', targetId);
+    console.log('Available period IDs:', Array.from(document.querySelectorAll('[id^="period-"]')).map(el => el.id));
     
-    // Find the target element by ID
+    // Find target element by ID
     const targetElement = document.getElementById(targetId);
     
     if (targetElement) {
@@ -234,7 +275,7 @@ window.jumpToTime = function() {
             block: 'start' 
         });
         
-        // Highlight the target section
+        // Highlight target section
         targetElement.classList.add('bg-yellow-100', 'dark:bg-yellow-900/30', 'rounded-lg', 'p-2', '-m-2', 'transition-all', 'duration-300');
         
         // Remove highlight after 2 seconds
@@ -242,7 +283,15 @@ window.jumpToTime = function() {
             targetElement.classList.remove('bg-yellow-100', 'dark:bg-yellow-900/30', 'rounded-lg', 'p-2', '-m-2', 'transition-all', 'duration-300');
         }, 2000);
     } else {
-        alert(`未找到 ${targetPeriod} 的作品`);
+        // Always provide helpful feedback
+        console.error('Target element not found:', targetId);
+        console.log('Available elements:', Array.from(document.querySelectorAll('[id^="period-"]')).map(el => el.id));
+        
+        if (selectedMonth) {
+            alert(`无法跳转到 ${targetPeriod}。请确保时间轴已完全加载，或尝试选择其他月份。`);
+        } else {
+            alert(`无法跳转到 ${targetPeriod}。请确保时间轴已完全加载。`);
+        }
     }
 };
 
@@ -312,7 +361,7 @@ function generateTimeline() {
     sortedDramas.forEach(drama => {
         const date = new Date(drama.dateAdded);
         const year = date.getFullYear();
-        const month = date.getMonth() + 1;
+        const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Ensure 2-digit format
         const key = `${year}年${month}月`;
         
         if (!groupedDramas[key]) {
@@ -322,6 +371,7 @@ function generateTimeline() {
     });
     
     console.log('Grouped dramas:', Object.keys(groupedDramas));
+    console.log('Generated period IDs:', Object.keys(groupedDramas).map(period => `period-${period}`));
     
     // Generate timeline HTML
     let timelineHTML = '';
@@ -359,6 +409,7 @@ function generateTimeline() {
     
     timelineContent.innerHTML = timelineHTML;
     console.log('Timeline generated successfully');
+    console.log('Available period elements after generation:', Array.from(document.querySelectorAll('[id^="period-"]')).map(el => el.id));
 }
 
 // --- Related Works Recommendation ---
@@ -687,7 +738,8 @@ function initializeCharts() {
     const translatedCount = dramas.filter(d => d.isTranslated && !d.isDomestic).length;
     const untranslatedCount = dramas.filter(d => !d.isTranslated && !d.isDomestic).length;
     const domesticCount = dramas.filter(d => d.isDomestic).length;
-    const percentage = Math.round((translatedCount / dramas.length) * 100);
+    const foreignWorksCount = translatedCount + untranslatedCount; // 只计算国外作品
+    const percentage = foreignWorksCount > 0 ? Math.round((translatedCount / foreignWorksCount) * 100) : 0;
     
     document.getElementById('translationPercentage').textContent = percentage + '%';
     
