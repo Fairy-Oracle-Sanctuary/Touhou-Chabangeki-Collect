@@ -1186,8 +1186,8 @@ function setupKeyboardShortcuts() {
             }
         }
         
-        // Ctrl+N to show newcomer list
-        if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
+        // Ctrl+M to show newcomer list (avoid browser new window conflict)
+        if ((e.ctrlKey || e.metaKey) && e.key === 'm') {
             e.preventDefault();
             showNewcomerModal();
         }
