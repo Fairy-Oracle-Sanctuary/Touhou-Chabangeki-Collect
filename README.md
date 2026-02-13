@@ -22,6 +22,7 @@
 - `translator`: 译者（可选，未汉化为 null）
 - `tags`: 标签数组
 - `isTranslated`: 是否已汉化
+- `isDomestic`: 是否为国产作品
 - `originalUrl`: 原版链接
 - `translatedUrl`: 汉化版链接（可选）
 - `description`: 描述
@@ -40,6 +41,7 @@
     translator: "译者名",
     tags: ["标签1", "标签2"],
     isTranslated: true,
+    isDomestic: false,
     originalUrl: "原版链接",
     translatedUrl: "汉化版链接",
     description: "描述信息",
@@ -88,3 +90,7 @@ npx http-server
 ## 许可证
 
 本项目采用 MIT 许可证。
+
+---
+
+<a href="https://github.com/Fairy-Oracle-Sanctuary/Touhou-Chabangeki-Collect/graphs/contributors"> <img src="https://contrib.rocks/image?repo=Fairy-Oracle-Sanctuary/Touhou-Chabangeki-Collect" /> </a>
