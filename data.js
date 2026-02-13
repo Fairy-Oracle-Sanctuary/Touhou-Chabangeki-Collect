@@ -148,7 +148,7 @@ const dramas = [
         isTranslated: true,
         isDomestic: false,
         originalUrl: "https://www.youtube.com/playlist?list=PL15bNp6jPcclvKXISMZ2fy8POHkEd3sSA",
-        translatedUrl: "https://space.bilibili.com/12621850/lists/5264242",
+        translatedUrl: "https://www.bilibili.com/video/BV1ddhqztEJJ",
         description: "短篇故事，大概100集",
         thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/11.jpg",
         dateAdded: "2024-07-31"
@@ -1454,6 +1454,62 @@ const dramas = [
         description: "——活下去",
         thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/104.jpg",
         dateAdded: "2025-09-21"
+    },
+    {
+        id: 105,
+        title: "选错就重来，与键山雏的恋爱循环",
+        author: "あーる。/ aru",
+        translator: "就是很一般",
+        tags: ["键山雏"],
+        isTranslated: true,
+        isDomestic: false,
+        originalUrl: "https://www.youtube.com/playlist?list=PLkbhAsj-moQyfsoSE3orNw3tilwVfVEL7",
+        translatedUrl: "https://www.bilibili.com/video/BV1uAunz5E3q",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/105.jpg",
+        dateAdded: "2021-03-20"
+    },
+    {
+        id: 106,
+        title: "因惩罚游戏告白后竟和世界第一可爱的灵梦结婚了",
+        author: "まったりさん",
+        translator: "就是很一般",
+        tags: ["博丽灵梦"],
+        isTranslated: true,
+        isDomestic: false,
+        originalUrl: "https://www.youtube.com/playlist?list=PLSySOhc57uZY2zl7ffHvGfW6eIbWx1_Cb",
+        translatedUrl: "https://www.bilibili.com/video/BV1kdVVzbEfY",
+        description: "结婚系灵梦，梦里啥都有.jpg",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/106.jpg",
+        dateAdded: "2023-04-30"
+    },
+    {
+        id: 107,
+        title: "『就是很一般』汉化的恋爱短篇",
+        author: "就是很一般",
+        translator: "就是很一般",
+        tags: ["永江衣玖", "东风谷早苗", "古明地恋", "道神驯子", "洩矢诹访子", "爱丽丝", "十六夜咲夜", "依神紫苑", "宇佐见莲子", "芙兰朵露"],
+        isTranslated: true,
+        isDomestic: false,
+        originalUrl: "https://space.bilibili.com/12621850/lists/5264242",
+        translatedUrl: "https://space.bilibili.com/12621850/lists/5264242",
+        description: "油管上一些作者做的恋爱短篇茶番剧",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/107.jpg",
+        dateAdded: "2025-03-08"
+    },
+    {
+        id: 108,
+        title: "云东方小尬剧",
+        author: "剧中还是剧终了呢",
+        translator: "",
+        tags: ["古明地觉", "古明地恋", "藤原妹红", "辉夜", "射命丸文", "犬走椛", "秦心", "魂魄妖梦", "西行寺幽幽子", "东风谷早苗", "纯狐", "多多良小伞", "绵月依姬", "露米娅", "埴安神袿姬"],
+        isTranslated: false,
+        isDomestic: true,
+        originalUrl: "https://space.bilibili.com/3493276539685348/lists/5804379",
+        translatedUrl: "",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/108.jpg",
+        dateAdded: "2025-06-07"
     }
 ];
 
@@ -1528,5 +1584,6 @@ const authorLinks = {
     "虚空大灾难": "https://space.bilibili.com/20713352/lists/6631848",
     "古茗地華": "https://space.bilibili.com/369600973",
     "チェイス【ゆっくり茶番劇】": "https://www.youtube.com/@CHASER126",
-    "楽園の魔法使": "https://space.bilibili.com/1650223739"
+    "楽園の魔法使": "https://space.bilibili.com/1650223739",
+    "剧中还是剧终了呢": "https://space.bilibili.com/3493276539685348"
 };
