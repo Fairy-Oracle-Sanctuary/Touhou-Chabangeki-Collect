@@ -449,14 +449,14 @@ const dramas = [
     },
     {
         id: 33,
-        title: "〆タケ作者的纯爱超甜合集",
+        title: "彼夏拾遗",
         author: "〆タケ",
         translator: "幻想入的Jier",
-        tags: ["蕾米莉亚", "芙兰朵露", "秦心"],
+        tags: ["蕾米莉亚"],
         isTranslated: true,
         isDomestic: false,
         originalUrl: "https://www.youtube.com/watch?v=c6mxNbdWinY",
-        translatedUrl: "https://space.bilibili.com/87123918/lists/4415038",
+        translatedUrl: "https://www.bilibili.com/video/BV1Uqo8YEEGr",
         description: "",
         thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/33.jpg",
         dateAdded: "2024-08-18"
@@ -1398,6 +1398,62 @@ const dramas = [
         description: "",
         thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770980258/touhou/thumbnails/100.jpg",
         dateAdded: "2025-06-17"
+    },
+    {
+        id: 101,
+        title: "如果东方的人物角色变成了病娇的话？",
+        author: "チェイス【ゆっくり茶番劇】",
+        translator: "楽園の魔法使",
+        tags: ["病娇", "古明地觉", "十六夜咲夜", "古明地恋", "藤原妹红", "红美铃", "风见幽香", "露米娅", "圣白莲", "绵月丰姬", "丰聪耳神子", "魂魄妖梦", "比那名居天子", "蕾米莉亚", "博丽灵梦", "雾雨魔理沙", "铃仙", "犬走椛", "秦心", "帕秋莉", "芙兰朵露", "八云紫", "绵月依姬", "大妖精", "琪露诺"],
+        isTranslated: true,
+        isDomestic: false,
+        originalUrl: "https://www.youtube.com/shorts/nNAkrSU1Ot8",
+        translatedUrl: "https://space.bilibili.com/1650223739/lists/6055955",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/101.jpg",
+        dateAdded: "2024-12-30"
+    },
+    {
+        id: 102,
+        title: "僕の恋と白色康乃馨",
+        author: "〆タケ",
+        translator: "幻想入的Jier",
+        tags: ["多多良小伞", "露米娅"],
+        isTranslated: true,
+        isDomestic: false,
+        originalUrl: "https://www.youtube.com/watch?v=ySfxHPVSC88",
+        translatedUrl: "https://www.bilibili.com/video/BV192dpYKEGM",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/102.jpg",
+        dateAdded: "2023-09-03"
+    },
+    {
+        id: 103,
+        title: "原本期限一天的租借女友（芙兰）被我不小心租了一辈子？！",
+        author: "〆タケ",
+        translator: "幻想入的Jier",
+        tags: ["芙兰朵露"],
+        isTranslated: true,
+        isDomestic: false,
+        originalUrl: "https://www.youtube.com/playlist?list=PLtbLg09TfEKpRAVdk1W7AmkquMHd5kr9P",
+        translatedUrl: "https://www.bilibili.com/video/BV1aqCBY5Er7",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/103.jpg",
+        dateAdded: "2023-04-08"
+    },
+    {
+        id: 104,
+        title: "相连的心",
+        author: "〆タケ",
+        translator: "幻想入的Jier",
+        tags: ["秦心"],
+        isTranslated: true,
+        isDomestic: false,
+        originalUrl: "https://www.youtube.com/watch?v=oTyt4zDiVUs",
+        translatedUrl: "https://www.bilibili.com/video/BV1HoJXzQEw1",
+        description: "——活下去",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/104.jpg",
+        dateAdded: "2025-09-21"
     }
 ];
 
@@ -1470,5 +1526,7 @@ const authorLinks = {
     "快乐的小顺": "https://space.bilibili.com/478979846",
     "某明Certainly": "https://space.bilibili.com/80249082",
     "虚空大灾难": "https://space.bilibili.com/20713352/lists/6631848",
-    "古茗地華": "https://space.bilibili.com/369600973"
+    "古茗地華": "https://space.bilibili.com/369600973",
+    "チェイス【ゆっくり茶番劇】": "https://www.youtube.com/@CHASER126",
+    "楽園の魔法使": "https://space.bilibili.com/1650223739"
 };
