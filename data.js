@@ -1342,6 +1342,62 @@ const dramas = [
         description: "",
         thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770980258/touhou/thumbnails/96.webp",
         dateAdded: "2025-09-25"
+    },
+    {
+        id: 97,
+        title: "东方病娇",
+        author: "某明Certainly",
+        translator: "",
+        tags: ["病娇", "纯狐", "霍青娥", "爱丽丝", "四季映姬", "芙兰朵露", "宫古芳香", "上白泽慧音", "辉夜", "键山雏"],
+        isTranslated: false,
+        isDomestic: true,
+        originalUrl: "https://space.bilibili.com/80249082/lists/3720523",
+        translatedUrl: "",
+        description: "震撼来袭",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/touhou/thumbnails/97.jpg",
+        dateAdded: "2024-08-26"
+    },
+    {
+        id: 98,
+        title: "关于我是早苗的青梅竹马一事",
+        author: "虚空大灾难",
+        translator: "",
+        tags: ["东风谷早苗", "博丽灵梦"],
+        isTranslated: false,
+        isDomestic: true,
+        originalUrl: "https://space.bilibili.com/20713352/lists/6631848",
+        translatedUrl: "",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770980258/touhou/thumbnails/98.jpg",
+        dateAdded: "2025-10-19"
+    },
+    {
+        id: 99,
+        title: "人鬼情未了",
+        author: "古茗地華",
+        translator: "",
+        tags: ["伊吹萃香"],
+        isTranslated: false,
+        isDomestic: true,
+        originalUrl: "https://www.bilibili.com/video/BV1cN89zyEDw",
+        translatedUrl: "",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770980258/touhou/thumbnails/99.jpg",
+        dateAdded: "2025-07-29"
+    },
+    {
+        id: 100,
+        title: "『幻想入的Jier』亲自操刀制作的茶番剧",
+        author: "幻想入的Jier",
+        translator: "",
+        tags: ["琪露诺", "大妖精", "封兽鵺", "多多良小伞", "蕾米莉亚", "博丽灵梦", "雾雨魔理沙"],
+        isTranslated: false,
+        isDomestic: true,
+        originalUrl: "https://space.bilibili.com/87123918/lists/5678896",
+        translatedUrl: "",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770980258/touhou/thumbnails/100.jpg",
+        dateAdded: "2025-06-17"
     }
 ];
 
@@ -1411,5 +1467,8 @@ const authorLinks = {
     "こよせ": "https://www.youtube.com/@koyose_ch",
     "TheUsualHeartFade123": "https://space.bilibili.com/5838316",
     "ゆっくりトポロジー": "https://www.youtube.com/@yukkuri.topology",
-    "快乐的小顺": "https://space.bilibili.com/478979846"
+    "快乐的小顺": "https://space.bilibili.com/478979846",
+    "某明Certainly": "https://space.bilibili.com/80249082",
+    "虚空大灾难": "https://space.bilibili.com/20713352/lists/6631848",
+    "古茗地華": "https://space.bilibili.com/369600973"
 };
