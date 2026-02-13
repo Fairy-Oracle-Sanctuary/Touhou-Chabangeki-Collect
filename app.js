@@ -2506,8 +2506,22 @@ function setupEventListeners() {
     
     // Listen for custom event from Alpine.js
     window.addEventListener('filter-change', (e) => {
-        // The hidden inputs are already updated by x-model, but we need to trigger the filter logic
-        filterAndSortDramas();
+        // Use the values from the event detail to ensure we get the latest Alpine.js state
+        if (e.detail) {
+            const statusFilterElement = document.getElementById('statusFilter');
+            const sortByElement = document.getElementById('sortBy');
+            
+            if (statusFilterElement && e.detail.status !== undefined) {
+                statusFilterElement.value = e.detail.status;
+            }
+            if (sortByElement && e.detail.sort !== undefined) {
+                sortByElement.value = e.detail.sort;
+            }
+        }
+        // Small delay to ensure DOM is updated
+        setTimeout(() => {
+            filterAndSortDramas();
+        }, 10);
     });
     
     // Setup direct event listeners for hidden inputs

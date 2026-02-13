@@ -457,7 +457,7 @@
                                 detail: { status: this.status, sort: this.sort } 
                             }));
                         }
-                    }" x-init="$watch('status', () => updateFilters())" x-id="['filterComponent']">
+                    }" x-init="$watch('status', () => updateFilters()); $watch('sort', () => updateFilters())" x-id="['filterComponent']">
                         <!-- Hidden Inputs for app.js compatibility -->
                         <input type="hidden" id="statusFilter" x-model="status">
                         <input type="hidden" id="sortBy" x-model="sort">
