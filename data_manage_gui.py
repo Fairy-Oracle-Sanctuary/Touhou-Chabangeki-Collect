@@ -60,12 +60,12 @@ class DataManagerGUI:
         ttk.Button(btn_bar, text="删除选中项", command=self.delete_item).pack(
             side=tk.LEFT, padx=2
         )
-        ttk.Button(btn_bar, text="清除所有缩略图", command=self.clear_all_thumbnails).pack(
-            side=tk.LEFT, padx=2
-        )
-        ttk.Button(btn_bar, text="生成缩略图URL", command=self.generate_thumbnail_urls).pack(
-            side=tk.LEFT, padx=2
-        )
+        ttk.Button(
+            btn_bar, text="清除所有缩略图", command=self.clear_all_thumbnails
+        ).pack(side=tk.LEFT, padx=2)
+        ttk.Button(
+            btn_bar, text="生成缩略图URL", command=self.generate_thumbnail_urls
+        ).pack(side=tk.LEFT, padx=2)
         ttk.Button(btn_bar, text="强制保存", command=self.save_data_gui).pack(
             side=tk.RIGHT, padx=2
         )
@@ -121,7 +121,7 @@ class DataManagerGUI:
 
     def get_suggestions(self):
         authors = sorted(list(set(i["author"] for i in self.data if i.get("author"))))
-        
+
         # 处理多译者
         translators_set = set()
         for i in self.data:
@@ -132,68 +132,208 @@ class DataManagerGUI:
                     translator = translator.strip()
                     if translator:
                         translators_set.add(translator)
-        
+
         translators = sorted(list(translators_set))
         tags = set()
         for i in self.data:
             tags.update(i.get("tags", []))
+
         # 按首字母拼音排序
         def get_pinyin_first_char(text):
             # 简单的中文首字母提取实现
             if not text:
-                return 'Z'
-            
+                return "Z"
+
             first_char = text[0]
-            
+
             # 如果是英文字母，直接返回大写
             if first_char.isalpha() and ord(first_char) < 128:
                 return first_char.upper()
-            
+
             # 简单的中文到拼音首字母映射（常见字）
             pinyin_map = {
-                '啊': 'A', '爱': 'A', '安': 'A', '按': 'A',
-                '八': 'B', '白': 'B', '百': 'B', '博': 'B', '不': 'B',
-                '才': 'C', '彩': 'C', '草': 'C', '常': 'C', '成': 'C', '出': 'C',
-                '大': 'D', '的': 'D', '地': 'D', '第': 'D', '东': 'D', '都': 'D',
-                '而': 'E', '二': 'E',
-                '发': 'F', '法': 'F', '反': 'F', '风': 'F', '芙': 'F',
-                '个': 'G', '给': 'G', '古': 'G', '关': 'G', '光': 'G', '广': 'G',
-                '还': 'H', '海': 'H', '和': 'H', '黑': 'H', '红': 'H', '后': 'H', '魂': 'H',
-                '机': 'J', '基': 'J', '极': 'J', '记': 'J', '家': 'J', '见': 'J', '江': 'J', '今': 'J', '经': 'J', '就': 'J',
-                '可': 'K', '看': 'K', '空': 'K',
-                '来': 'L', '蓝': 'L', '老': 'L', '雷': 'L', '冷': 'L', '里': 'L', '恋': 'L', '灵': 'L', '六': 'L', '龙': 'L', '露': 'L',
-                '妈': 'M', '魔': 'M', '美': 'M', '梦': 'M', '迷': 'M', '命': 'M',
-                '那': 'N', '南': 'N', '能': 'N', '你': 'N', '年': 'N', '鸟': 'N',
-                '派': 'P', '判': 'P',
-                '七': 'Q', '奇': 'Q', '琪': 'Q', '起': 'Q', '千': 'Q', '前': 'Q', '枪': 'Q', '青': 'Q', '秋': 'Q', '去': 'Q',
-                '让': 'R', '人': 'R', '日': 'R', '如': 'R',
-                '三': 'S', '色': 'S', '杀': 'S', '山': 'S', '上': 'S', '神': 'S', '圣': 'S', '十': 'S', '时': 'S', '水': 'S', '说': 'S',
-                '她': 'T', '他': 'T', '天': 'T', '通': 'T', '同': 'T',
-                '外': 'W', '完': 'W', '王': 'W', '为': 'W', '文': 'W', '我': 'W', '无': 'W', '五': 'W',
-                '西': 'X', '希': 'X', '下': 'X', '仙': 'X', '小': 'X', '新': 'X', '星': 'X', '行': 'X',
-                '一': 'Y', '医': 'Y', '永': 'Y', '有': 'Y', '右': 'Y', '与': 'Y', '宇': 'Y', '雨': 'Y', '玉': 'Y', '月': 'Y',
-                '在': 'Z', '早': 'Z', '怎': 'Z', '阵': 'Z', '正': 'Z', '之': 'Z', '知': 'Z', '直': 'Z', '中': 'Z', '重': 'Z', '主': 'Z', '住': 'Z', '转': 'Z', '装': 'Z', '追': 'Z', '紫': 'Z', '自': 'Z',
+                "啊": "A",
+                "爱": "A",
+                "安": "A",
+                "按": "A",
+                "八": "B",
+                "白": "B",
+                "百": "B",
+                "博": "B",
+                "不": "B",
+                "才": "C",
+                "彩": "C",
+                "草": "C",
+                "常": "C",
+                "成": "C",
+                "出": "C",
+                "大": "D",
+                "的": "D",
+                "地": "D",
+                "第": "D",
+                "东": "D",
+                "都": "D",
+                "而": "E",
+                "二": "E",
+                "发": "F",
+                "法": "F",
+                "反": "F",
+                "风": "F",
+                "芙": "F",
+                "个": "G",
+                "给": "G",
+                "古": "G",
+                "关": "G",
+                "光": "G",
+                "广": "G",
+                "还": "H",
+                "海": "H",
+                "和": "H",
+                "黑": "H",
+                "红": "H",
+                "后": "H",
+                "魂": "H",
+                "机": "J",
+                "基": "J",
+                "极": "J",
+                "记": "J",
+                "家": "J",
+                "见": "J",
+                "江": "J",
+                "今": "J",
+                "经": "J",
+                "就": "J",
+                "可": "K",
+                "看": "K",
+                "空": "K",
+                "来": "L",
+                "蓝": "L",
+                "老": "L",
+                "雷": "L",
+                "冷": "L",
+                "里": "L",
+                "恋": "L",
+                "灵": "L",
+                "六": "L",
+                "龙": "L",
+                "露": "L",
+                "妈": "M",
+                "魔": "M",
+                "美": "M",
+                "梦": "M",
+                "迷": "M",
+                "命": "M",
+                "那": "N",
+                "南": "N",
+                "能": "N",
+                "你": "N",
+                "年": "N",
+                "鸟": "N",
+                "派": "P",
+                "判": "P",
+                "七": "Q",
+                "奇": "Q",
+                "琪": "Q",
+                "起": "Q",
+                "千": "Q",
+                "前": "Q",
+                "枪": "Q",
+                "青": "Q",
+                "秋": "Q",
+                "去": "Q",
+                "让": "R",
+                "人": "R",
+                "日": "R",
+                "如": "R",
+                "三": "S",
+                "色": "S",
+                "杀": "S",
+                "山": "S",
+                "上": "S",
+                "神": "S",
+                "圣": "S",
+                "十": "S",
+                "时": "S",
+                "水": "S",
+                "说": "S",
+                "她": "T",
+                "他": "T",
+                "天": "T",
+                "通": "T",
+                "同": "T",
+                "外": "W",
+                "完": "W",
+                "王": "W",
+                "为": "W",
+                "文": "W",
+                "我": "W",
+                "无": "W",
+                "五": "W",
+                "西": "X",
+                "希": "X",
+                "下": "X",
+                "仙": "X",
+                "小": "X",
+                "新": "X",
+                "星": "X",
+                "行": "X",
+                "一": "Y",
+                "医": "Y",
+                "永": "Y",
+                "有": "Y",
+                "右": "Y",
+                "与": "Y",
+                "宇": "Y",
+                "雨": "Y",
+                "玉": "Y",
+                "月": "Y",
+                "在": "Z",
+                "早": "Z",
+                "怎": "Z",
+                "阵": "Z",
+                "正": "Z",
+                "之": "Z",
+                "知": "Z",
+                "直": "Z",
+                "中": "Z",
+                "重": "Z",
+                "主": "Z",
+                "住": "Z",
+                "转": "Z",
+                "装": "Z",
+                "追": "Z",
+                "紫": "Z",
+                "自": "Z",
             }
-            
+
             # 尝试从映射表中获取
             if first_char in pinyin_map:
                 return pinyin_map[first_char]
-            
+
             # 如果不在映射表中，尝试使用pinyin库
             try:
                 import pinyin
+
                 return pinyin.get_pinyin(first_char)[0].upper()
             except:
                 # 最后的备选方案：使用Unicode编码范围粗略判断
-                if '\u4e00' <= first_char <= '\u9fff':  # 中文字符范围
-                    return 'Z'  # 未知的汉字放在最后
+                if "\u4e00" <= first_char <= "\u9fff":  # 中文字符范围
+                    return "Z"  # 未知的汉字放在最后
                 return first_char.upper()
-        
+
         return {
             "authors": authors,
             "translators": translators,
             "tags": sorted(list(tags), key=get_pinyin_first_char),
         }
+
+    def get_status_text(self, item):
+        if item.get("isDomestic", False):
+            return "国产"
+        elif item.get("isTranslated", False):
+            return "已汉化"
+        else:
+            return "未汉化"
 
     def fill_treeview(self):
         self.tree.delete(*self.tree.get_children())
@@ -206,7 +346,7 @@ class DataManagerGUI:
                     item["title"],
                     item["author"],
                     item["translator"],
-                    "已汉化" if item["isTranslated"] else "未汉化",
+                    self.get_status_text(item),
                     item["dateAdded"],
                 ),
             )
@@ -265,50 +405,56 @@ class DataManagerGUI:
                 with open("data.js", "r", encoding="utf-8") as f:
                     existing_content = f.read()
                     # 查找authorLinks部分
-                    match = re.search(r'const authorLinks = ({.*?});', existing_content, re.DOTALL)
+                    match = re.search(
+                        r"const authorLinks = ({.*?});", existing_content, re.DOTALL
+                    )
                     if match:
                         links_str = match.group(1)
                         print(f"原始authorLinks字符串: {repr(links_str[:200])}")
-                        
+
                         # 最简单的方法：按行处理
-                        lines = links_str.split('\n')
+                        lines = links_str.split("\n")
                         existing_links = {}
-                        
+
                         for line in lines:
                             line = line.strip()
                             # 跳过空行和注释行
-                            if not line or line.startswith('//') or not line.startswith('"'):
+                            if (
+                                not line
+                                or line.startswith("//")
+                                or not line.startswith('"')
+                            ):
                                 continue
-                            
+
                             # 处理键值对
-                            if ':' in line and line.endswith(','):
-                                line = line.rstrip(',')  # 移除末尾逗号
-                                
-                            if ':' in line:
+                            if ":" in line and line.endswith(","):
+                                line = line.rstrip(",")  # 移除末尾逗号
+
+                            if ":" in line:
                                 try:
                                     # 直接用JSON解析这一行
-                                    line_json = '{' + line + '}'
+                                    line_json = "{" + line + "}"
                                     parsed = json.loads(line_json)
                                     for key, value in parsed.items():
                                         existing_links[key] = value
                                 except:
                                     # 手动解析
-                                    parts = line.split(':', 1)
+                                    parts = line.split(":", 1)
                                     if len(parts) == 2:
                                         key = parts[0].strip().strip('"')
                                         value = parts[1].strip().strip('"')
                                         if key:
                                             existing_links[key] = value
-                        
+
                         print(f"解析authorLinks成功，共有 {len(existing_links)} 个链接")
                         author_links_content = f"const authorLinks = {match.group(1)};"
             except Exception as e:
                 print(f"读取现有authorLinks时出错: {e}")
-            
+
             # 自动检测新的作者和译者
             detected_authors = set()
             detected_translators = set()
-            
+
             for item in self.data:
                 if item.get("author"):
                     detected_authors.add(item["author"])
@@ -319,29 +465,36 @@ class DataManagerGUI:
                         translator = translator.strip()
                         if translator:
                             detected_translators.add(translator)
-            
+
             # 更新authorLinks，添加新检测到的作者/译者
             updated_links = existing_links.copy()
             new_authors = 0
             new_translators = 0
-            
+
             for author in detected_authors:
                 if author not in updated_links:
                     updated_links[author] = ""  # 空字符串表示需要手动添加链接
                     new_authors += 1
                     print(f"检测到新作者: {author}")
-            
+
             for translator in detected_translators:
                 # 过滤掉包含分隔符的条目（这些是多译者组合）
-                if not re.search(r"[,、&和]", translator) and translator not in updated_links:
+                if (
+                    not re.search(r"[,、&和]", translator)
+                    and translator not in updated_links
+                ):
                     updated_links[translator] = ""  # 空字符串表示需要手动添加链接
                     new_translators += 1
                     print(f"检测到新译者: {translator}")
-            
+
             # 生成新的authorLinks内容
             if updated_links:
-                author_links_content = "const authorLinks = " + json.dumps(updated_links, ensure_ascii=False, indent=4) + ";"
-            
+                author_links_content = (
+                    "const authorLinks = "
+                    + json.dumps(updated_links, ensure_ascii=False, indent=4)
+                    + ";"
+                )
+
             # 生成dramas数组内容
             content = "const dramas = ["
             for i, item in enumerate(self.data):
@@ -354,6 +507,7 @@ class DataManagerGUI:
         translator: {json.dumps(item["translator"], ensure_ascii=False)},
         tags: {json.dumps(item["tags"], ensure_ascii=False)},
         isTranslated: {str(item["isTranslated"]).lower()},
+        isDomestic: {str(item.get("isDomestic", False)).lower()},
         originalUrl: {json.dumps(item["originalUrl"], ensure_ascii=False)},
         translatedUrl: {json.dumps(item["translatedUrl"], ensure_ascii=False)},
         description: {json.dumps(item["description"], ensure_ascii=False)},
@@ -361,15 +515,15 @@ class DataManagerGUI:
         dateAdded: {json.dumps(item["dateAdded"], ensure_ascii=False)}
     }}{"," if i < len(self.data) - 1 else ""}"""
             content += "\n];\n\n"
-            
+
             # 添加authorLinks部分
             if author_links_content:
                 content += author_links_content + "\n"
-            
+
             # 写入文件
             with open("data.js", "w", encoding="utf-8") as f:
                 f.write(content)
-            
+
             # 显示保存结果
             if not silent:
                 message = "数据已成功同步到 data.js"
@@ -458,14 +612,14 @@ class DataManagerGUI:
         if not self.data:
             messagebox.showinfo("提示", "当前没有数据条目")
             return
-        
+
         # 统计有多少条目有缩略图
         items_with_thumbnails = sum(1 for item in self.data if item.get("thumbnail"))
-        
+
         if items_with_thumbnails == 0:
             messagebox.showinfo("提示", "所有条目都没有缩略图")
             return
-        
+
         # 确认对话框
         confirm_msg = f"确定要清除所有 {items_with_thumbnails} 个条目的缩略图吗？\n\n此操作不可撤销！"
         if messagebox.askyesno("确认清除", confirm_msg, icon="warning"):
@@ -475,15 +629,15 @@ class DataManagerGUI:
                 if item.get("thumbnail"):
                     item["thumbnail"] = ""
                     cleared_count += 1
-            
+
             # 刷新显示并保存
             self.fill_treeview()
             self.save_data_gui(silent=True)
-            
+
             # 显示成功消息
             messagebox.showinfo(
-                "成功", 
-                f"已成功清除 {cleared_count} 个条目的缩略图\n\n数据已自动保存到 data.js"
+                "成功",
+                f"已成功清除 {cleared_count} 个条目的缩略图\n\n数据已自动保存到 data.js",
             )
 
     def generate_thumbnail_urls(self):
@@ -491,49 +645,49 @@ class DataManagerGUI:
         if not self.data:
             messagebox.showinfo("提示", "当前没有数据条目")
             return
-        
+
         # 创建生成URL对话框
         dialog = ThumbnailUrlDialog(self.root)
         self.root.wait_window(dialog)
-        
+
         if dialog.result:
             url_template, start_id, end_id, update_empty_only = dialog.result
-            
+
             # 统计将要更新的条目
             items_to_update = []
             for item in self.data:
-                if start_id <= item['id'] <= end_id:
+                if start_id <= item["id"] <= end_id:
                     if update_empty_only:
                         if not item.get("thumbnail"):
                             items_to_update.append(item)
                     else:
                         items_to_update.append(item)
-            
+
             if not items_to_update:
                 messagebox.showinfo("提示", "没有找到需要更新的条目")
                 return
-            
+
             # 确认对话框
             confirm_msg = f"确定要更新 {len(items_to_update)} 个条目的缩略图URL吗？\n\n"
             confirm_msg += f"URL格式: {url_template.replace('{id}', 'ID')}\n"
             confirm_msg += f"ID范围: {start_id}-{end_id}"
-            
+
             if messagebox.askyesno("确认更新", confirm_msg):
                 # 执行更新
                 updated_count = 0
                 for item in items_to_update:
-                    new_url = url_template.format(id=item['id'])
+                    new_url = url_template.format(id=item["id"])
                     if item.get("thumbnail") != new_url:
                         item["thumbnail"] = new_url
                         updated_count += 1
-                
+
                 # 刷新显示并保存
                 self.fill_treeview()
                 self.save_data_gui(silent=True)
-                
+
                 messagebox.showinfo(
-                    "成功", 
-                    f"已成功更新 {updated_count} 个条目的缩略图URL\n\n数据已自动保存到 data.js"
+                    "成功",
+                    f"已成功更新 {updated_count} 个条目的缩略图URL\n\n数据已自动保存到 data.js",
                 )
 
 
@@ -579,21 +733,21 @@ class JsonImportDialog(tk.Toplevel):
         )
         example_text.pack(fill=tk.BOTH, expand=True)
         example_text.configure(state=tk.NORMAL)
-        example_text.insert(
-            tk.END,
-            """{
+        example_json = """{
+  "id": 1,
   "title": "作品标题",
   "author": "作者",
   "translator": "汉化者",
   "tags": ["标签1", "标签2"],
   "isTranslated": true,
+  "isDomestic": false,
   "originalUrl": "原版链接",
   "translatedUrl": "汉化链接",
   "description": "简介",
   "thumbnail": "封面图链接",
-  "dateAdded": "2026-02-03"
-}""",
-        )
+  "dateAdded": "2024-01-01"
+}"""
+        example_text.insert(tk.END, example_json)
         example_text.configure(state=tk.DISABLED)
 
         # 底部按钮
@@ -679,17 +833,24 @@ class AddEditDialog(tk.Toplevel):
 
     def _create_tooltip(self, widget, text):
         """为控件创建工具提示"""
+
         def on_enter(event):
             tooltip = tk.Toplevel()
             tooltip.wm_overrideredirect(True)
-            tooltip.wm_geometry(f"+{event.x_root+10}+{event.y_root+10}")
-            label = tk.Label(tooltip, text=text, background="lightyellow", 
-                           relief=tk.SOLID, borderwidth=1, font=("Microsoft YaHei", 9))
+            tooltip.wm_geometry(f"+{event.x_root + 10}+{event.y_root + 10}")
+            label = tk.Label(
+                tooltip,
+                text=text,
+                background="lightyellow",
+                relief=tk.SOLID,
+                borderwidth=1,
+                font=("Microsoft YaHei", 9),
+            )
             label.pack()
             widget.tooltip = tooltip
 
         def on_leave(event):
-            if hasattr(widget, 'tooltip'):
+            if hasattr(widget, "tooltip"):
                 widget.tooltip.destroy()
                 del widget.tooltip
 
@@ -744,7 +905,7 @@ class AddEditDialog(tk.Toplevel):
         self.vars["tags"] = tk.StringVar(value=tag_val)
         tag_entry = ttk.Entry(f, textvariable=self.vars["tags"])
         tag_entry.grid(row=5, column=1, sticky=tk.EW, pady=5)
-        
+
         # 为tag输入框绑定自动补全
         self._setup_tag_autocomplete(tag_entry)
 
@@ -782,12 +943,28 @@ class AddEditDialog(tk.Toplevel):
 
         # 4. 状态
         self._section_title(f, "发布状态", 12)
-        self.is_translated_var = tk.BooleanVar(
-            value=self.item.get("isTranslated", False)
-        )
-        ttk.Checkbutton(
-            f, text="标记为已汉化完成", variable=self.is_translated_var
-        ).grid(row=13, column=1, sticky=tk.W, pady=5)
+
+        # 状态选择
+        status_frame = ttk.Frame(f)
+        status_frame.grid(row=13, column=0, columnspan=2, sticky=tk.W, pady=5)
+
+        self.status_var = tk.StringVar()
+
+        # 获取当前状态
+        current_status = "未汉化"
+        if self.item.get("isDomestic", False):
+            current_status = "国产"
+        elif self.item.get("isTranslated", False):
+            current_status = "已汉化"
+
+        self.status_var.set(current_status)
+
+        # 创建单选按钮
+        statuses = ["未汉化", "已汉化", "国产"]
+        for i, status in enumerate(statuses):
+            ttk.Radiobutton(
+                status_frame, text=status, variable=self.status_var, value=status
+            ).pack(side=tk.LEFT, padx=10)
 
         ttk.Label(f, text="添加日期:").grid(row=14, column=0, sticky=tk.W, pady=5)
         cur_date = self.item.get("dateAdded", datetime.now().strftime("%Y-%m-%d"))
@@ -816,126 +993,128 @@ class AddEditDialog(tk.Toplevel):
         if tag not in current:
             current.append(tag)
             self.vars["tags"].set(", ".join(current))
-    
+
     def _setup_tag_autocomplete(self, entry_widget):
         """为tag输入框设置自动补全功能"""
         self.autocomplete_listbox = None
         self._arrow_key_pressed = False  # 添加标志
-        
+
         def on_key_press(event):
             # 如果是箭头键，设置标志并返回
             if event.keysym in ["Up", "Down"]:
                 self._arrow_key_pressed = True
                 return
-                
+
             # 获取当前输入的最后一个词
             current_text = entry_widget.get()
             cursor_pos = entry_widget.index(tk.INSERT)
-            
+
             # 找到当前光标所在位置的词
             text_before_cursor = current_text[:cursor_pos]
             words = text_before_cursor.split(",")
             current_word = words[-1].strip() if words else ""
-            
+
             if len(current_word) < 1:
                 self._hide_autocomplete()
                 return
-            
+
             # 查找匹配的标签
             all_tags = self.suggestions.get("tags", [])
-            matches = [tag for tag in all_tags 
-                      if tag.lower().startswith(current_word.lower())]
-            
+            matches = [
+                tag for tag in all_tags if tag.lower().startswith(current_word.lower())
+            ]
+
             if matches:
                 self._show_autocomplete(entry_widget, matches, current_word)
             else:
                 self._hide_autocomplete()
-        
+
         def on_key_release(event):
             # 如果是箭头键，清除标志并返回
             if event.keysym in ["Up", "Down"]:
                 self._arrow_key_pressed = False
                 return "break"  # 阻止进一步处理
-                
+
             # 如果箭头键刚被按下，不处理自动补全
             if self._arrow_key_pressed:
                 return
-                
+
             # 获取当前输入的最后一个词
             current_text = entry_widget.get()
             cursor_pos = entry_widget.index(tk.INSERT)
-            
+
             # 找到当前光标所在位置的词
             text_before_cursor = current_text[:cursor_pos]
             words = text_before_cursor.split(",")
             current_word = words[-1].strip() if words else ""
-            
+
             if len(current_word) < 1:
                 self._hide_autocomplete()
                 return
-            
+
             # 查找匹配的标签
             all_tags = self.suggestions.get("tags", [])
-            matches = [tag for tag in all_tags 
-                      if tag.lower().startswith(current_word.lower())]
-            
+            matches = [
+                tag for tag in all_tags if tag.lower().startswith(current_word.lower())
+            ]
+
             if matches:
                 self._show_autocomplete(entry_widget, matches, current_word)
             else:
                 self._hide_autocomplete()
-        
+
         def on_tab_press(event):
             if not self.autocomplete_listbox:
                 return
-                
+
             # 检查是否有选择项，如果没有则选择第一项
             selection = self.autocomplete_listbox.curselection()
             if not selection:
                 self.autocomplete_listbox.selection_set(0)
                 selection = (0,)
-            
+
             if selection:
                 selected_tag = self.autocomplete_listbox.get(selection[0])
                 current_text = entry_widget.get()
                 cursor_pos = entry_widget.index(tk.INSERT)
-                
+
                 # 找到当前光标所在位置的词
                 text_before_cursor = current_text[:cursor_pos]
                 words = text_before_cursor.split(",")
-                
+
                 # 替换最后一个词并添加逗号
                 if len(words) > 1:
                     words[-1] = selected_tag + ", "
                     new_text = ",".join(words)
                 else:
                     new_text = selected_tag + ", "
-                
+
                 entry_widget.delete(0, tk.END)
                 entry_widget.insert(0, new_text)
                 entry_widget.icursor(len(new_text))
-                
+
                 self._hide_autocomplete()
                 return "break"  # 阻止默认Tab行为
-        
+
         def on_escape_press(event):
             self._hide_autocomplete()
             return "break"
-        
+
         def on_focus_out(event):
             # 延迟隐藏，以便点击列表项
             self.after(100, self._hide_autocomplete)
-        
+
         def on_arrow_key_press(event):
             if not self.autocomplete_listbox:
                 return
-                
+
             # 只处理上下箭头键
             if event.keysym not in ["Up", "Down"]:
                 return
-                
+
             current_selection = self.autocomplete_listbox.curselection()
             current_index = current_selection[0] if current_selection else 0
-            
+
             if event.keysym == "Up":
                 # 向上选择
                 if current_index > 0:
@@ -948,21 +1127,21 @@ class AddEditDialog(tk.Toplevel):
                     self.autocomplete_listbox.selection_clear(0, tk.END)
                     self.autocomplete_listbox.selection_set(current_index + 1)
                     self.autocomplete_listbox.see(current_index + 1)
-            
+
             # 阻止事件传播到KeyRelease
             return "break"
-        
+
         entry_widget.bind("<KeyPress>", on_arrow_key_press)  # 先绑定箭头键
-        entry_widget.bind("<KeyRelease>", on_key_release)   # 使用新的KeyRelease处理
+        entry_widget.bind("<KeyRelease>", on_key_release)  # 使用新的KeyRelease处理
         entry_widget.bind("<Tab>", on_tab_press)
         entry_widget.bind("<Escape>", on_escape_press)
         entry_widget.bind("<FocusOut>", on_focus_out)
-    
+
     def _show_autocomplete(self, entry_widget, matches, current_word):
         """显示自动补全列表"""
         if self.autocomplete_listbox:
             self.autocomplete_listbox.destroy()
-        
+
         # 创建列表框 - 使用self作为父窗口
         self.autocomplete_listbox = tk.Listbox(
             self,
@@ -973,31 +1152,31 @@ class AddEditDialog(tk.Toplevel):
             selectforeground="white",
             font=("Segoe UI", 9),
             relief="solid",
-            borderwidth=1
+            borderwidth=1,
         )
-        
+
         # 填充匹配项
         for match in matches[:6]:  # 最多显示6个
             self.autocomplete_listbox.insert(tk.END, match)
-        
+
         # 默认选中第一项
         if matches:
             self.autocomplete_listbox.selection_set(0)
-        
+
         # 计算位置 - 使用entry_widget的坐标
         entry_widget.update_idletasks()  # 确保窗口已更新
         entry_x = entry_widget.winfo_rootx()
         entry_y = entry_widget.winfo_rooty()
         entry_height = entry_widget.winfo_height()
         entry_width = entry_widget.winfo_width()
-        
+
         # 将列表框定位到输入框下方
         self.autocomplete_listbox.place(
             x=entry_x - self.winfo_rootx(),
             y=entry_y - self.winfo_rooty() + entry_height,
-            width=entry_width
+            width=entry_width,
         )
-        
+
         # 绑定点击事件
         def on_listbox_click(event):
             selection = self.autocomplete_listbox.curselection()
@@ -1005,26 +1184,26 @@ class AddEditDialog(tk.Toplevel):
                 selected_tag = self.autocomplete_listbox.get(selection[0])
                 current_text = entry_widget.get()
                 cursor_pos = entry_widget.index(tk.INSERT)
-                
+
                 # 找到当前光标所在位置的词
                 text_before_cursor = current_text[:cursor_pos]
                 words = text_before_cursor.split(",")
-                
+
                 # 替换最后一个词并添加逗号
                 if len(words) > 1:
                     words[-1] = selected_tag + ", "
                     new_text = ",".join(words)
                 else:
                     new_text = selected_tag + ", "
-                
+
                 entry_widget.delete(0, tk.END)
                 entry_widget.insert(0, new_text)
                 entry_widget.icursor(len(new_text))
-                
+
                 self._hide_autocomplete()
-        
+
         self.autocomplete_listbox.bind("<ButtonRelease-1>", on_listbox_click)
-    
+
     def _hide_autocomplete(self):
         """隐藏自动补全列表"""
         if self.autocomplete_listbox:
@@ -1042,7 +1221,8 @@ class AddEditDialog(tk.Toplevel):
             "tags": [
                 t.strip() for t in self.vars["tags"].get().split(",") if t.strip()
             ],
-            "isTranslated": self.is_translated_var.get(),
+            "isTranslated": self.status_var.get() == "已汉化",
+            "isDomestic": self.status_var.get() == "国产",
             "originalUrl": self.vars["originalUrl"].get().strip(),
             "translatedUrl": self.vars["translatedUrl"].get().strip(),
             "description": self.vars["description"].get().strip(),
@@ -1059,73 +1239,88 @@ class AuthorLinksDialog(tk.Toplevel):
         self.data = data
         self.result = None
         self.geometry("600x500")
-        
+
         # 主框架
         main_frame = ttk.Frame(self, padding="10")
         main_frame.pack(fill=tk.BOTH, expand=True)
-        
+
         # 说明
-        ttk.Label(main_frame, text="配置作者和译者的主页链接，支持YouTube和B站", 
-                 font=("Microsoft YaHei", 10)).pack(pady=(0, 10))
-        
+        ttk.Label(
+            main_frame,
+            text="配置作者和译者的主页链接，支持YouTube和B站",
+            font=("Microsoft YaHei", 10),
+        ).pack(pady=(0, 10))
+
         # 创建表格框架
         table_frame = ttk.Frame(main_frame)
         table_frame.pack(fill=tk.BOTH, expand=True)
-        
+
         # 滚动条
         scrollbar = ttk.Scrollbar(table_frame)
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-        
+
         # 树形视图
-        self.tree = ttk.Treeview(table_frame, columns=("name", "link"), show="headings", 
-                                 yscrollcommand=scrollbar.set)
+        self.tree = ttk.Treeview(
+            table_frame,
+            columns=("name", "link"),
+            show="headings",
+            yscrollcommand=scrollbar.set,
+        )
         self.tree.heading("name", text="作者/译者")
         self.tree.heading("link", text="主页链接")
         self.tree.column("name", width=200)
         self.tree.column("link", width=350)
         self.tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         scrollbar.config(command=self.tree.yview)
-        
+
         # 加载现有链接
         self.load_existing_links()
-        
+
         # 按钮区
         btn_frame = ttk.Frame(main_frame)
         btn_frame.pack(fill=tk.X, pady=(10, 0))
-        
-        ttk.Button(btn_frame, text="添加/修改", command=self.add_edit_link).pack(side=tk.LEFT, padx=2)
-        ttk.Button(btn_frame, text="删除", command=self.delete_link).pack(side=tk.LEFT, padx=2)
-        ttk.Button(btn_frame, text="保存", command=self.save_links).pack(side=tk.RIGHT, padx=2)
-        ttk.Button(btn_frame, text="取消", command=self.destroy).pack(side=tk.RIGHT, padx=2)
-        
+
+        ttk.Button(btn_frame, text="添加/修改", command=self.add_edit_link).pack(
+            side=tk.LEFT, padx=2
+        )
+        ttk.Button(btn_frame, text="删除", command=self.delete_link).pack(
+            side=tk.LEFT, padx=2
+        )
+        ttk.Button(btn_frame, text="保存", command=self.save_links).pack(
+            side=tk.RIGHT, padx=2
+        )
+        ttk.Button(btn_frame, text="取消", command=self.destroy).pack(
+            side=tk.RIGHT, padx=2
+        )
+
         # 双击编辑
         self.tree.bind("<Double-1>", lambda e: self.add_edit_link())
-    
+
     def load_existing_links(self):
         """加载现有的作者链接"""
         # 从data.js中提取authorLinks
         try:
             with open("data.js", "r", encoding="utf-8") as f:
                 content = f.read()
-                
+
             # 查找authorLinks对象
-            match = re.search(r'const authorLinks = ({.*?});', content, re.DOTALL)
+            match = re.search(r"const authorLinks = ({.*?});", content, re.DOTALL)
             if match:
                 links_str = match.group(1)
                 print(f"原始字符串: {repr(links_str[:200])}")
-                
+
                 # 移除JavaScript注释，使其成为有效的JSON
                 # 移除单行注释 //（但不包括URL中的//）
-                links_str = re.sub(r'^\s*//.*$', '', links_str, flags=re.MULTILINE)
+                links_str = re.sub(r"^\s*//.*$", "", links_str, flags=re.MULTILINE)
                 # 移除多行注释 /* */
-                links_str = re.sub(r'/\*.*?\*/', '', links_str, flags=re.DOTALL)
+                links_str = re.sub(r"/\*.*?\*/", "", links_str, flags=re.DOTALL)
                 # 移除多余的逗号和空白
-                links_str = re.sub(r',\s*}', '}', links_str)
-                links_str = re.sub(r',\s*]', ']', links_str)
+                links_str = re.sub(r",\s*}", "}", links_str)
+                links_str = re.sub(r",\s*]", "]", links_str)
                 links_str = links_str.strip()
-                
+
                 print(f"清理后字符串: {repr(links_str[:200])}")
-                
+
                 # 尝试解析JSON，如果失败则尝试修复常见问题
                 try:
                     self.author_links = json.loads(links_str)
@@ -1133,12 +1328,14 @@ class AuthorLinksDialog(tk.Toplevel):
                     print(f"JSON解析错误详情: {e}")
                     # 尝试修复常见的JSON问题
                     # 移除控制字符但保留必要的换行符
-                    links_str = re.sub(r'[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F-\x9F]', '', links_str)
+                    links_str = re.sub(
+                        r"[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F-\x9F]", "", links_str
+                    )
                     # 确保字符串使用双引号
                     links_str = re.sub(r"'([^']*)'", r'"\1"', links_str)
                     print(f"修复后字符串: {repr(links_str[:200])}")
                     self.author_links = json.loads(links_str)
-                
+
                 print(f"解析成功，共有 {len(self.author_links)} 个链接")
             else:
                 print("未找到authorLinks对象")
@@ -1146,28 +1343,29 @@ class AuthorLinksDialog(tk.Toplevel):
         except Exception as e:
             print(f"加载作者链接时出错: {e}")
             import traceback
+
             traceback.print_exc()
             self.author_links = {}
-        
+
         # 显示到表格
         print(f"准备显示到表格，链接数量: {len(self.author_links)}")
         for name, link in self.author_links.items():
             print(f"添加: {name} -> {link}")
             self.tree.insert("", tk.END, values=(name, link))
-    
+
     def add_edit_link(self):
         """添加或修改链接"""
         selection = self.tree.selection()
         if selection:
             item = self.tree.item(selection[0])
-            name, link = item['values']
+            name, link = item["values"]
         else:
             name = ""
             link = ""
-        
+
         dialog = LinkEditDialog(self, name, link)
         self.wait_window(dialog)
-        
+
         if dialog.result:
             new_name, new_link = dialog.result
             # 更新或添加
@@ -1175,26 +1373,26 @@ class AuthorLinksDialog(tk.Toplevel):
                 self.tree.item(selection[0], values=(new_name, new_link))
             else:
                 self.tree.insert("", tk.END, values=(new_name, new_link))
-    
+
     def delete_link(self):
         """删除链接"""
         selection = self.tree.selection()
         if not selection:
             messagebox.showwarning("提示", "请先选择要删除的项目")
             return
-        
+
         if messagebox.askyesno("确认", "确定要删除这个链接吗？"):
             self.tree.delete(selection[0])
-    
+
     def save_links(self):
         """保存链接到data.js"""
         # 收集所有链接
         links = {}
         for child in self.tree.get_children():
-            name, link = self.tree.item(child)['values']
+            name, link = self.tree.item(child)["values"]
             if name and link:
                 links[name] = link
-        
+
         # 读取data.js文件
         try:
             with open("data.js", "r", encoding="utf-8") as f:
@@ -1202,18 +1400,22 @@ class AuthorLinksDialog(tk.Toplevel):
         except:
             messagebox.showerror("错误", "无法读取data.js文件")
             return
-        
+
         # 替换authorLinks部分
-        new_links_str = "const authorLinks = " + json.dumps(links, ensure_ascii=False, indent=4) + ";"
-        
+        new_links_str = (
+            "const authorLinks = "
+            + json.dumps(links, ensure_ascii=False, indent=4)
+            + ";"
+        )
+
         # 查找并替换
-        pattern = r'const authorLinks = {.*?};'
+        pattern = r"const authorLinks = {.*?};"
         if re.search(pattern, content, re.DOTALL):
             new_content = re.sub(pattern, new_links_str, content, flags=re.DOTALL)
         else:
             # 如果没有找到，在文件开头添加
             new_content = new_links_str + "\n\n" + content
-        
+
         # 保存文件
         try:
             with open("data.js", "w", encoding="utf-8") as f:
@@ -1231,44 +1433,54 @@ class LinkEditDialog(tk.Toplevel):
         self.title("编辑链接")
         self.result = None
         self.geometry("400x200")
-        
+
         # 主框架
         main_frame = ttk.Frame(self, padding="20")
         main_frame.pack(fill=tk.BOTH, expand=True)
-        
+
         # 名称输入
         ttk.Label(main_frame, text="作者/译者名称:").pack(anchor=tk.W)
         self.name_var = tk.StringVar(value=name)
-        ttk.Entry(main_frame, textvariable=self.name_var, width=50).pack(fill=tk.X, pady=(0, 10))
-        
+        ttk.Entry(main_frame, textvariable=self.name_var, width=50).pack(
+            fill=tk.X, pady=(0, 10)
+        )
+
         # 链接输入
         ttk.Label(main_frame, text="主页链接:").pack(anchor=tk.W)
         self.link_var = tk.StringVar(value=link)
-        ttk.Entry(main_frame, textvariable=self.link_var, width=50).pack(fill=tk.X, pady=(0, 10))
-        
+        ttk.Entry(main_frame, textvariable=self.link_var, width=50).pack(
+            fill=tk.X, pady=(0, 10)
+        )
+
         # 说明
-        ttk.Label(main_frame, text="支持YouTube频道链接或B站空间链接", 
-                 font=("Microsoft YaHei", 9), foreground="#666").pack(pady=(0, 10))
-        
+        ttk.Label(
+            main_frame,
+            text="支持YouTube频道链接或B站空间链接",
+            font=("Microsoft YaHei", 9),
+            foreground="#666",
+        ).pack(pady=(0, 10))
+
         # 按钮
         btn_frame = ttk.Frame(main_frame)
         btn_frame.pack(fill=tk.X)
-        
+
         ttk.Button(btn_frame, text="确定", command=self.ok).pack(side=tk.RIGHT, padx=2)
-        ttk.Button(btn_frame, text="取消", command=self.destroy).pack(side=tk.RIGHT, padx=2)
-    
+        ttk.Button(btn_frame, text="取消", command=self.destroy).pack(
+            side=tk.RIGHT, padx=2
+        )
+
     def ok(self):
         name = self.name_var.get().strip()
         link = self.link_var.get().strip()
-        
+
         if not name:
             messagebox.showwarning("提示", "请输入作者/译者名称")
             return
-        
+
         if not link:
             messagebox.showwarning("提示", "请输入主页链接")
             return
-        
+
         self.result = (name, link)
         self.destroy()
 
@@ -1279,139 +1491,190 @@ class ThumbnailUrlDialog(tk.Toplevel):
         self.title("生成缩略图URL")
         self.geometry("600x500")  # 增加高度以适应滚动条
         self.result = None
-        
+
         # 主框架 - 使用Canvas和滚动条
         canvas = tk.Canvas(self)
         scrollbar = ttk.Scrollbar(self, orient="vertical", command=canvas.yview)
         main_frame = ttk.Frame(canvas)
-        
+
         # 配置滚动条
         scrollbar.pack(side="right", fill="y")
         canvas.pack(side="left", fill="both", expand=True)
         canvas.create_window((0, 0), window=main_frame, anchor="nw")
         canvas.configure(yscrollcommand=scrollbar.set)
-        
+
         # 更新滚动区域
         def configure_scroll_region(event=None):
             canvas.configure(scrollregion=canvas.bbox("all"))
-        
+
         # 绑定鼠标滚轮事件到整个窗口
         def on_mousewheel(event):
-            canvas.yview_scroll(int(-1*(event.delta/120)), "units")
-        
+            canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+
         # 绑定到canvas、main_frame和顶级窗口
-        canvas.bind('<MouseWheel>', on_mousewheel)
-        main_frame.bind('<MouseWheel>', on_mousewheel)
-        self.bind('<MouseWheel>', on_mousewheel)
-        main_frame.bind('<Configure>', configure_scroll_region)
-        
+        canvas.bind("<MouseWheel>", on_mousewheel)
+        main_frame.bind("<MouseWheel>", on_mousewheel)
+        self.bind("<MouseWheel>", on_mousewheel)
+        main_frame.bind("<Configure>", configure_scroll_region)
+
         # URL格式选择
         format_frame = ttk.LabelFrame(main_frame, text="URL格式", padding="10")
         format_frame.pack(fill=tk.X, pady=(0, 20))
-        
+
         self.url_format = tk.StringVar(value="cloudinary")
-        
-        ttk.Radiobutton(format_frame, text="Cloudinary", 
-                      variable=self.url_format, value="cloudinary",
-                      command=self.update_url_preview).pack(anchor=tk.W)
-        ttk.Radiobutton(format_frame, text="GitHub + jsDelivr", 
-                      variable=self.url_format, value="github",
-                      command=self.update_url_preview).pack(anchor=tk.W)
-        ttk.Radiobutton(format_frame, text="自定义URL", 
-                      variable=self.url_format, value="custom",
-                      command=self.update_url_preview).pack(anchor=tk.W)
-        
+
+        ttk.Radiobutton(
+            format_frame,
+            text="Cloudinary",
+            variable=self.url_format,
+            value="cloudinary",
+            command=self.update_url_preview,
+        ).pack(anchor=tk.W)
+        ttk.Radiobutton(
+            format_frame,
+            text="GitHub + jsDelivr",
+            variable=self.url_format,
+            value="github",
+            command=self.update_url_preview,
+        ).pack(anchor=tk.W)
+        ttk.Radiobutton(
+            format_frame,
+            text="自定义URL",
+            variable=self.url_format,
+            value="custom",
+            command=self.update_url_preview,
+        ).pack(anchor=tk.W)
+
         # URL配置
         config_frame = ttk.LabelFrame(main_frame, text="URL配置", padding="10")
         config_frame.pack(fill=tk.X, pady=(0, 20))
-        
+
         # Cloudinary配置
         self.cloud_frame = ttk.Frame(config_frame)
-        ttk.Label(self.cloud_frame, text="云名称:").grid(row=0, column=0, sticky=tk.W, pady=2)
+        ttk.Label(self.cloud_frame, text="云名称:").grid(
+            row=0, column=0, sticky=tk.W, pady=2
+        )
         self.cloud_name = tk.StringVar(value="do6rggmy6")
-        ttk.Entry(self.cloud_frame, textvariable=self.cloud_name).grid(row=0, column=1, sticky=tk.EW, pady=2)
-        
-        ttk.Label(self.cloud_frame, text="版本号:").grid(row=1, column=0, sticky=tk.W, pady=2)
+        ttk.Entry(self.cloud_frame, textvariable=self.cloud_name).grid(
+            row=0, column=1, sticky=tk.EW, pady=2
+        )
+
+        ttk.Label(self.cloud_frame, text="版本号:").grid(
+            row=1, column=0, sticky=tk.W, pady=2
+        )
         self.cloud_version = tk.StringVar(value="v1770352189")
-        ttk.Entry(self.cloud_frame, textvariable=self.cloud_version).grid(row=1, column=1, sticky=tk.EW, pady=2)
-        
-        ttk.Label(self.cloud_frame, text="文件夹:").grid(row=2, column=0, sticky=tk.W, pady=2)
+        ttk.Entry(self.cloud_frame, textvariable=self.cloud_version).grid(
+            row=1, column=1, sticky=tk.EW, pady=2
+        )
+
+        ttk.Label(self.cloud_frame, text="文件夹:").grid(
+            row=2, column=0, sticky=tk.W, pady=2
+        )
         self.cloud_folder = tk.StringVar(value="touhou/thumbnails")
-        ttk.Entry(self.cloud_frame, textvariable=self.cloud_folder).grid(row=2, column=1, sticky=tk.EW, pady=2)
-        
+        ttk.Entry(self.cloud_frame, textvariable=self.cloud_folder).grid(
+            row=2, column=1, sticky=tk.EW, pady=2
+        )
+
         self.cloud_frame.columnconfigure(1, weight=1)
-        
+
         # GitHub配置
         self.github_frame = ttk.Frame(config_frame)
-        ttk.Label(self.github_frame, text="用户名:").grid(row=0, column=0, sticky=tk.W, pady=2)
+        ttk.Label(self.github_frame, text="用户名:").grid(
+            row=0, column=0, sticky=tk.W, pady=2
+        )
         self.github_user = tk.StringVar(value="Fairy-Oracle-Sanctuary")
-        ttk.Entry(self.github_frame, textvariable=self.github_user).grid(row=0, column=1, sticky=tk.EW, pady=2)
-        
-        ttk.Label(self.github_frame, text="仓库名:").grid(row=1, column=0, sticky=tk.W, pady=2)
+        ttk.Entry(self.github_frame, textvariable=self.github_user).grid(
+            row=0, column=1, sticky=tk.EW, pady=2
+        )
+
+        ttk.Label(self.github_frame, text="仓库名:").grid(
+            row=1, column=0, sticky=tk.W, pady=2
+        )
         self.github_repo = tk.StringVar(value="Touhou-Chabangeki-Collect")
-        ttk.Entry(self.github_frame, textvariable=self.github_repo).grid(row=1, column=1, sticky=tk.EW, pady=2)
-        
-        ttk.Label(self.github_frame, text="文件夹:").grid(row=2, column=0, sticky=tk.W, pady=2)
+        ttk.Entry(self.github_frame, textvariable=self.github_repo).grid(
+            row=1, column=1, sticky=tk.EW, pady=2
+        )
+
+        ttk.Label(self.github_frame, text="文件夹:").grid(
+            row=2, column=0, sticky=tk.W, pady=2
+        )
         self.github_folder = tk.StringVar(value="images")
-        ttk.Entry(self.github_frame, textvariable=self.github_folder).grid(row=2, column=1, sticky=tk.EW, pady=2)
-        
+        ttk.Entry(self.github_frame, textvariable=self.github_folder).grid(
+            row=2, column=1, sticky=tk.EW, pady=2
+        )
+
         self.github_frame.columnconfigure(1, weight=1)
-        
+
         # 自定义配置
         self.custom_frame = ttk.Frame(config_frame)
-        ttk.Label(self.custom_frame, text="基础URL:").grid(row=0, column=0, sticky=tk.W, pady=2)
+        ttk.Label(self.custom_frame, text="基础URL:").grid(
+            row=0, column=0, sticky=tk.W, pady=2
+        )
         self.custom_base = tk.StringVar(value="https://example.com/images/")
-        ttk.Entry(self.custom_frame, textvariable=self.custom_base).grid(row=0, column=1, sticky=tk.EW, pady=2)
-        
+        ttk.Entry(self.custom_frame, textvariable=self.custom_base).grid(
+            row=0, column=1, sticky=tk.EW, pady=2
+        )
+
         self.custom_frame.columnconfigure(1, weight=1)
-        
+
         # 范围选择
         range_frame = ttk.LabelFrame(main_frame, text="ID范围", padding="10")
         range_frame.pack(fill=tk.X, pady=(0, 20))
-        
+
         range_input_frame = ttk.Frame(range_frame)
         range_input_frame.pack(fill=tk.X)
-        
+
         ttk.Label(range_input_frame, text="从:").pack(side=tk.LEFT)
         self.start_id = tk.StringVar(value="1")
-        ttk.Entry(range_input_frame, textvariable=self.start_id, width=8).pack(side=tk.LEFT, padx=(5, 10))
-        
+        ttk.Entry(range_input_frame, textvariable=self.start_id, width=8).pack(
+            side=tk.LEFT, padx=(5, 10)
+        )
+
         ttk.Label(range_input_frame, text="到:").pack(side=tk.LEFT)
         self.end_id = tk.StringVar(value="70")
-        ttk.Entry(range_input_frame, textvariable=self.end_id, width=8).pack(side=tk.LEFT, padx=(5, 10))
-        
+        ttk.Entry(range_input_frame, textvariable=self.end_id, width=8).pack(
+            side=tk.LEFT, padx=(5, 10)
+        )
+
         # 选项
         self.update_empty_only = tk.BooleanVar(value=True)
-        ttk.Checkbutton(range_frame, text="仅更新空的缩略图", 
-                      variable=self.update_empty_only).pack(anchor=tk.W, pady=(10, 0))
-        
+        ttk.Checkbutton(
+            range_frame, text="仅更新空的缩略图", variable=self.update_empty_only
+        ).pack(anchor=tk.W, pady=(10, 0))
+
         # URL预览
         preview_frame = ttk.LabelFrame(main_frame, text="URL预览", padding="10")
         preview_frame.pack(fill=tk.X, pady=(0, 20))
-        
-        self.preview_label = ttk.Label(preview_frame, text="请选择URL格式", 
-                                   font=("Microsoft YaHei", 9), wraplength=550)
+
+        self.preview_label = ttk.Label(
+            preview_frame,
+            text="请选择URL格式",
+            font=("Microsoft YaHei", 9),
+            wraplength=550,
+        )
         self.preview_label.pack(anchor=tk.W)
-        
+
         # 按钮
         btn_frame = ttk.Frame(main_frame)
         btn_frame.pack(fill=tk.X)
-        
-        ttk.Button(btn_frame, text="确定", command=self.ok).pack(side=tk.RIGHT, padx=(5, 0))
+
+        ttk.Button(btn_frame, text="确定", command=self.ok).pack(
+            side=tk.RIGHT, padx=(5, 0)
+        )
         ttk.Button(btn_frame, text="取消", command=self.destroy).pack(side=tk.RIGHT)
-        
+
         # 初始化显示
         self.update_url_preview()
-    
+
     def update_url_preview(self):
         """更新URL预览"""
         format_type = self.url_format.get()
-        
+
         # 隐藏所有配置框架
         self.cloud_frame.pack_forget()
         self.github_frame.pack_forget()
         self.custom_frame.pack_forget()
-        
+
         if format_type == "cloudinary":
             self.cloud_frame.pack(fill=tk.X, pady=(5, 0))
             url = f"https://res.cloudinary.com/{self.cloud_name.get()}/image/upload/{self.cloud_version.get()}/{self.cloud_folder.get()}/{{id}}.jpg"
@@ -1421,44 +1684,44 @@ class ThumbnailUrlDialog(tk.Toplevel):
         else:  # custom
             self.custom_frame.pack(fill=tk.X, pady=(5, 0))
             base = self.custom_base.get()
-            if not base.endswith('/'):
-                base += '/'
+            if not base.endswith("/"):
+                base += "/"
             url = f"{base}{{id}}.jpg"
-        
+
         example_url = url.format(id=1)
         self.preview_label.config(text=f"示例URL: {example_url}")
-    
+
     def get_url_template(self):
         """获取URL模板"""
         format_type = self.url_format.get()
-        
+
         if format_type == "cloudinary":
             return f"https://res.cloudinary.com/{self.cloud_name.get()}/image/upload/{self.cloud_version.get()}/{self.cloud_folder.get()}/{{id}}.jpg"
         elif format_type == "github":
             return f"https://cdn.jsdelivr.net/gh/{self.github_user.get()}/{self.github_repo.get()}/main/{self.github_folder.get()}/{{id}}.jpg"
         else:  # custom
             base = self.custom_base.get()
-            if not base.endswith('/'):
-                base += '/'
+            if not base.endswith("/"):
+                base += "/"
             return f"{base}{{id}}.jpg"
-    
+
     def ok(self):
         """确定按钮"""
         try:
             start_id = int(self.start_id.get())
             end_id = int(self.end_id.get())
-            
+
             if start_id < 1 or end_id < start_id:
                 messagebox.showerror("错误", "请输入有效的ID范围")
                 return
-                
+
         except ValueError:
             messagebox.showerror("错误", "请输入有效的数字")
             return
-        
+
         url_template = self.get_url_template()
         update_empty_only = self.update_empty_only.get()
-        
+
         self.result = (url_template, start_id, end_id, update_empty_only)
         self.destroy()
 

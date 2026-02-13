@@ -4,7 +4,7 @@ const dramas = [
         title: "死神与少年",
         author: "ささきの茶釜",
         translator: "就是很一般",
-        tags: ["小野塚小町", "圣白莲", "命莲", "八意永琳", "射命丸文", "琪露诺", "大妖精", "多多良小伞", "娜兹玲", "村纱水蜜", "云居一轮", "幽谷响子", "河城荷取", "水桥帕露西", "封兽鵺", "若鹭姬", "露米娅", "上白泽慧音", "星熊勇仪", "伊吹萃香", "铃仙", "博丽灵梦", "魂魄妖梦", "芙兰朵露", "四季映姬"],
+        tags: ["小野塚小町", "圣白莲", "命莲", "八意永琳", "射命丸文", "琪露诺", "大妖精", "多多良小伞", "娜兹玲", "村纱水蜜", "云居一轮", "幽谷响子", "河城荷取", "水桥帕露西", "封兽鵺", "若鹭姬", "露米娅", "上白泽慧音", "星熊勇仪", "伊吹萃香", "铃仙", "博丽灵梦", "魂魄妖梦", "芙兰朵露", "四季映姬", "寅丸星"],
         isTranslated: true,
         originalUrl: "https://www.youtube.com/playlist?list=PLxioisTzjlBa1NoKDTH1nkAHgOwAHzhma",
         translatedUrl: "https://cdn.jsdelivr.net/gh/Fairy-Oracle-Sanctuary/Touhou-Chabangeki-Collect@main/images/1.jpg",
@@ -42,11 +42,11 @@ const dramas = [
         id: 4,
         title: "騒がしすぎて怖くない夜廻三",
         author: "ささきの茶釜",
-        translator: "",
+        translator: "Baby_2016",
         tags: ["魂魄妖梦", "芙兰朵露", "十六夜咲夜", "洩矢诹访子", "博丽灵梦", "东风谷早苗", "雾雨魔理沙", "森近霖之助", "上白泽慧音", "蕾米莉亚", "爱丽丝"],
-        isTranslated: false,
+        isTranslated: true,
         originalUrl: "https://www.youtube.com/playlist?list=PLxioisTzjlBYrCViDpMBfFOEy1R4xNi1t",
-        translatedUrl: "",
+        translatedUrl: "https://space.bilibili.com/499929312/lists/7392546",
         description: "夜明けまでに、呪いを解く方法を思い出せ。",
         thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/4.jpg",
         dateAdded: "2022-08-10"
@@ -1207,6 +1207,19 @@ const dramas = [
         description: "",
         thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770358555/touhou/thumbnails/93.jpg",
         dateAdded: "2025-09-10"
+    },
+    {
+        id: 94,
+        title: "爱丽丝成为妈妈了",
+        author: "ゆっくりトポロジー",
+        translator: "寄遗忘之物于流年",
+        tags: ["爱丽丝"],
+        isTranslated: true,
+        originalUrl: "https://www.youtube.com/playlist?list=PLsfDuT-j_dJ4n48XIiNjlPkA-wRBCezP3",
+        translatedUrl: "https://space.bilibili.com/109338384/lists/7394791",
+        description: "爱丽丝妈妈",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770978235/touhou/thumbnails/94.jpg",
+        dateAdded: "2025-01-13"
     }
 ];
 
@@ -1274,5 +1287,6 @@ const authorLinks = {
     "白玉ぜんざいの人": "https://www.youtube.com/@shiratama-zenzai-",
     "ゆっくりむむ": "https://www.youtube.com/@mumumu0410",
     "こよせ": "https://www.youtube.com/@koyose_ch",
-    "TheUsualHeartFade123": "https://space.bilibili.com/5838316"
+    "TheUsualHeartFade123": "https://space.bilibili.com/5838316",
+    "ゆっくりトポロジー": "https://www.youtube.com/@yukkuri.topology"
 };
