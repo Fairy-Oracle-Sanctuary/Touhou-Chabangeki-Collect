@@ -1510,6 +1510,20 @@ const dramas = [
         description: "",
         thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/108.jpg",
         dateAdded: "2025-06-07"
+    },
+    {
+        id: 109,
+        title: "映姬所遗忘的妹妹们",
+        author: "温柔的-露娜sama",
+        translator: "",
+        tags: ["四季映姬", "芙兰朵露", "博丽灵梦", "犬走椛", "魂魄妖梦", "古明地觉", "蕾米莉亚", "雾雨魔理沙", "稗田阿求"],
+        isTranslated: false,
+        isDomestic: true,
+        originalUrl: "https://space.bilibili.com/521628660/lists/6025206",
+        translatedUrl: "",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/109.jpg",
+        dateAdded: "2025-07-04"
     }
 ];
 
@@ -1585,5 +1599,6 @@ const authorLinks = {
     "古茗地華": "https://space.bilibili.com/369600973",
     "チェイス【ゆっくり茶番劇】": "https://www.youtube.com/@CHASER126",
     "楽園の魔法使": "https://space.bilibili.com/1650223739",
-    "剧中还是剧终了呢": "https://space.bilibili.com/3493276539685348"
+    "剧中还是剧终了呢": "https://space.bilibili.com/3493276539685348",
+    "温柔的-露娜sama": "https://space.bilibili.com/521628660"
 };
