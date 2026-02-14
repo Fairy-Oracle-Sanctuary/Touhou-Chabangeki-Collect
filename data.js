@@ -1499,8 +1499,8 @@ const dramas = [
     },
     {
         id: 108,
-        title: "云东方小尬剧",
-        author: "剧中还是剧终了呢",
+        title: "小尬剧",
+        author: "极悲",
         translator: "",
         tags: ["古明地觉", "古明地恋", "藤原妹红", "辉夜", "射命丸文", "犬走椛", "秦心", "魂魄妖梦", "西行寺幽幽子", "东风谷早苗", "纯狐", "多多良小伞", "绵月依姬", "露米娅", "埴安神袿姬"],
         isTranslated: false,
@@ -1599,6 +1599,6 @@ const authorLinks = {
     "古茗地華": "https://space.bilibili.com/369600973",
     "チェイス【ゆっくり茶番劇】": "https://www.youtube.com/@CHASER126",
     "楽園の魔法使": "https://space.bilibili.com/1650223739",
-    "剧中还是剧终了呢": "https://space.bilibili.com/3493276539685348",
+    "极悲": "https://space.bilibili.com/3493276539685348",
     "温柔的-露娜sama": "https://space.bilibili.com/521628660"
 };
