@@ -8,7 +8,7 @@ const dramas = [
         isTranslated: true,
         isDomestic: false,
         originalUrl: "https://www.youtube.com/playlist?list=PLxioisTzjlBa1NoKDTH1nkAHgOwAHzhma",
-        translatedUrl: "https://cdn.jsdelivr.net/gh/Fairy-Oracle-Sanctuary/Touhou-Chabangeki-Collect@main/images/1.jpg",
+        translatedUrl: "https://space.bilibili.com/12621850/lists/4882608",
         description: "你是我活过的证明。",
         thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/1.jpg",
         dateAdded: "2023-06-18"
