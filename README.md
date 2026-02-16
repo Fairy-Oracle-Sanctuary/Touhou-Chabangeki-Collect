@@ -2,7 +2,7 @@
   东方 Project 茶番剧收藏
 </h1>
 
-> 这是一个用于收集和展示东方 Project 二次创作茶番剧的网站，使用 GitHub Pages 托管。请注意所有的代码都是由AI编写，团队只负责维护和更新数据，如果ui实在让你感到不适请发issue。。
+> 这是一个用于收集和展示东方 Project 二次创作茶番剧的网站，使用 GitHub Pages 托管。请注意所有的代码都是由AI编写，团队只负责维护和更新数据，如果ui实在让你感到不适请发issue。
 
 <p align="center">
 
