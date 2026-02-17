@@ -479,7 +479,7 @@ const dramas = [
         id: 35,
         title: "古今西行歌枕",
         author: "森の民やむぅ",
-        translator: "幻想入的Jier,Baby_2016,TheUsualHeartFade123",
+        translator: "幻想入的Jier,Baby_2016,TheUsualHeartFade123, 降り注ぐ星の光",
         tags: ["西行寺幽幽子", "八云紫", "魂魄妖梦"],
         isTranslated: true,
         isDomestic: false,
@@ -1524,6 +1524,20 @@ const dramas = [
         description: "",
         thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/109.jpg",
         dateAdded: "2025-07-04"
+    },
+    {
+        id: 110,
+        title: "盲目的少女与丑陋的少年",
+        author: "ツキミ草【ゆっくり】",
+        translator: "兴趣使然的鸽子口牙",
+        tags: ["古明地恋", "东风谷早苗"],
+        isTranslated: true,
+        isDomestic: false,
+        originalUrl: "https://www.youtube.com/playlist?list=PLuabzLomQRYUsFGKUThPnEMJ-zT2dxdBj",
+        translatedUrl: "https://space.bilibili.com/3546748681194187/lists/7438204",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/110.jpg",
+        dateAdded: "2025-05-07"
     }
 ];
 
@@ -1600,5 +1614,6 @@ const authorLinks = {
     "チェイス【ゆっくり茶番劇】": "https://www.youtube.com/@CHASER126",
     "楽園の魔法使": "https://space.bilibili.com/1650223739",
     "极悲": "https://space.bilibili.com/3493276539685348",
-    "温柔的-露娜sama": "https://space.bilibili.com/521628660"
+    "温柔的-露娜sama": "https://space.bilibili.com/521628660",
+    "降り注ぐ星の光": "https://space.bilibili.com/2041496991"
 };
