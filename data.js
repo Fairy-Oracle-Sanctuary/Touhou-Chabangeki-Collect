@@ -1538,6 +1538,62 @@ const dramas = [
         description: "",
         thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/110.jpg",
         dateAdded: "2025-05-07"
+    },
+    {
+        id: 111,
+        title: "一向高冷的王子殿下，唯独对我展露可爱一面\n·",
+        author: "ゆっくりトポロジー",
+        translator: "寄遗忘之物于流年",
+        tags: ["藤原妹红"],
+        isTranslated: true,
+        isDomestic: false,
+        originalUrl: "https://www.youtube.com/playlist?list=PLsfDuT-j_dJ7ZiG7V_a4828RPerwHFc7q",
+        translatedUrl: "https://space.bilibili.com/109338384/lists/7466744",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/111.jpg",
+        dateAdded: "2025-05-30"
+    },
+    {
+        id: 112,
+        title: "史上最差最糟的狼人游戏",
+        author: "夜桜チャンネル",
+        translator: "黎仟憶_アリス",
+        tags: ["博丽灵梦", "雾雨魔理沙", "八意永琳", "古明地恋", "古明地觉", "帕秋莉", "十六夜咲夜", "魂魄妖梦", "蕾米莉亚", "上白泽慧音", "八云紫", "芙兰朵露"],
+        isTranslated: true,
+        isDomestic: false,
+        originalUrl: "https://www.youtube.com/playlist?list=PL-1f8SJ_NruyUAAguD3t5Kxc0BwapRHaa",
+        translatedUrl: "https://space.bilibili.com/1359356041/lists/4387144",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/112.jpg",
+        dateAdded: "2023-07-11"
+    },
+    {
+        id: 113,
+        title: "被诅咒少女的幻想入",
+        author: "夜桜チャンネル",
+        translator: "黎仟憶_アリス",
+        tags: ["幻想入", "八云紫", "雾雨魔理沙", "博丽灵梦", "蕾米莉亚", "芙兰朵露"],
+        isTranslated: true,
+        isDomestic: false,
+        originalUrl: "https://www.youtube.com/playlist?list=PL-1f8SJ_NruxsGgyZaefxrA96z8HxBERv",
+        translatedUrl: "https://www.bilibili.com/video/BV1172tBqEjR",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/113.jpg",
+        dateAdded: "2024-05-21"
+    },
+    {
+        id: 114,
+        title: "被入室小偷求婚的结果！？",
+        author: "NOT教育系月蝕さんのゆっくり茶番劇Ch【不定期投稿中】",
+        translator: "寄遗忘之物于流年",
+        tags: ["多多良小伞"],
+        isTranslated: true,
+        isDomestic: false,
+        originalUrl: "https://www.youtube.com/playlist?list=PLcVm5ie8VPeX4qRXt-TNzoGamNIPJjYYP",
+        translatedUrl: "https://space.bilibili.com/109338384/lists/7466039",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/114.jpg",
+        dateAdded: "2023-07-01"
     }
 ];
 
@@ -1615,5 +1671,8 @@ const authorLinks = {
     "楽園の魔法使": "https://space.bilibili.com/1650223739",
     "极悲": "https://space.bilibili.com/3493276539685348",
     "温柔的-露娜sama": "https://space.bilibili.com/521628660",
-    "降り注ぐ星の光": "https://space.bilibili.com/2041496991"
+    "降り注ぐ星の光": "https://space.bilibili.com/2041496991",
+    "NOT教育系月蝕さんのゆっくり茶番劇Ch【不定期投稿中】": "https://www.youtube.com/@Ch-geltusyoku-%E8%8C%B6%E7%95%AA%E5%8A%87",
+    "夜桜チャンネル": "https://www.youtube.com/@yozakura.ch7",
+    "黎仟憶_アリス": "https://space.bilibili.com/1359356041"
 };
