@@ -123,7 +123,7 @@ const dramas = [
         translatedUrl: "https://space.bilibili.com/12621850/lists/6172948",
         description: "大家听说过水平思考谜题吗？\n也被称为\"海龟汤\"呢。",
         thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/9.jpg",
-        dateAdded: "2026-02-03"
+        dateAdded: "2021-04-04"
     },
     {
         id: 10,
