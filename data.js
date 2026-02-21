@@ -1595,6 +1595,31 @@ const dramas = [
         thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/114.jpg",
         dateAdded: "2023-07-01"
     }
+    {
+        "id": 115,
+        "title": "突然被美少女逼婚了",
+        "author": "あるふぁるふぁ",
+        "translator": "寄遗忘之物于流年",
+        "tags": [
+        "多多良小伞",
+        "古明地恋",
+        "射命丸文",
+        "上白泽慧音",
+        "藤原妹红",
+        "蕾米莉亚",
+        "帕秋莉",
+        "四季映姬",
+        "本居小铃",
+        "小野冢小町"
+        ],
+        "isTranslated": true,
+        "isDomestic": true,
+        "originalUrl": "https://www.youtube.com/watch?v=DTZSb_4gkPU",
+        "translatedUrl": "https://www.bilibili.com/video/BV19VZPBGEgQ/",
+        "description": "",
+        "thumbnail": "",
+        "dateAdded": "2026-02-16"
+      }
 ];
 
 const authorLinks = {
