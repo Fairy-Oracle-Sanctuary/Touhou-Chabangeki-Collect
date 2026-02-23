@@ -1613,12 +1613,12 @@ const dramas = [
         "小野冢小町"
         ],
         "isTranslated": true,
-        "isDomestic": true,
+        "isDomestic": false,
         "originalUrl": "https://www.youtube.com/watch?v=DTZSb_4gkPU",
         "translatedUrl": "https://www.bilibili.com/video/BV19VZPBGEgQ/",
         "description": "",
         "thumbnail": "",
-        "dateAdded": "2026-02-16"
+        "dateAdded": "2024-05-25"
       }
 ];
 
