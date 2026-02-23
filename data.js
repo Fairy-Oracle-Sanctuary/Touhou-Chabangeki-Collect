@@ -1594,7 +1594,7 @@ const dramas = [
         description: "",
         thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/114.jpg",
         dateAdded: "2023-07-01"
-    }
+    },
     {
         "id": 115,
         "title": "突然被美少女逼婚了",
