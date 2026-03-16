@@ -1598,7 +1598,7 @@ const dramas = [
     {
         "id": 115,
         "title": "突然被美少女逼婚了",
-        "author": "あるふぁるふぁ",
+        "author": "あるふぁるふぁ。@ゆっくり茶番劇",
         "translator": "寄遗忘之物于流年",
         "tags": [
         "多多良小伞",
@@ -1617,7 +1617,7 @@ const dramas = [
         "originalUrl": "https://www.youtube.com/watch?v=DTZSb_4gkPU",
         "translatedUrl": "https://www.bilibili.com/video/BV19VZPBGEgQ/",
         "description": "",
-        "thumbnail": "",
+        "thumbnail": "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/115.jpg",
         "dateAdded": "2024-05-25"
       }
 ];
