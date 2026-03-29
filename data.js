@@ -32,7 +32,7 @@ const dramas = [
         title: "幻想心狼殿",
         author: "ささきの茶釜",
         translator: "就是很一般",
-        tags: ["古明地觉", "古明地恋", "魂魄妖梦", "芙兰朵露", "灵乌路空", "火焰猫燐", "藤原妹红"],
+        tags: ["古明地觉", "古明地恋", "魂魄妖梦", "芙兰朵露", "灵乌路空", "火焰猫燐", "藤原妹红", "黑谷山女", "犬走椛"],
         isTranslated: true,
         isDomestic: false,
         originalUrl: "https://www.youtube.com/playlist?list=PLxioisTzjlBaXcAkHQes8-dkINhSlG-Aj",
@@ -1596,30 +1596,89 @@ const dramas = [
         dateAdded: "2023-07-01"
     },
     {
-        "id": 115,
-        "title": "突然被美少女逼婚了",
-        "author": "あるふぁるふぁ。@ゆっくり茶番劇",
-        "translator": "寄遗忘之物于流年",
-        "tags": [
-        "多多良小伞",
-        "古明地恋",
-        "射命丸文",
-        "上白泽慧音",
-        "藤原妹红",
-        "蕾米莉亚",
-        "帕秋莉",
-        "四季映姬",
-        "本居小铃",
-        "小野冢小町"
-        ],
-        "isTranslated": true,
-        "isDomestic": false,
-        "originalUrl": "https://www.youtube.com/watch?v=DTZSb_4gkPU",
-        "translatedUrl": "https://www.bilibili.com/video/BV19VZPBGEgQ/",
-        "description": "",
-        "thumbnail": "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/115.jpg",
-        "dateAdded": "2024-05-25"
-      }
+        id: 115,
+        title: "突然被美少女逼婚了",
+        author: "あるふぁるふぁ。@ゆっくり茶番劇",
+        translator: "寄遗忘之物于流年",
+        tags: ["多多良小伞", "古明地恋", "射命丸文", "上白泽慧音", "藤原妹红", "蕾米莉亚", "帕秋莉", "四季映姬", "本居小铃", "小野冢小町"],
+        isTranslated: true,
+        isDomestic: false,
+        originalUrl: "https://www.youtube.com/watch?v=DTZSb_4gkPU",
+        translatedUrl: "https://www.bilibili.com/video/BV19VZPBGEgQ/",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/115.jpg",
+        dateAdded: "2024-05-25"
+    },
+    {
+        id: 116,
+        title: "最差劲却又最心爱的恋人",
+        author: "あーる。/ aru",
+        translator: "兴趣使然的鸽子口牙",
+        tags: ["奥野田美宵", "朱鹭子"],
+        isTranslated: true,
+        isDomestic: false,
+        originalUrl: "https://www.youtube.com/playlist?list=PLkbhAsj-moQxa4Q2Cs3pAbcTKYy7cSf6i",
+        translatedUrl: "https://space.bilibili.com/109338384/lists/7520962",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/116.jpg",
+        dateAdded: "2021-11-01"
+    },
+    {
+        id: 117,
+        title: "致毕业季的你",
+        author: "MISAKI 3518",
+        translator: "寄遗忘之物于流年",
+        tags: ["冴月麟", "火焰猫燐", "多多良小伞", "本居小铃", "森近霖之助"],
+        isTranslated: true,
+        isDomestic: false,
+        originalUrl: "https://www.youtube.com/playlist?list=PLPIDlOi7aH3HB7suRaFmtiSYZToWh8ZXg",
+        translatedUrl: "https://space.bilibili.com/109338384/lists/7757680",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/117.jpg",
+        dateAdded: "2023-12-26"
+    },
+    {
+        id: 118,
+        title: "拯救了被欺负的穷鬼灵梦",
+        author: "ユアきち",
+        translator: "山上的幽灵_",
+        tags: ["博丽灵梦", "雾雨魔理沙", "十六夜咲夜", "蕾米莉亚"],
+        isTranslated: true,
+        isDomestic: false,
+        originalUrl: "https://www.youtube.com/playlist?list=PLJFn_LriRbKF_y1YaQAJV57QqRAjind4T",
+        translatedUrl: "https://space.bilibili.com/3546752504302024/lists/7626835",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/118.jpg",
+        dateAdded: "2025-03-01"
+    },
+    {
+        id: 119,
+        title: "冬休みの実家帰省",
+        author: "あるふぁるふぁ。@ゆっくり茶番劇",
+        translator: "凯文想当道",
+        tags: ["东风谷早苗", "博丽灵梦", "十六夜咲夜", "古明地恋", "冴月麟", "秦心"],
+        isTranslated: true,
+        isDomestic: false,
+        originalUrl: "https://www.youtube.com/watch?v=xq5AEEruqf8",
+        translatedUrl: "https://www.bilibili.com/video/BV1aQw4zJE8o",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/119.jpg",
+        dateAdded: "2025-12-28"
+    },
+    {
+        id: 120,
+        title: "とある少女と一輪の花",
+        author: "あるふぁるふぁ。@ゆっくり茶番劇",
+        translator: "凯文想当道",
+        tags: ["东风谷早苗", "古明地恋", "博丽灵梦", "上白泽慧音", "风见幽香", "黑谷山女", "雾雨魔理沙", "魂魄妖梦", "蕾米莉亚"],
+        isTranslated: true,
+        isDomestic: false,
+        originalUrl: "https://www.youtube.com/watch?v=MCS8fHO4hgc",
+        translatedUrl: "https://www.bilibili.com/video/BV1MdXyBMEKt",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/120.jpg",
+        dateAdded: "2026-02-12"
+    }
 ];
 
 const authorLinks = {
@@ -1699,5 +1758,8 @@ const authorLinks = {
     "降り注ぐ星の光": "https://space.bilibili.com/2041496991",
     "NOT教育系月蝕さんのゆっくり茶番劇Ch【不定期投稿中】": "https://www.youtube.com/@Ch-geltusyoku-%E8%8C%B6%E7%95%AA%E5%8A%87",
     "夜桜チャンネル": "https://www.youtube.com/@yozakura.ch7",
-    "黎仟憶_アリス": "https://space.bilibili.com/1359356041"
+    "黎仟憶_アリス": "https://space.bilibili.com/1359356041",
+    "あるふぁるふぁ。@ゆっくり茶番劇": "https://www.youtube.com/@alfalfa_alpha",
+    "ユアきち": "https://www.youtube.com/@YUAKICHI-016",
+    "凯文想当道": ""
 };
