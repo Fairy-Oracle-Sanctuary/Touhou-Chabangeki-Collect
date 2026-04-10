@@ -1678,6 +1678,20 @@ const dramas = [
         description: "",
         thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/120.jpg",
         dateAdded: "2026-02-12"
+    },
+    {
+        id: 121,
+        title: "幽灵女友幽幽子小姐",
+        author: "ゆっくりアニ友",
+        translator: "兴趣使然的鸽子口牙",
+        tags: ["西行寺幽幽子"],
+        isTranslated: true,
+        isDomestic: false,
+        originalUrl: "https://www.youtube.com/playlist?list=PLOTcjB4jF8DiOSeG1O7HKfWoux0vdxPS5",
+        translatedUrl: "https://space.bilibili.com/109338384/lists/7844798",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/121.jpg",
+        dateAdded: "2021-01-09"
     }
 ];
 
@@ -1761,5 +1775,6 @@ const authorLinks = {
     "黎仟憶_アリス": "https://space.bilibili.com/1359356041",
     "あるふぁるふぁ。@ゆっくり茶番劇": "https://www.youtube.com/@alfalfa_alpha",
     "ユアきち": "https://www.youtube.com/@YUAKICHI-016",
-    "凯文想当道": ""
+    "凯文想当道": "https://space.bilibili.com/1701396872",
+    "ゆっくりアニ友": "https://www.youtube.com/@%E3%82%86%E3%81%A3%E3%81%8F%E3%82%8A%E3%82%A2%E3%83%8B%E5%8F%8B"
 };
