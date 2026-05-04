@@ -1692,6 +1692,90 @@ const dramas = [
         description: "",
         thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/121.jpg",
         dateAdded: "2021-01-09"
+    },
+    {
+        id: 122,
+        title: "病娇会传染",
+        author: "片野シュウ",
+        translator: "山上的幽灵_",
+        tags: ["病娇", "博丽灵梦", "芙兰朵露", "铃仙", "古明地恋"],
+        isTranslated: true,
+        isDomestic: false,
+        originalUrl: "https://www.youtube.com/playlist?list=PLz4ADywDGAbRlXhDkbxNdrvwXR2maG97-",
+        translatedUrl: "https://space.bilibili.com/3546752504302024/lists/7986364",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/122.jpg",
+        dateAdded: "2026-03-03"
+    },
+    {
+        id: 123,
+        title: "病娇修罗场幻想乡",
+        author: "こよせ",
+        translator: "山上的幽灵_",
+        tags: ["病娇", "博丽灵梦", "雾雨魔理沙", "十六夜咲夜"],
+        isTranslated: true,
+        isDomestic: false,
+        originalUrl: "https://www.youtube.com/playlist?list=PLCPkyZ4DMXEk3-oyfJRIPkpwiRC0f83V9",
+        translatedUrl: "https://space.bilibili.com/3546752504302024/lists/8033742",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/123.jpg",
+        dateAdded: "2026-04-25"
+    },
+    {
+        id: 124,
+        title: "Endless Summer",
+        author: "るちょ",
+        translator: "兴趣使然的鸽子口牙",
+        tags: ["博丽灵梦", "雾雨魔理沙", "魂魄妖忌", "秦心", "魂魄妖梦"],
+        isTranslated: true,
+        isDomestic: false,
+        originalUrl: "https://www.youtube.com/playlist?list=PLDnwQpBnibfJt5dVafAksjOSYviWo2hDC",
+        translatedUrl: "https://space.bilibili.com/3546748681194187/lists/8015723",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/124.jpg",
+        dateAdded: "2026-03-01"
+    },
+    {
+        id: 125,
+        title: "与青梅竹马觉的久别重逢",
+        author: "ゆくはる【ゆっくり茶番劇】",
+        translator: "寄遗忘之物于流年",
+        tags: ["古明地觉"],
+        isTranslated: true,
+        isDomestic: false,
+        originalUrl: "https://www.youtube.com/playlist?list=PLobmr1SIOMx1j05QlRgQK4OQEAClTYfAo",
+        translatedUrl: "https://space.bilibili.com/109338384/lists/7787927",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/125.jpg",
+        dateAdded: "2023-06-25"
+    },
+    {
+        id: 126,
+        title: "某对夫妻的日常",
+        author: "輝夜好きなゆっくり刀",
+        translator: "寄遗忘之物于流年",
+        tags: ["神绮"],
+        isTranslated: true,
+        isDomestic: false,
+        originalUrl: "https://www.youtube.com/playlist?list=PLGrlwBSJhaEFx-navtpSz_KJWWDUcNtgS",
+        translatedUrl: "https://space.bilibili.com/109338384/lists/8011256",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/126.jpg",
+        dateAdded: "2021-05-17"
+    },
+    {
+        id: 127,
+        title: "东方生魔操 第1章 『幻想乡篇』",
+        author: "レッド【ゆっくり劇場】",
+        translator: "寄遗忘之物于流年",
+        tags: ["爱丽丝", "雾雨魔理沙", "博丽灵梦", "本居小铃", "八云蓝"],
+        isTranslated: true,
+        isDomestic: false,
+        originalUrl: "https://www.youtube.com/playlist?list=PLyW401MWd8416rJXMNVXbZ0dcnX6yb9ze",
+        translatedUrl: "https://space.bilibili.com/109338384/lists/8024108",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/127.jpg",
+        dateAdded: "2021-03-14"
     }
 ];
 
@@ -1776,5 +1860,9 @@ const authorLinks = {
     "あるふぁるふぁ。@ゆっくり茶番劇": "https://www.youtube.com/@alfalfa_alpha",
     "ユアきち": "https://www.youtube.com/@YUAKICHI-016",
     "凯文想当道": "https://space.bilibili.com/1701396872",
-    "ゆっくりアニ友": "https://www.youtube.com/@%E3%82%86%E3%81%A3%E3%81%8F%E3%82%8A%E3%82%A2%E3%83%8B%E5%8F%8B"
+    "ゆっくりアニ友": "https://www.youtube.com/@%E3%82%86%E3%81%A3%E3%81%8F%E3%82%8A%E3%82%A2%E3%83%8B%E5%8F%8B",
+    "片野シュウ": "https://www.youtube.com/@Katano_Syuu",
+    "ゆくはる【ゆっくり茶番劇】": "https://www.youtube.com/@%E3%82%86%E3%81%8F%E3%81%AF%E3%82%8B640",
+    "輝夜好きなゆっくり刀": "https://www.youtube.com/@%E8%BC%9D%E5%A4%9C%E5%A5%BD%E3%81%8D%E3%81%AA%E3%82%86%E3%81%A3%E3%81%8F%E3%82%8A%E5%88%80",
+    "レッド【ゆっくり劇場】": "https://www.youtube.com/@%E3%83%AC%E3%83%83%E3%83%89%E3%82%86%E3%81%A3%E3%81%8F%E3%82%8A%E5%8A%87%E5%A0%B4"
 };
