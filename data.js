@@ -1683,7 +1683,7 @@ const dramas = [
         id: 121,
         title: "幽灵女友幽幽子小姐",
         author: "ゆっくりアニ友",
-        translator: "兴趣使然的鸽子口牙",
+        translator: "寄遗忘之物于流年",
         tags: ["西行寺幽幽子"],
         isTranslated: true,
         isDomestic: false,
