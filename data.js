@@ -1776,6 +1776,62 @@ const dramas = [
         description: "",
         thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/127.jpg",
         dateAdded: "2021-03-14"
+    },
+    {
+        id: 128,
+        title: "博丽灵梦的赛钱箱",
+        author: "博丽灵梦project",
+        translator: "",
+        tags: ["博丽灵梦", "雾雨魔理沙", "射命丸文", "八云紫", "茨木华扇", "冴月麟"],
+        isTranslated: false,
+        isDomestic: true,
+        originalUrl: "https://space.bilibili.com/2127486445/lists/8092983",
+        translatedUrl: "",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1781336080/128.webp",
+        dateAdded: "2026-05-10"
+    },
+    {
+        id: 129,
+        title: "アルカイ教作者的性压抑合集合集",
+        author: "アルカイ教",
+        translator: "羽が落ちたな",
+        tags: ["博丽灵梦", "古明地恋", "赫卡提亚", "蕾米莉亚", "秦心"],
+        isTranslated: true,
+        isDomestic: false,
+        originalUrl: "https://www.youtube.com/@arukaikyou",
+        translatedUrl: "https://space.bilibili.com/355345896/lists/8330071",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1781336080/129.webp",
+        dateAdded: "2026-05-09"
+    },
+    {
+        id: 130,
+        title: "废都的爱丽丝",
+        author: "不知火桃",
+        translator: "寄遗忘之物于流年",
+        tags: ["爱丽丝", "八云蓝", "八云紫", "依神紫苑", "八云橙", "魂魄妖梦", "铃仙", "雾雨魔理沙", "神绮", "帕秋莉"],
+        isTranslated: true,
+        isDomestic: false,
+        originalUrl: "https://www.youtube.com/playlist?list=PLFU-QWGTBq-5nPBq2wROx4MClksDO0oyd",
+        translatedUrl: "https://space.bilibili.com/109338384/lists/8296370",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1781336080/130.webp",
+        dateAdded: "2023-10-16"
+    },
+    {
+        id: 131,
+        title: "东方灵旧章",
+        author: "レッド【ゆっくり劇場】",
+        translator: "寄遗忘之物于流年",
+        tags: ["博丽灵梦", "八意永琳", "雾雨魔理沙", "八坂神奈子", "东风谷早苗", "风见幽香"],
+        isTranslated: true,
+        isDomestic: false,
+        originalUrl: "https://www.youtube.com/playlist?list=PLyW401MWd840VUy_dGrINnQqV50efWVby",
+        translatedUrl: "https://space.bilibili.com/109338384/lists/8202862",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1781336080/131.webp",
+        dateAdded: "2018-07-07"
     }
 ];
 
@@ -1864,5 +1920,7 @@ const authorLinks = {
     "片野シュウ": "https://www.youtube.com/@Katano_Syuu",
     "ゆくはる【ゆっくり茶番劇】": "https://www.youtube.com/@%E3%82%86%E3%81%8F%E3%81%AF%E3%82%8B640",
     "輝夜好きなゆっくり刀": "https://www.youtube.com/@%E8%BC%9D%E5%A4%9C%E5%A5%BD%E3%81%8D%E3%81%AA%E3%82%86%E3%81%A3%E3%81%8F%E3%82%8A%E5%88%80",
-    "レッド【ゆっくり劇場】": "https://www.youtube.com/@%E3%83%AC%E3%83%83%E3%83%89%E3%82%86%E3%81%A3%E3%81%8F%E3%82%8A%E5%8A%87%E5%A0%B4"
+    "レッド【ゆっくり劇場】": "https://www.youtube.com/@%E3%83%AC%E3%83%83%E3%83%89%E3%82%86%E3%81%A3%E3%81%8F%E3%82%8A%E5%8A%87%E5%A0%B4",
+    "博丽灵梦project": "https://space.bilibili.com/2127486445",
+    "羽が落ちたな": "https://space.bilibili.com/355345896"
 };

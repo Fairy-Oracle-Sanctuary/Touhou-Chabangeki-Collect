@@ -2459,9 +2459,9 @@ function renderDramas() {
         // Add pagination controls if needed
         if (userSettings.itemsPerPage !== 'all' && totalPages > 1) {
             grid.innerHTML += `
-                <div class="col-span-full flex justify-center items-center gap-2 mt-6">
+                <div class="col-span-full flex flex-wrap justify-center items-center gap-2 mt-6">
                     <button onclick="changePage(${window.pagination.currentPage - 1})" 
-                            class="px-3 py-1.5 text-sm rounded border transition-colors ${
+                            class="px-2 sm:px-3 py-1.5 text-sm rounded border transition-colors ${
                                 window.pagination.currentPage === 1 
                                     ? 'bg-gray-100 dark:bg-zinc-800 text-gray-400 dark:text-zinc-600 border-gray-200 dark:border-zinc-700 cursor-not-allowed' 
                                     : 'bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800'
@@ -2470,13 +2470,13 @@ function renderDramas() {
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                         </svg>
-                        上一页
+                        <span class="hidden sm:inline">上一页</span>
                     </button>
                     
-                    <div class="flex items-center gap-1">
+                    <div class="flex items-center gap-1 overflow-x-auto max-w-full px-1">
                         ${Array.from({ length: totalPages }, (_, i) => i + 1).map(pageNum => `
                             <button onclick="changePage(${pageNum})" 
-                                    class="px-3 py-1.5 text-sm rounded border transition-colors ${
+                                    class="px-2 sm:px-3 py-1.5 text-sm rounded border transition-colors flex-shrink-0 ${
                                         pageNum === window.pagination.currentPage 
                                             ? 'bg-red-600 text-white border-red-600' 
                                             : 'bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800'
@@ -2487,19 +2487,19 @@ function renderDramas() {
                     </div>
                     
                     <button onclick="changePage(${window.pagination.currentPage + 1})" 
-                            class="px-3 py-1.5 text-sm rounded border transition-colors ${
+                            class="px-2 sm:px-3 py-1.5 text-sm rounded border transition-colors ${
                                 window.pagination.currentPage === totalPages 
                                     ? 'bg-gray-100 dark:bg-zinc-800 text-gray-400 dark:text-zinc-600 border-gray-200 dark:border-zinc-700 cursor-not-allowed' 
                                     : 'bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800'
                             }"
                             ${window.pagination.currentPage === totalPages ? 'disabled' : ''}>
-                        下一页
+                        <span class="hidden sm:inline">下一页</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                         </svg>
                     </button>
                     
-                    <div class="flex items-center gap-2 ml-4">
+                    <div class="hidden sm:flex items-center gap-2 ml-2">
                         <span class="text-sm text-zinc-600 dark:text-zinc-400">跳转到</span>
                         <input type="number" 
                                id="gotoPage" 
