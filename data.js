@@ -1776,6 +1776,34 @@ const dramas = [
         description: "",
         thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/127.jpg",
         dateAdded: "2021-03-14"
+    },
+    {
+        id: 128,
+        title: "东方星莲船前传",
+        author: "baby2016",
+        translator: "",
+        tags: ["圣白莲", "命莲"],
+        isTranslated: false,
+        isDomestic: true,
+        originalUrl: "https://space.bilibili.com/499929312/lists/8416274",
+        translatedUrl: "",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/128.png",
+        dateAdded: "2026-07-08"
+    },
+    {
+        id: 129,
+        title: "东方秘救部",
+        author: "レッド【ゆっくり劇場】",
+        translator: "寄遗忘之物于流年",
+        tags: ["宇佐见莲子", "梅莉"],
+        isTranslated: true,
+        isDomestic: false,
+        originalUrl: "https://www.youtube.com/playlist?list=PLyW401MWd843e2pWgRGcLfdMx7PeIcP90",
+        translatedUrl: "https://space.bilibili.com/109338384/lists/8559908",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/129.jpg",
+        dateAdded: "2018-11-17"
     }
 ];
 
@@ -1864,5 +1892,6 @@ const authorLinks = {
     "片野シュウ": "https://www.youtube.com/@Katano_Syuu",
     "ゆくはる【ゆっくり茶番劇】": "https://www.youtube.com/@%E3%82%86%E3%81%8F%E3%81%AF%E3%82%8B640",
     "輝夜好きなゆっくり刀": "https://www.youtube.com/@%E8%BC%9D%E5%A4%9C%E5%A5%BD%E3%81%8D%E3%81%AA%E3%82%86%E3%81%A3%E3%81%8F%E3%82%8A%E5%88%80",
-    "レッド【ゆっくり劇場】": "https://www.youtube.com/@%E3%83%AC%E3%83%83%E3%83%89%E3%82%86%E3%81%A3%E3%81%8F%E3%82%8A%E5%8A%87%E5%A0%B4"
+    "レッド【ゆっくり劇場】": "https://www.youtube.com/@%E3%83%AC%E3%83%83%E3%83%89%E3%82%86%E3%81%A3%E3%81%8F%E3%82%8A%E5%8A%87%E5%A0%B4",
+    "baby2016": "https://space.bilibili.com/499929312"
 };
