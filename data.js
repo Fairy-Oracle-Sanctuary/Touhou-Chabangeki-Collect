@@ -1832,6 +1832,34 @@ const dramas = [
         description: "",
         thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1781336080/131.webp",
         dateAdded: "2018-07-07"
+    },
+    {
+        id: 132,
+        title: "东方星莲船·前传",
+        author: "Baby_2016",
+        translator: "",
+        tags: ["圣白莲", "命莲"],
+        isTranslated: false,
+        isDomestic: true,
+        originalUrl: "https://space.bilibili.com/499929312/lists/8416274",
+        translatedUrl: "",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1784983152/touhou/thumbnails/128.png",
+        dateAdded: "2026-07-08"
+    },
+    {
+        id: 133,
+        title: "东方秘救部",
+        author: "レッド【ゆっくり劇場】",
+        translator: "寄遗忘之物于流年",
+        tags: ["宇佐见莲子", "梅莉"],
+        isTranslated: true,
+        isDomestic: false,
+        originalUrl: "https://www.youtube.com/playlist?list=PLyW401MWd842p5NsjxQzh2KOV6PDAU53q",
+        translatedUrl: "https://space.bilibili.com/109338384/lists/8559908",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1784983153/touhou/thumbnails/129.jpg",
+        dateAdded: "2018-11-17"
     }
 ];
 
