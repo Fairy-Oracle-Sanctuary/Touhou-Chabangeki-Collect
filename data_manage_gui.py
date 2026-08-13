@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 东方 Project 茶番剧收藏数据管理脚本 (GUI 完整修复版)
 修复说明：
@@ -410,7 +409,7 @@ class DataManagerGUI:
                     )
                     if match:
                         links_str = match.group(1)
-                        print(f"原始authorLinks字符串: {repr(links_str[:200])}")
+                        print(f"原始authorLinks字符串: {links_str[:200]!r}")
 
                         # 最简单的方法：按行处理
                         lines = links_str.split("\n")
@@ -1307,7 +1306,7 @@ class AuthorLinksDialog(tk.Toplevel):
             match = re.search(r"const authorLinks = ({.*?});", content, re.DOTALL)
             if match:
                 links_str = match.group(1)
-                print(f"原始字符串: {repr(links_str[:200])}")
+                print(f"原始字符串: {links_str[:200]!r}")
 
                 # 移除JavaScript注释，使其成为有效的JSON
                 # 移除单行注释 //（但不包括URL中的//）
@@ -1319,7 +1318,7 @@ class AuthorLinksDialog(tk.Toplevel):
                 links_str = re.sub(r",\s*]", "]", links_str)
                 links_str = links_str.strip()
 
-                print(f"清理后字符串: {repr(links_str[:200])}")
+                print(f"清理后字符串: {links_str[:200]!r}")
 
                 # 尝试解析JSON，如果失败则尝试修复常见问题
                 try:
@@ -1333,7 +1332,7 @@ class AuthorLinksDialog(tk.Toplevel):
                     )
                     # 确保字符串使用双引号
                     links_str = re.sub(r"'([^']*)'", r'"\1"', links_str)
-                    print(f"修复后字符串: {repr(links_str[:200])}")
+                    print(f"修复后字符串: {links_str[:200]!r}")
                     self.author_links = json.loads(links_str)
 
                 print(f"解析成功，共有 {len(self.author_links)} 个链接")
@@ -1424,7 +1423,7 @@ class AuthorLinksDialog(tk.Toplevel):
             messagebox.showinfo("成功", "作者链接已保存")
             self.destroy()
         except Exception as e:
-            messagebox.showerror("错误", f"保存失败: {str(e)}")
+            messagebox.showerror("错误", f"保存失败: {e!s}")
 
 
 class LinkEditDialog(tk.Toplevel):

@@ -20,14 +20,35 @@
                 extend: {
                     fontFamily: {
                         sans: ['Noto Sans SC', 'sans-serif'],
+                        heading: ['Noto Sans SC', 'sans-serif'],
                     },
                     colors: {
                         // 东方红 (Reimu Red)
                         touhou: {
                             red: '#E60012',
+                            'red-soft': '#FF3B47',
                             dark: '#1a1a1a',
                         }
-                    }
+                    },
+                    borderRadius: {
+                        '2xl': '1rem',
+                        '3xl': '1.5rem',
+                    },
+                    boxShadow: {
+                        'card': '0 1px 2px rgba(9,9,11,0.04), 0 1px 3px rgba(9,9,11,0.06)',
+                        'card-hover': '0 20px 40px -12px rgba(230,0,18,0.18), 0 8px 16px -8px rgba(230,0,18,0.10)',
+                        'modal': '0 25px 50px -12px rgba(0,0,0,0.35)',
+                        'glow-red': '0 0 0 1px rgba(230,0,18,0.25), 0 10px 30px -10px rgba(230,0,18,0.45)',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            from: { opacity: '0', transform: 'translateY(16px)' },
+                            to: { opacity: '1', transform: 'translateY(0)' }
+                        },
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.5s ease-out both',
+                    },
                 }
             }
         }
@@ -35,17 +56,29 @@
     <style>
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
-            width: 6px;
+            width: 8px;
+            height: 8px;
         }
         ::-webkit-scrollbar-track {
             background: transparent;
         }
         ::-webkit-scrollbar-thumb {
-            background: #d1d5db;
-            border-radius: 3px;
+            background: rgba(113, 113, 122, 0.4);
+            border-radius: 9999px;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(230, 0, 18, 0.55);
+            background-clip: padding-box;
         }
         .dark ::-webkit-scrollbar-thumb {
-            background: #4b5563;
+            background: rgba(82, 82, 91, 0.6);
+            background-clip: padding-box;
+        }
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 59, 71, 0.6);
+            background-clip: padding-box;
         }
         
         /* Loading Animations */
@@ -77,11 +110,23 @@
         
         /* Card hover effects */
         .drama-card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 1rem;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                        box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                        border-color 0.3s ease;
+            will-change: transform, box-shadow;
         }
-        
+
         .drama-card:hover {
-            transform: translateY(-2px);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -12px rgba(230, 0, 18, 0.18),
+                        0 8px 16px -8px rgba(230, 0, 18, 0.10);
+            border-color: rgba(230, 0, 18, 0.35);
+        }
+
+        .dark .drama-card:hover {
+            box-shadow: 0 20px 40px -12px rgba(255, 59, 71, 0.22),
+                        0 8px 16px -8px rgba(255, 59, 71, 0.14);
         }
         
         /* Loading spinner */
@@ -259,17 +304,159 @@
                 min-height: 44px;
                 min-width: 44px;
             }
-            
+
             .drama-card {
                 padding: 1rem;
             }
+        }
+
+        /* ===== 现代化设计层（借鉴 Fairy-Oracle-Sanctuary 设计语言，保留东方红） ===== */
+
+        /* Design tokens */
+        :root {
+            --tc-red: #E60012;
+            --tc-red-soft: #FF3B47;
+            --tc-red-tint: rgba(230, 0, 18, 0.08);
+            --tc-red-tint-strong: rgba(230, 0, 18, 0.14);
+            --tc-surface: #FFFFFF;
+            --tc-surface-2: #F9FAFB;
+            --tc-border: #E4E4E7;
+            --tc-text: #27272A;
+            --tc-text-muted: #71717A;
+            --tc-header-fade: #FFFFFF;
+        }
+        .dark {
+            --tc-red: #FF3B47;
+            --tc-red-soft: #FF6B73;
+            --tc-red-tint: rgba(255, 59, 71, 0.12);
+            --tc-red-tint-strong: rgba(255, 59, 71, 0.20);
+            --tc-surface: #18181B;
+            --tc-surface-2: #09090B;
+            --tc-border: #27272A;
+            --tc-text: #FAFAFA;
+            --tc-text-muted: #A1A1AA;
+            --tc-header-fade: #18181B;
+        }
+
+        /* Header banner decorative strip */
+        .header-banner {
+            position: relative;
+            width: 100%;
+            height: 96px;
+            background-image: url('images/banner.jpg');
+            background-size: cover;
+            background-position: center 35%;
+            overflow: hidden;
+        }
+        .header-banner::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(to bottom, rgba(230,0,18,0.10), transparent 40%, var(--tc-header-fade) 100%),
+                linear-gradient(to right, var(--tc-header-fade) 0%, transparent 18%, transparent 82%, var(--tc-header-fade) 100%);
+        }
+        @media (max-width: 640px) {
+            .header-banner { height: 64px; }
+        }
+
+        /* Banner floating particles */
+        .banner-particle {
+            position: absolute;
+            bottom: 0;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: var(--tc-red);
+            opacity: 0;
+            animation: bannerFloat 6s linear infinite;
+        }
+        .dark .banner-particle { background: var(--tc-red-soft); }
+        @keyframes bannerFloat {
+            0%   { transform: translateY(0) translateX(0); opacity: 0; }
+            15%  { opacity: 0.5; }
+            85%  { opacity: 0.5; }
+            100% { transform: translateY(-90px) translateX(var(--drift, 0)); opacity: 0; }
+        }
+
+        /* Glass navbar */
+        .navbar-glass {
+            background: rgba(255, 255, 255, 0.80);
+            backdrop-filter: blur(12px) saturate(160%);
+            -webkit-backdrop-filter: blur(12px) saturate(160%);
+        }
+        .dark .navbar-glass {
+            background: rgba(24, 24, 27, 0.80);
+        }
+
+        /* Pill tag (red-tinted) */
+        .tag-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.125rem 0.5rem;
+            font-size: 0.65rem;
+            font-weight: 500;
+            border-radius: 9999px;
+            background: var(--tc-red-tint);
+            color: var(--tc-red);
+            border: 1px solid transparent;
+            transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+        }
+        .tag-pill:hover {
+            background: var(--tc-red-tint-strong);
+            color: var(--tc-red);
+        }
+
+        /* Pill button helper (standalone CTAs only) */
+        .btn-pill {
+            border-radius: 9999px !important;
+        }
+
+        /* Refined modal panel (overflow left to existing overflow-y-auto utility to avoid scroll conflicts) */
+        .modal-panel {
+            border-radius: 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+        }
+
+        /* Refined sidebar card */
+        .side-card {
+            border-radius: 1rem;
+            transition: box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+        .side-card:hover {
+            border-color: rgba(230, 0, 18, 0.25);
+        }
+
+        /* Back-to-top (ID selector — wins specificity) */
+        #backToTop {
+            border-radius: 9999px;
+            border: 1px solid var(--tc-border);
+            background: var(--tc-surface);
+            color: var(--tc-text);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.10);
+            transition: background-color 0.25s, color 0.25s, transform 0.25s,
+                        box-shadow 0.25s, opacity 0.3s, visibility 0.3s;
+        }
+        #backToTop:hover {
+            background: var(--tc-red);
+            color: #fff;
+            border-color: var(--tc-red);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -6px rgba(230, 0, 18, 0.45);
+        }
+
+        /* Reduced-motion safety */
+        @media (prefers-reduced-motion: reduce) {
+            .drama-card,
+            .drama-card:hover { transform: none !important; box-shadow: none !important; }
+            .banner-particle { display: none; }
         }
     </style>
 </head>
 <body class="bg-gray-50 dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 transition-colors duration-200 min-h-screen flex flex-col opacity-0">
 
     <!-- Navbar -->
-    <nav class="sticky top-0 z-50 w-full bg-white/90 dark:bg-zinc-900/90 border-b border-gray-200 dark:border-zinc-800 backdrop-blur-sm">
+    <nav class="navbar-glass sticky top-0 z-50 w-full border-b border-gray-200 dark:border-zinc-800">
         <div class="container mx-auto px-3 sm:px-4 h-14 flex items-center justify-between">
             <div class="flex items-center gap-2 sm:gap-3">
                 <div class="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center">
@@ -306,7 +493,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                     </svg>
                 </button>
-                <button id="submitBtn" class="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-md transition-colors flex items-center gap-1.5">
+                <button id="submitBtn" class="px-4 py-1.5 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-full transition-colors flex items-center gap-1.5">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                     </svg>
@@ -367,7 +554,7 @@
                     </svg>
                     <span class="text-sm">新人推荐</span>
                 </button>
-                <button id="mobileSubmitBtn" class="w-full flex items-center gap-3 px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md transition-colors">
+                <button id="mobileSubmitBtn" class="w-full flex items-center gap-3 px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-full transition-colors">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                     </svg>
@@ -397,8 +584,16 @@
     </nav>
 
     <!-- Header Section -->
-    <header class="bg-white dark:bg-zinc-900 border-b border-gray-200 dark:border-zinc-800 bg-pattern">
-        <div class="container mx-auto px-4 py-4 sm:py-6 md:py-8">
+    <header class="bg-white dark:bg-zinc-900 border-b border-gray-200 dark:border-zinc-800">
+        <!-- Banner decorative strip -->
+        <div class="header-banner" aria-hidden="true">
+            <span class="banner-particle" style="left:12%;--drift:8px;animation-delay:0s"></span>
+            <span class="banner-particle" style="left:32%;--drift:-6px;animation-delay:1.4s"></span>
+            <span class="banner-particle" style="left:55%;--drift:10px;animation-delay:2.8s"></span>
+            <span class="banner-particle" style="left:74%;--drift:-9px;animation-delay:4.1s"></span>
+            <span class="banner-particle" style="left:88%;--drift:5px;animation-delay:5.2s"></span>
+        </div>
+        <div class="container mx-auto px-4 py-4 sm:py-6 md:py-8 bg-pattern">
             <div class="max-w-3xl">
                 <h1 class="text-xl sm:text-2xl md:text-3xl font-bold text-zinc-900 dark:text-white mb-2 sm:mb-3 tracking-tight">
                     东方 Project 茶番剧收藏
@@ -418,7 +613,7 @@
                         <input 
                             type="text" 
                             id="searchInput" 
-                            class="block w-full pl-9 pr-10 py-2.5 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md text-sm text-zinc-900 dark:text-white placeholder-zinc-500 focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-colors" 
+                            class="block w-full pl-9 pr-10 py-2.5 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-xl text-sm text-zinc-900 dark:text-white placeholder-zinc-500 focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-colors"
                             placeholder="搜索标题、作者、标签... (Ctrl+K)"
                         >
                         <!-- Clear Button -->
@@ -428,7 +623,7 @@
                             </svg>
                         </button>
                         <!-- Autocomplete Dropdown -->
-                        <div id="autocompleteDropdown" class="absolute left-0 right-0 top-full mt-1 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-md shadow-lg z-20 hidden">
+                        <div id="autocompleteDropdown" class="absolute left-0 right-0 top-full mt-1 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl shadow-lg z-20 hidden">
                             <ul id="autocompleteList" class="py-1 max-h-60 overflow-y-auto">
                                 <!-- Autocomplete items will be injected here -->
                             </ul>
@@ -470,12 +665,12 @@
                         <!-- Custom Status Dropdown -->
                         <div class="relative">
                             <button @click="statusOpen = !statusOpen" @click.outside="statusOpen = false" aria-label="选择状态"
-                                    class="flex items-center justify-between w-full sm:w-32 px-3 py-2.5 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md text-sm text-zinc-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-750 focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-colors">
+                                    class="flex items-center justify-between w-full sm:w-32 px-3 py-2.5 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-xl text-sm text-zinc-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-750 focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-colors">
                                 <span x-text="statusOptions.find(o => o.value === status).label"></span>
                                 <svg class="w-4 h-4 ml-2 text-zinc-400 transition-transform duration-200" :class="{'rotate-180': statusOpen}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                             </button>
                             <div x-show="statusOpen" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" 
-                                 class="absolute z-10 w-full sm:w-48 mt-1 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-md shadow-lg" x-cloak>
+                                 class="absolute z-10 w-full sm:w-48 mt-1 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl shadow-lg" x-cloak>
                                 <ul class="py-1">
                                     <template x-for="option in statusOptions" :key="option.value">
                                         <li>
@@ -493,12 +688,12 @@
                         <!-- Custom Sort Dropdown -->
                         <div class="relative">
                             <button @click="sortOpen = !sortOpen" @click.outside="sortOpen = false" aria-label="选择排序方式"
-                                    class="flex items-center justify-between w-full sm:w-32 px-3 py-2.5 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md text-sm text-zinc-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-750 focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-colors">
+                                    class="flex items-center justify-between w-full sm:w-32 px-3 py-2.5 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-xl text-sm text-zinc-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-750 focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-colors">
                                 <span x-text="sortOptions.find(o => o.value === sort).label"></span>
                                 <svg class="w-4 h-4 ml-2 text-zinc-400 transition-transform duration-200" :class="{'rotate-180': sortOpen}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                             </button>
                             <div x-show="sortOpen" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" 
-                                 class="absolute z-10 w-full sm:w-48 mt-1 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-md shadow-lg" x-cloak>
+                                 class="absolute z-10 w-full sm:w-48 mt-1 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl shadow-lg" x-cloak>
                                 <ul class="py-1">
                                     <template x-for="option in sortOptions" :key="option.value">
                                         <li>
@@ -534,20 +729,20 @@
             <!-- Sidebar (Filters) -->
             <aside id="sidebar" class="w-full lg:w-64 flex-shrink-0 space-y-6 lg:space-y-8">
                 <!-- Stats -->
-                <div class="bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-zinc-800 p-4">
+                <div class="bg-white dark:bg-zinc-900 rounded-2xl side-card border border-gray-200 dark:border-zinc-800 p-4">
                     <div class="flex items-center justify-between mb-3">
                         <h3 class="text-sm font-bold text-zinc-900 dark:text-white flex items-center gap-2">
                             <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
                             统计信息
                         </h3>
                         <div class="flex gap-2">
-                            <button onclick="showTimelineModal()" 
-                                    class="text-xs px-2 py-1 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 rounded hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors"
+                            <button onclick="showTimelineModal()"
+                                    class="text-xs px-2 py-1 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 rounded-full hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors"
                                     title="时间轴">
                                 时间轴
                             </button>
-                            <button onclick="showChartsModal()" 
-                                    class="text-xs px-2 py-1 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors"
+                            <button onclick="showChartsModal()"
+                                    class="text-xs px-2 py-1 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-full hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors"
                                     title="查看统计图表">
                                 图表
                             </button>
@@ -574,8 +769,8 @@
                             <span class="text-zinc-500 dark:text-zinc-400">已收藏</span>
                             <div class="flex items-center gap-2">
                                 <span class="font-medium text-red-600 dark:text-red-500" id="favoritesCount">0</span>
-                                <button onclick="showFavoritesOnly()" 
-                                        class="text-xs px-2 py-1 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors"
+                                <button onclick="showFavoritesOnly()"
+                                        class="text-xs px-2 py-1 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-full hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors"
                                         title="查看收藏">
                                     查看
                                 </button>
@@ -646,7 +841,7 @@
 
     <!-- Detail Page -->
     <div id="detailPage" class="fixed inset-0 z-[60] bg-black/70 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 hidden">
-        <div class="bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-zinc-800 max-w-4xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
+        <div class="bg-white dark:bg-zinc-900 rounded-3xl modal-panel shadow-modal border border-gray-200 dark:border-zinc-800 max-w-4xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
             <!-- Detail Header -->
             <div class="relative">
                 <div class="aspect-video overflow-hidden bg-gray-100 dark:bg-zinc-800">
@@ -680,10 +875,10 @@
                 
                 <!-- Detail Links -->
                 <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 mb-4 sm:mb-6">
-                    <a id="detailTranslatedLink" href="" target="_blank" rel="noopener noreferrer" class="flex-1 flex items-center justify-center gap-1.5 py-2 sm:py-2.5 rounded bg-red-600 hover:bg-red-700 text-white text-sm font-medium transition-colors hidden">
+                    <a id="detailTranslatedLink" href="" target="_blank" rel="noopener noreferrer" class="flex-1 flex items-center justify-center gap-1.5 py-2 sm:py-2.5 rounded-full bg-red-600 hover:bg-red-700 text-white text-sm font-medium transition-colors shadow-sm hover:shadow-glow-red hidden">
                         <span>观看汉化</span>
                     </a>
-                    <a id="detailOriginalLink" href="" target="_blank" rel="noopener noreferrer" class="flex-1 flex items-center justify-center gap-1.5 py-2 sm:py-2.5 rounded border border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-sm font-medium transition-colors">
+                    <a id="detailOriginalLink" href="" target="_blank" rel="noopener noreferrer" class="flex-1 flex items-center justify-center gap-1.5 py-2 sm:py-2.5 rounded-full border border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-sm font-medium transition-colors">
                         <span>查看原版</span>
                     </a>
                 </div>
@@ -701,7 +896,7 @@
 
     <!-- Submit Form Modal -->
     <div id="submitModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 hidden">
-        <div class="bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-zinc-800 max-w-4xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
+        <div class="bg-white dark:bg-zinc-900 rounded-3xl modal-panel shadow-modal border border-gray-200 dark:border-zinc-800 max-w-4xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
             <!-- Submit Form Header -->
             <div class="flex items-center justify-between border-b border-gray-200 dark:border-zinc-800 px-4 sm:px-6 py-3 sm:py-4">
                 <h2 class="text-base sm:text-lg font-bold text-zinc-900 dark:text-white">提交茶番剧</h2>
@@ -717,12 +912,12 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                         <div>
                             <label for="title" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">标题 *</label>
-                            <input type="text" id="title" name="title" required class="w-full px-3 py-2 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md text-sm text-zinc-900 dark:text-white placeholder-zinc-500 focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-colors">
+                            <input type="text" id="title" name="title" required class="w-full px-3 py-2 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-xl text-sm text-zinc-900 dark:text-white placeholder-zinc-500 focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-colors">
                         </div>
                         <div>
                             <label for="author" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">作者 *</label>
                             <div class="relative">
-                                <input type="text" id="author" name="author" required class="w-full px-3 py-2 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md text-sm text-zinc-900 dark:text-white placeholder-zinc-500 focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-colors">
+                                <input type="text" id="author" name="author" required class="w-full px-3 py-2 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-xl text-sm text-zinc-900 dark:text-white placeholder-zinc-500 focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-colors">
                                 <button type="button" id="authorDropdownBtn" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -741,7 +936,7 @@
                         <div>
                             <label for="translator" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">汉化者</label>
                             <div class="relative">
-                                <input type="text" id="translator" name="translator" placeholder="多个译者请用逗号、顿号、&或和分隔" class="w-full px-3 py-2 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md text-sm text-zinc-900 dark:text-white placeholder-zinc-500 focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-colors">
+                                <input type="text" id="translator" name="translator" placeholder="多个译者请用逗号、顿号、&或和分隔" class="w-full px-3 py-2 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-xl text-sm text-zinc-900 dark:text-white placeholder-zinc-500 focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-colors">
                                 <button type="button" id="translatorDropdownBtn" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -756,7 +951,7 @@
                         </div>
                         <div>
                             <label for="dateAdded" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">添加日期 *</label>
-                            <input type="date" id="dateAdded" name="dateAdded" required class="w-full px-3 py-2 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md text-sm text-zinc-900 dark:text-white placeholder-zinc-500 focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-colors">
+                            <input type="date" id="dateAdded" name="dateAdded" required class="w-full px-3 py-2 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-xl text-sm text-zinc-900 dark:text-white placeholder-zinc-500 focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-colors">
                         </div>
                     </div>
                     
@@ -764,11 +959,11 @@
                     <div class="space-y-4">
                         <div>
                             <label for="originalUrl" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">原版链接 *</label>
-                            <input type="url" id="originalUrl" name="originalUrl" required class="w-full px-3 py-2 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md text-sm text-zinc-900 dark:text-white placeholder-zinc-500 focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-colors">
+                            <input type="url" id="originalUrl" name="originalUrl" required class="w-full px-3 py-2 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-xl text-sm text-zinc-900 dark:text-white placeholder-zinc-500 focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-colors">
                         </div>
                         <div>
                             <label for="translatedUrl" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">汉化链接</label>
-                            <input type="url" id="translatedUrl" name="translatedUrl" class="w-full px-3 py-2 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md text-sm text-zinc-900 dark:text-white placeholder-zinc-500 focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-colors">
+                            <input type="url" id="translatedUrl" name="translatedUrl" class="w-full px-3 py-2 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-xl text-sm text-zinc-900 dark:text-white placeholder-zinc-500 focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-colors">
                         </div>
                     </div>
                     
@@ -776,18 +971,18 @@
                     <div class="space-y-4">
                         <div>
                             <label for="description" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">简介</label>
-                            <textarea id="description" name="description" rows="3" class="w-full px-3 py-2 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md text-sm text-zinc-900 dark:text-white placeholder-zinc-500 focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-colors"></textarea>
+                            <textarea id="description" name="description" rows="3" class="w-full px-3 py-2 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-xl text-sm text-zinc-900 dark:text-white placeholder-zinc-500 focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-colors"></textarea>
                         </div>
                         <div>
                             <label for="thumbnail" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">缩略图链接</label>
-                            <input type="url" id="thumbnail" name="thumbnail" class="w-full px-3 py-2 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md text-sm text-zinc-900 dark:text-white placeholder-zinc-500 focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-colors">
+                            <input type="url" id="thumbnail" name="thumbnail" class="w-full px-3 py-2 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-xl text-sm text-zinc-900 dark:text-white placeholder-zinc-500 focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-colors">
                         </div>
                     </div>
                     
                     <!-- Tags -->
                     <div>
                         <label for="tags" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">标签（用逗号分隔）</label>
-                        <input type="text" id="tags" name="tags" class="w-full px-3 py-2 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md text-sm text-zinc-900 dark:text-white placeholder-zinc-500 focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-colors">
+                        <input type="text" id="tags" name="tags" class="w-full px-3 py-2 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-xl text-sm text-zinc-900 dark:text-white placeholder-zinc-500 focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-colors">
                         <div class="mt-2">
                             <button type="button" id="tagDropdownBtn" class="text-xs text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300">
                                 选择已有标签
@@ -822,10 +1017,10 @@
                     
                     <!-- Submit Button -->
                     <div class="flex justify-end gap-3">
-                        <button type="button" id="cancelSubmit" class="px-4 py-2 border border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-sm font-medium rounded-md transition-colors">
+                        <button type="button" id="cancelSubmit" class="px-4 py-2 border border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-sm font-medium rounded-full transition-colors">
                             取消
                         </button>
-                        <button type="submit" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-md transition-colors">
+                        <button type="submit" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-full transition-colors">
                             生成 JSON
                         </button>
                     </div>
@@ -850,7 +1045,7 @@
 
     <!-- Batch Actions Modal -->
     <div id="batchActionsModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-        <div class="bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-zinc-800 max-w-md w-full">
+        <div class="bg-white dark:bg-zinc-900 rounded-3xl modal-panel shadow-modal border border-gray-200 dark:border-zinc-800 max-w-md w-full">
             <!-- Batch Actions Modal Header -->
             <div class="flex items-center justify-between border-b border-gray-200 dark:border-zinc-800 px-6 py-4">
                 <h2 class="text-lg font-bold text-zinc-900 dark:text-white">批量操作</h2>
@@ -866,21 +1061,21 @@
                 </div>
                 
                 <div class="space-y-3">
-                    <button id="batchFavoriteBtn" class="w-full px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-md transition-colors flex items-center justify-center gap-2">
+                    <button id="batchFavoriteBtn" class="w-full px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-full transition-colors flex items-center justify-center gap-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                         </svg>
                         批量收藏当前筛选结果
                     </button>
                     
-                    <button id="batchUnfavoriteBtn" class="w-full px-4 py-2 border border-gray-300 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-sm font-medium rounded-md transition-colors flex items-center justify-center gap-2">
+                    <button id="batchUnfavoriteBtn" class="w-full px-4 py-2 border border-gray-300 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-sm font-medium rounded-full transition-colors flex items-center justify-center gap-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                         </svg>
                         批量取消收藏当前筛选结果
                     </button>
                     
-                    <button id="exportFavoritesBtn" class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md transition-colors flex items-center justify-center gap-2">
+                    <button id="exportFavoritesBtn" class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-full transition-colors flex items-center justify-center gap-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                         </svg>
@@ -897,7 +1092,7 @@
 
     <!-- Timeline Modal -->
     <div id="timelineModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-        <div class="bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-zinc-800 max-w-5xl w-full max-h-[90vh] overflow-y-auto">
+        <div class="bg-white dark:bg-zinc-900 rounded-3xl modal-panel shadow-modal border border-gray-200 dark:border-zinc-800 max-w-5xl w-full max-h-[90vh] overflow-y-auto">
             <!-- Timeline Modal Header -->
             <div class="flex items-center justify-between border-b border-gray-200 dark:border-zinc-800 px-6 py-4">
                 <h2 class="text-lg font-bold text-zinc-900 dark:text-white">作品发布时间轴</h2>
@@ -945,7 +1140,7 @@
 
     <!-- Settings Modal -->
     <div id="settingsModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-        <div class="bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-zinc-800 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div class="bg-white dark:bg-zinc-900 rounded-3xl modal-panel shadow-modal border border-gray-200 dark:border-zinc-800 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <!-- Settings Modal Header -->
             <div class="flex items-center justify-between border-b border-gray-200 dark:border-zinc-800 px-6 py-4">
                 <h2 class="text-lg font-bold text-zinc-900 dark:text-white">个性化设置</h2>
@@ -974,7 +1169,7 @@
                 <!-- Items Per Page -->
                 <div>
                     <h3 class="text-sm font-bold text-zinc-900 dark:text-white mb-3">每页显示数量</h3>
-                    <select id="itemsPerPage" class="w-full px-3 py-2 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md text-sm text-zinc-900 dark:text-white">
+                    <select id="itemsPerPage" class="w-full px-3 py-2 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-xl text-sm text-zinc-900 dark:text-white">
                         <option value="12">12 个</option>
                         <option value="24">24 个</option>
                         <option value="48">48 个</option>
@@ -985,7 +1180,7 @@
                 <!-- Default Sort -->
                 <div>
                     <h3 class="text-sm font-bold text-zinc-900 dark:text-white mb-3">默认排序方式</h3>
-                    <select id="defaultSort" class="w-full px-3 py-2 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md text-sm text-zinc-900 dark:text-white">
+                    <select id="defaultSort" class="w-full px-3 py-2 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-xl text-sm text-zinc-900 dark:text-white">
                         <option value="date-desc">最新添加</option>
                         <option value="date-asc">最早添加</option>
                         <option value="name-asc">名称 A-Z</option>
@@ -1004,10 +1199,10 @@
                 
                 <!-- Save Button -->
                 <div class="flex justify-end gap-3 pt-4 border-t border-gray-200 dark:border-zinc-800">
-                    <button id="resetSettings" class="px-4 py-2 border border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-sm font-medium rounded-md transition-colors">
+                    <button id="resetSettings" class="px-4 py-2 border border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-sm font-medium rounded-full transition-colors">
                         重置默认
                     </button>
-                    <button id="saveSettings" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-md transition-colors">
+                    <button id="saveSettings" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-full transition-colors">
                         保存设置
                     </button>
                 </div>
@@ -1017,7 +1212,7 @@
 
     <!-- Charts Modal -->
     <div id="chartsModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-        <div class="bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-zinc-800 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+        <div class="bg-white dark:bg-zinc-900 rounded-3xl modal-panel shadow-modal border border-gray-200 dark:border-zinc-800 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
             <!-- Charts Modal Header -->
             <div class="flex items-center justify-between border-b border-gray-200 dark:border-zinc-800 px-6 py-4">
                 <h2 class="text-lg font-bold text-zinc-900 dark:text-white">统计图表</h2>
@@ -1030,7 +1225,7 @@
             <div class="p-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Translation Progress Chart -->
-                    <div class="bg-gray-50 dark:bg-zinc-800 rounded-lg p-4">
+                    <div class="bg-gray-50 dark:bg-zinc-800 rounded-2xl p-4">
                         <h3 class="text-sm font-bold text-zinc-900 dark:text-white mb-4">汉化进度</h3>
                         <div class="relative h-48">
                             <canvas id="translationChart"></canvas>
@@ -1042,7 +1237,7 @@
                     </div>
                     
                     <!-- Monthly Trend Chart -->
-                    <div class="bg-gray-50 dark:bg-zinc-800 rounded-lg p-4">
+                    <div class="bg-gray-50 dark:bg-zinc-800 rounded-2xl p-4">
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="text-sm font-bold text-zinc-900 dark:text-white">月度发布趋势</h3>
                             <button onclick="showFullMonthlyTrend()" 
@@ -1064,7 +1259,7 @@
                     </div>
                     
                     <!-- Top Authors Chart -->
-                    <div class="bg-gray-50 dark:bg-zinc-800 rounded-lg p-4">
+                    <div class="bg-gray-50 dark:bg-zinc-800 rounded-2xl p-4">
                         <h3 class="text-sm font-bold text-zinc-900 dark:text-white mb-4">作者贡献排行</h3>
                         <div class="relative h-64">
                             <canvas id="authorsChart"></canvas>
@@ -1072,7 +1267,7 @@
                     </div>
                     
                     <!-- Top Translators Chart -->
-                    <div class="bg-gray-50 dark:bg-zinc-800 rounded-lg p-4">
+                    <div class="bg-gray-50 dark:bg-zinc-800 rounded-2xl p-4">
                         <h3 class="text-sm font-bold text-zinc-900 dark:text-white mb-4">译者贡献排行</h3>
                         <div class="relative h-64">
                             <canvas id="translatorsChart"></canvas>
@@ -1085,7 +1280,7 @@
 
     <!-- Shortcuts Modal -->
     <div id="shortcutsModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-        <div class="bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-zinc-800 max-w-md w-full">
+        <div class="bg-white dark:bg-zinc-900 rounded-3xl modal-panel shadow-modal border border-gray-200 dark:border-zinc-800 max-w-md w-full">
             <!-- Shortcuts Modal Header -->
             <div class="flex items-center justify-between border-b border-gray-200 dark:border-zinc-800 px-6 py-4">
                 <h2 class="text-lg font-bold text-zinc-900 dark:text-white">键盘快捷键</h2>
@@ -1099,27 +1294,27 @@
                 <div class="space-y-4">
                     <div class="flex items-center justify-between">
                         <span class="text-sm text-zinc-700 dark:text-zinc-300">聚焦搜索框</span>
-                        <kbd class="px-2 py-1 text-xs bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded">Ctrl+K</kbd>
+                        <kbd class="px-2 py-1 text-xs bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md">Ctrl+K</kbd>
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="text-sm text-zinc-700 dark:text-zinc-300">查看收藏</span>
-                        <kbd class="px-2 py-1 text-xs bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded">Ctrl+Shift+F</kbd>
+                        <kbd class="px-2 py-1 text-xs bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md">Ctrl+Shift+F</kbd>
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="text-sm text-zinc-700 dark:text-zinc-300">关闭弹窗</span>
-                        <kbd class="px-2 py-1 text-xs bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded">Esc</kbd>
+                        <kbd class="px-2 py-1 text-xs bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md">Esc</kbd>
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="text-sm text-zinc-700 dark:text-zinc-300">清空搜索</span>
-                        <kbd class="px-2 py-1 text-xs bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded">Esc</kbd>
+                        <kbd class="px-2 py-1 text-xs bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md">Esc</kbd>
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="text-sm text-zinc-700 dark:text-zinc-300">提交表单</span>
-                        <kbd class="px-2 py-1 text-xs bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded">Ctrl+Enter</kbd>
+                        <kbd class="px-2 py-1 text-xs bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md">Ctrl+Enter</kbd>
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="text-sm text-zinc-700 dark:text-zinc-300">新人推荐</span>
-                        <kbd class="px-2 py-1 text-xs bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded">Ctrl+M</kbd>
+                        <kbd class="px-2 py-1 text-xs bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md">Ctrl+M</kbd>
                     </div>
                 </div>
             </div>
@@ -1128,11 +1323,11 @@
 
     <!-- Newcomer List Modal -->
     <div id="newcomerModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-        <div class="bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-zinc-800 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+        <div class="bg-white dark:bg-zinc-900 rounded-3xl modal-panel shadow-modal border border-gray-200 dark:border-zinc-800 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
             <!-- Newcomer Modal Header -->
             <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-zinc-800">
                 <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
+                    <div class="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center">
                         <svg class="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                         </svg>
