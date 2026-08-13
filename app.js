@@ -388,11 +388,11 @@ function generateTimeline() {
                         <h3 class="text-base sm:text-lg font-bold text-zinc-900 dark:text-white mb-2 sm:mb-3" id="period-${period}">${period}</h3>
                         <div class="space-y-2 sm:space-y-3">
                             ${periodDramas.map(drama => `
-                                <div class="bg-gray-50 dark:bg-zinc-800 rounded-lg p-2 sm:p-3 hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors cursor-pointer" 
+                                <div class="bg-gray-50 dark:bg-zinc-800 rounded-xl p-2 sm:p-3 hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors cursor-pointer"
                                      data-drama="${btoa(unescape(encodeURIComponent(JSON.stringify(drama))))}"
                                      onclick="openDetailFromData(this)">
                                     <div class="flex items-start gap-2 sm:gap-3">
-                                        <img src="${drama.thumbnail}" alt="${drama.title}" class="w-12 h-9 sm:w-16 sm:h-12 object-cover rounded">
+                                        <img src="${drama.thumbnail}" alt="${drama.title}" class="w-12 h-9 sm:w-16 sm:h-12 object-cover rounded-lg">
                                         <div class="flex-1 min-w-0">
                                             <h4 class="text-sm sm:text-base font-medium text-zinc-900 dark:text-white">${drama.title}</h4>
                                             <p class="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">${drama.author} • ${getDramaStatus(drama).text}</p>
@@ -471,16 +471,16 @@ function renderRelatedWorks(currentDrama) {
     }
     
     relatedWorksContainer.innerHTML = relatedWorks.map(drama => `
-        <div class="bg-gray-50 dark:bg-zinc-800 rounded-lg p-3 hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors cursor-pointer" 
+        <div class="bg-gray-50 dark:bg-zinc-800 rounded-xl p-3 hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors cursor-pointer border border-transparent hover:border-red-300/40" 
              data-drama="${btoa(unescape(encodeURIComponent(JSON.stringify(drama))))}"
              onclick="openDetailFromData(this)">
             <div class="flex items-start gap-2">
-                <img src="${drama.thumbnail}" alt="${drama.title}" class="w-12 h-9 object-cover rounded">
+                <img src="${drama.thumbnail}" alt="${drama.title}" class="w-12 h-9 object-cover rounded-lg">
                 <div class="flex-1 min-w-0">
                     <h4 class="text-sm font-medium text-zinc-900 dark:text-white truncate">${drama.title}</h4>
                     <p class="text-xs text-zinc-500 dark:text-zinc-400">${drama.author}</p>
                     <div class="flex items-center gap-2 mt-1">
-                        <span class="px-1.5 py-0.5 rounded text-[8px] font-medium ${getDramaStatus(drama).badgeClass}">
+                        <span class="px-1.5 py-0.5 rounded-full text-[8px] font-medium ${getDramaStatus(drama).badgeClass}">
                             ${getDramaStatus(drama).text}
                         </span>
                         ${isFavorite(drama.id) ? '<svg class="w-3 h-3 text-red-500 fill-current" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>' : ''}
@@ -563,7 +563,7 @@ function exportFavorites() {
 // Show batch operation message
 function showBatchOperationMessage(message) {
     const msgDiv = document.createElement('div');
-    msgDiv.className = 'fixed top-4 right-4 bg-emerald-500 text-white px-4 py-2 rounded-md shadow-lg z-50 fade-in';
+    msgDiv.className = 'fixed top-4 right-4 bg-emerald-500 text-white px-4 py-2 rounded-full shadow-lg z-50 fade-in';
     msgDiv.textContent = message;
     document.body.appendChild(msgDiv);
     
@@ -938,9 +938,9 @@ window.showFullMonthlyTrend = function() {
     const monthlyData = getMonthlyData(true);
     
     const modal = document.createElement('div');
-    modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+    modal.className = 'fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4';
     modal.innerHTML = `
-        <div class="bg-white dark:bg-zinc-900 rounded-xl max-w-6xl w-full max-h-[90vh] overflow-hidden shadow-2xl">
+        <div class="bg-white dark:bg-zinc-900 rounded-3xl modal-panel shadow-modal max-w-6xl w-full max-h-[90vh] overflow-hidden">
             <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-zinc-700">
                 <h2 class="text-2xl font-bold text-zinc-900 dark:text-white">
                     📊 完整月度发布趋势
@@ -1448,9 +1448,9 @@ function viewAuthorDetails(type, name) {
     
     // 创建作者详情页面
     const detailModal = document.createElement('div');
-    detailModal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+    detailModal.className = 'fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4';
     detailModal.innerHTML = `
-        <div class="bg-white dark:bg-zinc-900 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+        <div class="bg-white dark:bg-zinc-900 rounded-3xl modal-panel shadow-modal max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
             <div class="p-6 border-b border-gray-200 dark:border-zinc-700">
                 <div class="flex items-center justify-between">
                     <div>
@@ -1477,10 +1477,10 @@ function viewAuthorDetails(type, name) {
             <div class="flex-1 overflow-y-auto p-6">
                 <div class="grid gap-4">
                     ${filteredDramas.map(drama => `
-                        <div class="border border-gray-200 dark:border-zinc-700 rounded-lg p-4 hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors cursor-pointer" onclick="openDetail(${drama.id}); this.closest('.fixed').remove();">
+                        <div class="border border-gray-200 dark:border-zinc-700 rounded-xl p-4 hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors cursor-pointer" onclick="openDetail(${drama.id}); this.closest('.fixed').remove();">
                             <div class="flex justify-between items-start mb-2">
                                 <h3 class="font-medium text-zinc-900 dark:text-zinc-100">${drama.title}</h3>
-                                <span class="text-xs px-2 py-1 rounded ${getDramaStatus(drama).class}">
+                                <span class="text-xs px-2 py-1 rounded-full ${getDramaStatus(drama).class}">
                                     ${getDramaStatus(drama).text}
                                 </span>
                             </div>
@@ -1532,9 +1532,9 @@ function openAuthorBrowser(type) {
     
     // 创建浏览页面
     const browserModal = document.createElement('div');
-    browserModal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+    browserModal.className = 'fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4';
     browserModal.innerHTML = `
-        <div class="bg-white dark:bg-zinc-900 rounded-lg max-w-6xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+        <div class="bg-white dark:bg-zinc-900 rounded-3xl modal-panel shadow-modal max-w-6xl w-full max-h-[90vh] overflow-hidden flex flex-col">
             <div class="p-6 border-b border-gray-200 dark:border-zinc-700">
                 <div class="flex items-center justify-between">
                     <h2 class="text-2xl font-bold text-zinc-900 dark:text-zinc-100">${title}</h2>
@@ -1551,7 +1551,7 @@ function openAuthorBrowser(type) {
                     ${items.map(item => {
                         const authorLink = authorLinks[item.name];
                         return `
-                            <div class="bg-gray-50 dark:bg-zinc-800 rounded-lg p-4 hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors cursor-pointer group">
+                            <div class="bg-gray-50 dark:bg-zinc-800 rounded-2xl p-4 hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors cursor-pointer group border border-transparent hover:border-red-300/40">
                                 <div class="flex items-start justify-between mb-3">
                                     <div class="flex-1">
                                         <h3 class="font-medium text-zinc-900 dark:text-zinc-100 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
@@ -1585,7 +1585,7 @@ function openAuthorBrowser(type) {
                                 </div>
                                 <div class="flex flex-wrap gap-1">
                                     ${item.topTags && item.topTags.length > 0 ? item.topTags.slice(0, 3).map(tag => `
-                                        <span class="px-2 py-0.5 text-xs rounded bg-gray-200 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-400">
+                                        <span class="px-2 py-0.5 text-xs rounded-full bg-gray-200 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-400">
                                             #${tag}
                                         </span>
                                     `).join('') : '<span class="text-xs text-zinc-500">暂无标签</span>'}
@@ -1917,7 +1917,7 @@ function renderSidebar() {
             
         return `
             <button onclick="toggleFilter('tag', '${tag.name}')" 
-                    class="px-2 py-1 text-xs rounded border transition-colors ${activeClass}">
+                    class="px-2 py-1 text-xs rounded-full border transition-colors ${activeClass}">
                 #${tag.name} <span class="opacity-60 ml-0.5 text-[10px]">(${tag.count})</span>
             </button>
         `;
@@ -1931,7 +1931,7 @@ function renderSidebar() {
         
         tagCloud.innerHTML += `
             <button onclick="toggleTagsExpanded()" 
-                    class="mt-3 px-3 py-1.5 text-xs rounded bg-gray-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-gray-200 dark:hover:bg-zinc-700 transition-colors">
+                    class="mt-3 px-3 py-1.5 text-xs rounded-full bg-gray-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-gray-200 dark:hover:bg-zinc-700 transition-colors">
                 ${buttonText}
             </button>
         `;
@@ -1956,7 +1956,7 @@ function renderSidebar() {
                 </button>
                 <button onclick="viewAuthorDetails('artist', '${author.name}')" 
                         title="查看作者详情"
-                        class="p-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-gray-100 dark:hover:bg-zinc-800 rounded">
+                        class="p-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-lg">
                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
@@ -1973,7 +1973,7 @@ function renderSidebar() {
         
         authorList.innerHTML += `
             <button onclick="toggleAuthorsExpanded()" 
-                    class="mt-2 px-3 py-1.5 text-xs rounded bg-gray-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-gray-200 dark:hover:bg-zinc-700 transition-colors">
+                    class="mt-2 px-3 py-1.5 text-xs rounded-full bg-gray-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-gray-200 dark:hover:bg-zinc-700 transition-colors">
                 ${buttonText}
             </button>
         `;
@@ -1988,7 +1988,7 @@ function renderSidebar() {
             authorTitle.classList.add('flex', 'items-center', 'gap-2');
             authorTitle.innerHTML += `
                 <button onclick="openAuthorBrowser('artist')" 
-                        class="author-browse-btn ml-auto p-1 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded transition-colors"
+                        class="author-browse-btn ml-auto p-1 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-lg transition-colors"
                         title="浏览所有作者">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -2012,13 +2012,13 @@ function renderSidebar() {
             return `
                 <div class="flex items-center gap-1 group">
                     <button onclick="toggleFilter('translator', '${translator.name}')" 
-                            class="flex-1 text-left px-2 py-1.5 text-xs rounded transition-colors flex justify-between items-center ${activeClass}">
+                            class="flex-1 text-left px-2 py-1.5 text-xs rounded-lg transition-colors flex justify-between items-center ${activeClass}">
                         <span class="truncate">${translator.name}</span>
                         <span class="text-[10px] bg-gray-100 dark:bg-zinc-800 group-hover:bg-white dark:group-hover:bg-zinc-700 px-1.5 py-0.5 rounded-full transition-colors">${translator.count}</span>
                     </button>
                     <button onclick="viewAuthorDetails('translator', '${translator.name}')" 
                             title="查看译者详情"
-                            class="p-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-gray-100 dark:hover:bg-zinc-800 rounded">
+                            class="p-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-lg">
                         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
@@ -2035,7 +2035,7 @@ function renderSidebar() {
             
             translatorList.innerHTML += `
                 <button onclick="toggleTranslatorsExpanded()" 
-                        class="mt-2 px-3 py-1.5 text-xs rounded bg-gray-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-gray-200 dark:hover:bg-zinc-700 transition-colors">
+                        class="mt-2 px-3 py-1.5 text-xs rounded-full bg-gray-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-gray-200 dark:hover:bg-zinc-700 transition-colors">
                     ${buttonText}
                 </button>
             `;
@@ -2050,7 +2050,7 @@ function renderSidebar() {
                 translatorTitle.classList.add('flex', 'items-center', 'gap-2');
                 translatorTitle.innerHTML += `
                     <button onclick="openAuthorBrowser('translator')" 
-                            class="translator-browse-btn ml-auto p-1 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded transition-colors"
+                            class="translator-browse-btn ml-auto p-1 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-lg transition-colors"
                             title="浏览所有译者">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -2367,7 +2367,7 @@ function renderDramas() {
     
     setTimeout(() => {
         grid.innerHTML = displayDramas.map((drama, index) => `
-            <div class="drama-card group bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-zinc-800 hover:border-red-500/30 dark:hover:border-red-500/30 transition-colors duration-200 flex flex-col overflow-hidden cursor-pointer fade-in" 
+            <div class="drama-card group bg-white dark:bg-zinc-900 rounded-2xl border border-gray-200 dark:border-zinc-800 hover:border-red-500/40 dark:hover:border-red-500/40 flex flex-col overflow-hidden cursor-pointer fade-in" 
                  style="animation-delay: ${index * 50}ms"
                  data-drama="${btoa(unescape(encodeURIComponent(JSON.stringify(drama))))}"
                  onclick="openDetailFromData(this)">
@@ -2383,7 +2383,7 @@ function renderDramas() {
                     
                     <!-- Status Badge -->
                     <div class="absolute top-2 right-2">
-                        <span class="px-2 py-0.5 rounded text-[10px] font-medium shadow-sm ${getDramaStatus(drama).class}">
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-medium shadow-sm ${getDramaStatus(drama).class}">
                             ${getDramaStatus(drama).text}
                         </span>
                     </div>
@@ -2415,7 +2415,7 @@ function renderDramas() {
                     <!-- Tags -->
                     <div class="flex flex-wrap gap-1.5 mb-4">
                         ${drama.tags.slice(0, 3).map(tag => `
-                            <button onclick="toggleFilter('tag', '${tag}'); event.stopPropagation();" class="px-1.5 py-0.5 text-[10px] rounded bg-gray-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-gray-200 dark:border-zinc-700 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 hover:border-red-200 dark:hover:border-red-800 transition-all">
+                            <button onclick="toggleFilter('tag', '${tag}'); event.stopPropagation();" class="tag-pill text-[10px]">
                                 #${tag}
                             </button>
                         `).join('')}
@@ -2426,7 +2426,7 @@ function renderDramas() {
                     <div class="flex gap-2 mt-auto pt-3 border-t border-gray-100 dark:border-zinc-800">
                         <!-- Favorite Button -->
                         <button onclick="toggleFavorite(${drama.id}); event.stopPropagation();" 
-                                class="flex items-center justify-center gap-1.5 py-1.5 px-3 rounded border transition-colors ${
+                                class="flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-full border transition-colors ${
                                     isFavorite(drama.id) 
                                     ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30' 
                                     : 'border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-red-600 dark:hover:text-red-400'
@@ -2440,13 +2440,13 @@ function renderDramas() {
                         
                         ${drama.isTranslated && drama.translatedUrl && !drama.isDomestic ? `
                             <a href="${drama.translatedUrl}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();"
-                               class="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded bg-red-600 hover:bg-red-700 text-white text-xs font-medium transition-colors">
+                               class="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-full bg-red-600 hover:bg-red-700 text-white text-xs font-medium transition-colors shadow-sm hover:shadow-glow-red">
                                 <span>观看汉化</span>
                             </a>
                         ` : ''}
                         
                         <a href="${drama.originalUrl}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();"
-                           class="${(drama.isTranslated && drama.translatedUrl && !drama.isDomestic) ? 'px-2.5' : 'flex-1'} flex items-center justify-center gap-1.5 py-1.5 rounded border border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-xs font-medium transition-colors"
+                           class="${(drama.isTranslated && drama.translatedUrl && !drama.isDomestic) ? 'px-2.5' : 'flex-1'} flex items-center justify-center gap-1.5 py-1.5 rounded-full border border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-xs font-medium transition-colors"
                            title="查看原版">
                             ${(!drama.isTranslated || drama.isDomestic) ? '<span>查看原版</span>' : ''}
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
@@ -3319,7 +3319,7 @@ function generateNewcomerList() {
         const translatorDisplay = translators.length > 0 ? translators.join('、') : '无';
         
         return `
-            <div class="bg-white dark:bg-zinc-800 rounded-lg border border-gray-200 dark:border-zinc-700 p-4 hover:shadow-md transition-shadow group" data-drama-id="${drama.id}">
+            <div class="bg-white dark:bg-zinc-800 rounded-2xl border border-gray-200 dark:border-zinc-700 p-4 hover:shadow-card-hover transition-shadow group" data-drama-id="${drama.id}">
                 <div class="flex items-start gap-4">
                     <!-- 序号 -->
                     <div class="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
@@ -3344,13 +3344,13 @@ function generateNewcomerList() {
                                     <span>${drama.dateAdded}</span>
                                 </div>
                                 <div class="flex items-center gap-2 text-xs text-zinc-600 dark:text-zinc-400 mb-3">
-                                    <span class="px-2 py-0.5 rounded ${drama.isTranslated ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'}">
+                                    <span class="px-2 py-0.5 rounded-full ${drama.isTranslated ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'}">
                                         ${drama.isTranslated ? '已汉化' : '未汉化'}
                                     </span>
                                     ${translatorDisplay !== '无' ? `<span>译者: ${translatorDisplay}</span>` : ''}
                                 </div>
                                 <!-- 推荐理由 -->
-                                <div class="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-lg p-3 border border-green-200 dark:border-green-800">
+                                <div class="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl p-3 border border-green-200 dark:border-green-800">
                                     <div class="flex items-start gap-2">
                                         <svg class="w-4 h-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
@@ -3366,7 +3366,7 @@ function generateNewcomerList() {
                             <!-- 操作按钮 -->
                             <div class="flex flex-col gap-2">
                                 <!-- 查看详情按钮 -->
-                                <button class="newcomer-detail-btn px-3 py-1.5 text-xs bg-red-600 hover:bg-red-700 text-white rounded transition-colors flex items-center gap-1" data-drama-id="${drama.id}">
+                                <button class="newcomer-detail-btn px-3 py-1.5 text-xs bg-red-600 hover:bg-red-700 text-white rounded-full transition-colors flex items-center gap-1" data-drama-id="${drama.id}">
                                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
@@ -3375,7 +3375,7 @@ function generateNewcomerList() {
                                 </button>
                                 
                                 <!-- 缩略图 -->
-                                <div class="w-20 h-14 bg-gray-100 dark:bg-zinc-700 rounded overflow-hidden">
+                                <div class="w-20 h-14 bg-gray-100 dark:bg-zinc-700 rounded-lg overflow-hidden">
                                     <img src="${drama.thumbnail}" alt="${drama.title}" 
                                          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                          onerror="handleImageError(this, '${drama.title}')">
@@ -3386,12 +3386,12 @@ function generateNewcomerList() {
                         <!-- 标签 -->
                         <div class="flex flex-wrap gap-1.5 mt-3">
                             ${drama.tags.slice(0, 4).map(tag => `
-                                <span class="px-2 py-0.5 text-xs rounded bg-gray-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-gray-200 dark:border-zinc-700">
+                                <span class="px-2 py-0.5 text-xs rounded-full bg-gray-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-gray-200 dark:border-zinc-700">
                                     #${tag}
                                 </span>
                             `).join('')}
                             ${drama.tags.length > 4 ? `
-                                <span class="px-2 py-0.5 text-xs rounded bg-gray-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-500 border border-gray-200 dark:border-zinc-700">
+                                <span class="px-2 py-0.5 text-xs rounded-full bg-gray-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-500 border border-gray-200 dark:border-zinc-700">
                                     +${drama.tags.length - 4}
                                 </span>
                             ` : ''}
