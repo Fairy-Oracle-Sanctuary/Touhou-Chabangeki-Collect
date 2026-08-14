@@ -2308,6 +2308,20 @@ const dramas = [
         description: "",
         thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/165.jpg",
         dateAdded: "2018-09-09"
+    },
+    {
+        id: 166,
+        title: "在校园里被当成废物的我，被发现其实是独臂的最强者",
+        author: "まったりさん",
+        translator: "黎仟憶_アリス",
+        tags: ["古明地觉"],
+        isTranslated: true,
+        isDomestic: false,
+        originalUrl: "https://www.youtube.com/watch?v=iQ4QRBkGMZU",
+        translatedUrl: "https://space.bilibili.com/1359356041/lists/8763869",
+        description: "",
+        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/166.jpg",
+        dateAdded: "2022-07-17"
     }
 ];
 
