@@ -183,7 +183,7 @@ export default function Header({
             </div>
 
             {mobileMenuOpen && (
-                <div className="mobile-menu">
+                <div className="mobile-menu open">
                     {actions.map((a) => (
                         <button key={a.id} onClick={() => { onOpen(a.id); setMobileMenuOpen(false); }}>
                             <Icon name={a.icon} size={16} />
