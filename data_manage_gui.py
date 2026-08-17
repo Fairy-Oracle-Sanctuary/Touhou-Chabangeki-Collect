@@ -446,7 +446,7 @@ class DataManagerGUI:
                                             existing_links[key] = value
 
                         print(f"解析authorLinks成功，共有 {len(existing_links)} 个链接")
-                        author_links_content = f"const authorLinks = {match.group(1)};"
+                        author_links_content = f"export const authorLinks = {match.group(1)};"
             except Exception as e:
                 print(f"读取现有authorLinks时出错: {e}")
 
@@ -489,13 +489,13 @@ class DataManagerGUI:
             # 生成新的authorLinks内容
             if updated_links:
                 author_links_content = (
-                    "const authorLinks = "
+                    "export const authorLinks = "
                     + json.dumps(updated_links, ensure_ascii=False, indent=4)
                     + ";"
                 )
 
             # 生成dramas数组内容
-            content = "const dramas = ["
+            content = "export const dramas = ["
             for i, item in enumerate(self.data):
                 # 使用 json.dumps 确保所有字段中的特殊字符（引号、换行）被正确转义
                 content += f"""
@@ -1520,8 +1520,15 @@ class ThumbnailUrlDialog(tk.Toplevel):
         format_frame = ttk.LabelFrame(main_frame, text="URL格式", padding="10")
         format_frame.pack(fill=tk.X, pady=(0, 20))
 
-        self.url_format = tk.StringVar(value="cloudinary")
+        self.url_format = tk.StringVar(value="local")
 
+        ttk.Radiobutton(
+            format_frame,
+            text="本地 (cover/)",
+            variable=self.url_format,
+            value="local",
+            command=self.update_url_preview,
+        ).pack(anchor=tk.W)
         ttk.Radiobutton(
             format_frame,
             text="Cloudinary",
@@ -1547,6 +1554,18 @@ class ThumbnailUrlDialog(tk.Toplevel):
         # URL配置
         config_frame = ttk.LabelFrame(main_frame, text="URL配置", padding="10")
         config_frame.pack(fill=tk.X, pady=(0, 20))
+
+        # 本地配置
+        self.local_frame = ttk.Frame(config_frame)
+        ttk.Label(self.local_frame, text="文件夹:").grid(
+            row=0, column=0, sticky=tk.W, pady=2
+        )
+        self.local_folder = tk.StringVar(value="cover")
+        ttk.Entry(self.local_frame, textvariable=self.local_folder).grid(
+            row=0, column=1, sticky=tk.EW, pady=2
+        )
+
+        self.local_frame.columnconfigure(1, weight=1)
 
         # Cloudinary配置
         self.cloud_frame = ttk.Frame(config_frame)
@@ -1673,8 +1692,13 @@ class ThumbnailUrlDialog(tk.Toplevel):
         self.cloud_frame.pack_forget()
         self.github_frame.pack_forget()
         self.custom_frame.pack_forget()
+        self.local_frame.pack_forget()
 
-        if format_type == "cloudinary":
+        if format_type == "local":
+            self.local_frame.pack(fill=tk.X, pady=(5, 0))
+            folder = self.local_folder.get().strip("/")
+            url = f"{folder}/{{id}}.jpg"
+        elif format_type == "cloudinary":
             self.cloud_frame.pack(fill=tk.X, pady=(5, 0))
             url = f"https://res.cloudinary.com/{self.cloud_name.get()}/image/upload/{self.cloud_version.get()}/{self.cloud_folder.get()}/{{id}}.jpg"
         elif format_type == "github":
@@ -1694,7 +1718,10 @@ class ThumbnailUrlDialog(tk.Toplevel):
         """获取URL模板"""
         format_type = self.url_format.get()
 
-        if format_type == "cloudinary":
+        if format_type == "local":
+            folder = self.local_folder.get().strip("/")
+            return f"{folder}/{{id}}.jpg"
+        elif format_type == "cloudinary":
             return f"https://res.cloudinary.com/{self.cloud_name.get()}/image/upload/{self.cloud_version.get()}/{self.cloud_folder.get()}/{{id}}.jpg"
         elif format_type == "github":
             return f"https://cdn.jsdelivr.net/gh/{self.github_user.get()}/{self.github_repo.get()}/main/{self.github_folder.get()}/{{id}}.jpg"
