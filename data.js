@@ -1,4 +1,4 @@
-const dramas = [
+export const dramas = [
     {
         id: 1,
         title: "死神与少年",
@@ -10,7 +10,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLxioisTzjlBa1NoKDTH1nkAHgOwAHzhma",
         translatedUrl: "https://space.bilibili.com/12621850/lists/4882608",
         description: "你是我活过的证明。",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/1.jpg",
+        thumbnail: "cover/1.jpg",
         dateAdded: "2023-06-18"
     },
     {
@@ -24,7 +24,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLxioisTzjlBZ63LCFxhe0uDIma4lgCMfC",
         translatedUrl: "https://space.bilibili.com/12621850/lists/5066012",
         description: "死而未绝，络续不绝之缘。",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/2.jpg",
+        thumbnail: "cover/2.jpg",
         dateAdded: "2024-08-24"
     },
     {
@@ -38,7 +38,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLxioisTzjlBaXcAkHQes8-dkINhSlG-Aj",
         translatedUrl: "https://space.bilibili.com/12621850/lists/6561665",
         description: "一群变态似乎在拯救世界。",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/3.jpg",
+        thumbnail: "cover/3.jpg",
         dateAdded: "2025-08-17"
     },
     {
@@ -52,7 +52,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLxioisTzjlBYrCViDpMBfFOEy1R4xNi1t",
         translatedUrl: "https://space.bilibili.com/499929312/lists/7392546",
         description: "夜明けまでに、呪いを解く方法を思い出せ。",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/4.jpg",
+        thumbnail: "cover/4.jpg",
         dateAdded: "2022-08-10"
     },
     {
@@ -66,7 +66,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL4PMLGSCaH8AF_vC-FcV9DTDU5XPCatxG",
         translatedUrl: "https://space.bilibili.com/499929312/lists/6267690",
         description: "莫名其妙就要和吸血鬼同居了！？",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/5.jpg",
+        thumbnail: "cover/5.jpg",
         dateAdded: "2020-05-29"
     },
     {
@@ -80,7 +80,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLFU-QWGTBq-4SsfGQuJBNzmvZtTzN3FoJ",
         translatedUrl: "https://space.bilibili.com/499929312/lists/6324095",
         description: "学校的优等生竟和吸血鬼夜游！？",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/6.jpg",
+        thumbnail: "cover/6.jpg",
         dateAdded: "2022-09-09"
     },
     {
@@ -94,7 +94,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=ienoNid46dM&list=PLPIDlOi7aH3EiGs9HnU3Rg52r4j587qsI&index=6",
         translatedUrl: "https://www.bilibili.com/video/BV16A6QBCEqD/?vd_source=29215d7e01e2e3b79461f647961a787f",
         description: "与铃仙在酒吧的小故事",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/7.jpg",
+        thumbnail: "cover/7.jpg",
         dateAdded: "2025-06-20"
     },
     {
@@ -108,7 +108,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLiZP5uzNOuqyLnTRnyb4ZT5LuoVlBxnyE",
         translatedUrl: "https://space.bilibili.com/12621850/lists/5251532",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/8.jpg",
+        thumbnail: "cover/8.jpg",
         dateAdded: "2021-03-24"
     },
     {
@@ -122,7 +122,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLmc6eO_qCE4najTjdUCtXDa0Agx8tzDON",
         translatedUrl: "https://space.bilibili.com/12621850/lists/6172948",
         description: "大家听说过水平思考谜题吗？\n也被称为\"海龟汤\"呢。",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/9.jpg",
+        thumbnail: "cover/9.jpg",
         dateAdded: "2021-04-04"
     },
     {
@@ -136,7 +136,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLeIWlGzrNsQUtLMAjpHAw4AN2U9j6-xwn",
         translatedUrl: "https://space.bilibili.com/12621850/lists/5962069",
         description: "你听说过百元行的故事吗？",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/10.jpg",
+        thumbnail: "cover/10.jpg",
         dateAdded: "2024-07-25"
     },
     {
@@ -150,7 +150,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL15bNp6jPcclvKXISMZ2fy8POHkEd3sSA",
         translatedUrl: "https://www.bilibili.com/video/BV1ddhqztEJJ",
         description: "短篇故事，大概100集",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/11.jpg",
+        thumbnail: "cover/11.jpg",
         dateAdded: "2024-07-31"
     },
     {
@@ -164,7 +164,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL2h240ZAgAYEaeVipLKlDJaK-FswRZMuu",
         translatedUrl: "https://space.bilibili.com/12621850/lists/5697073",
         description: "非常有意思的战斗向茶剧",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/12.jpg",
+        thumbnail: "cover/12.jpg",
         dateAdded: "2024-03-07"
     },
     {
@@ -178,7 +178,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=boGrjUJpBVo",
         translatedUrl: "https://space.bilibili.com/12621850/lists/5116051",
         description: "一个在油管上比较有趣的幻想入系列，但有着原创主人公、角色暴力表现。觉得不OK的慎入",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/13.jpg",
+        thumbnail: "cover/13.jpg",
         dateAdded: "2024-12-06"
     },
     {
@@ -192,7 +192,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=tL5lu9jG9m8",
         translatedUrl: "https://space.bilibili.com/12621850/lists/5104404",
         description: "世界谚语科普",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/14.jpg",
+        thumbnail: "cover/14.jpg",
         dateAdded: "2022-08-13"
     },
     {
@@ -206,7 +206,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=6cME-im2kDE",
         translatedUrl: "https://space.bilibili.com/12621850/lists/7228361",
         description: "这是啥子角色？",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/15.jpg",
+        thumbnail: "cover/15.jpg",
         dateAdded: "2021-12-27"
     },
     {
@@ -220,7 +220,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL15bNp6jPccn24qH-xfKfS2XQTJY30Fuu",
         translatedUrl: "https://space.bilibili.com/12621850/lists/6626365",
         description: "魂魄妖梦，你毁了我的性取向",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/16.jpg",
+        thumbnail: "cover/16.jpg",
         dateAdded: "2019-02-16"
     },
     {
@@ -234,7 +234,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLmc6eO_qCE4nYR7tYmTsppAF1CTxhcrTP",
         translatedUrl: "https://space.bilibili.com/499929312/lists/6449310",
         description: "佛前樱散祈缘契，愿渡来生共世人。",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/17.jpg",
+        thumbnail: "cover/17.jpg",
         dateAdded: "2018-10-14"
     },
     {
@@ -248,7 +248,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLwnprYHAfPHaqEZqQFi2nQiPLg5Igo3mT",
         translatedUrl: "https://space.bilibili.com/499929312/lists/6466841",
         description: "无刀可放心食用",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/18.jpg",
+        thumbnail: "cover/18.jpg",
         dateAdded: "2025-07-24"
     },
     {
@@ -262,7 +262,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLn5zMpk5-YR-Qzz5RcosD3oA5MbuMk23V",
         translatedUrl: "https://space.bilibili.com/499929312/lists/6525221",
         description: "mmd和茶番剧二合一",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/19.jpg",
+        thumbnail: "cover/19.jpg",
         dateAdded: "2024-07-31"
     },
     {
@@ -276,7 +276,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLwnprYHAfPHZ0bKlsSRE1CQYkWNYw5L6U",
         translatedUrl: "https://space.bilibili.com/499929312/lists/6702992",
         description: "帕秋莉厨必看系列",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/20.jpg",
+        thumbnail: "cover/20.jpg",
         dateAdded: "2025-09-12"
     },
     {
@@ -290,7 +290,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLkONYltbNkGdPwu1CVug0NyOROBUShYqh",
         translatedUrl: "https://space.bilibili.com/499929312/lists/6809460",
         description: "繧?▲縺上ｊ縺励※縺?▲縺ｦ縺ｭ?",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/21.jpg",
+        thumbnail: "cover/21.jpg",
         dateAdded: "2023-10-01"
     },
     {
@@ -304,7 +304,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLwsFUfY3oQWJ3GsyshggcsJbI6_X8hRD0",
         translatedUrl: "https://space.bilibili.com/499929312/lists/7221002",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/22.jpg",
+        thumbnail: "cover/22.jpg",
         dateAdded: "2024-08-23"
     },
     {
@@ -318,7 +318,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL-pkvuGg-eTBtbPiC-dhheSrl0GaAeifd",
         translatedUrl: "https://space.bilibili.com/33819012/lists/6789016",
         description: "来演话剧吧！博丽同学！",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/23.jpg",
+        thumbnail: "cover/23.jpg",
         dateAdded: "2025-02-10"
     },
     {
@@ -332,7 +332,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=y6Kwj56KTCE",
         translatedUrl: "https://space.bilibili.com/87123918/lists/4535137",
         description: "如果你最珍视的人明天就要离世了，你会怎么做？",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/24.jpg",
+        thumbnail: "cover/24.jpg",
         dateAdded: "2021-06-07"
     },
     {
@@ -346,7 +346,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=7_eM4AAt3XM",
         translatedUrl: "https://space.bilibili.com/87123918/lists/4845021",
         description: "我这人啊，就是爱瞎操心",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/25.jpg",
+        thumbnail: "cover/25.jpg",
         dateAdded: "2022-10-09"
     },
     {
@@ -360,7 +360,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=SoOBZO_n5gU",
         translatedUrl: "https://space.bilibili.com/87123918/lists/5078005",
         description: "想要出去就只能○○的房间",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/26.jpg",
+        thumbnail: "cover/26.jpg",
         dateAdded: "2023-11-07"
     },
     {
@@ -374,7 +374,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=t-vZgFACfmw",
         translatedUrl: "https://space.bilibili.com/87123918/lists/4780455",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/27.jpg",
+        thumbnail: "cover/27.jpg",
         dateAdded: "2021-11-14"
     },
     {
@@ -388,7 +388,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=NNAi4rWxy4k",
         translatedUrl: "https://space.bilibili.com/87123918/lists/4396885",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/28.jpg",
+        thumbnail: "cover/28.jpg",
         dateAdded: "2022-08-05"
     },
     {
@@ -402,7 +402,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLl_rWSOGGXM8ULORk8_P5JQJEc4AIEz4W",
         translatedUrl: "https://space.bilibili.com/87123918/lists/4409450",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/29.jpg",
+        thumbnail: "cover/29.jpg",
         dateAdded: "2020-09-02"
     },
     {
@@ -416,7 +416,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=qrRNO2w6JqE",
         translatedUrl: "https://space.bilibili.com/87123918/lists/5117741",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/30.jpg",
+        thumbnail: "cover/30.jpg",
         dateAdded: "2025-02-03"
     },
     {
@@ -430,7 +430,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=U_hPtTKAMlM",
         translatedUrl: "https://space.bilibili.com/87123918/lists/5574603",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/31.jpg",
+        thumbnail: "cover/31.jpg",
         dateAdded: "2022-10-02"
     },
     {
@@ -444,7 +444,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLVBIKA03FhZPjrYJAJ4Qb3bXCZAyE8jyv",
         translatedUrl: "https://space.bilibili.com/87123918/lists/4758726",
         description: "雨爱的秘密，会一直延续~",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/32.jpg",
+        thumbnail: "cover/32.jpg",
         dateAdded: "2023-01-13"
     },
     {
@@ -458,7 +458,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=c6mxNbdWinY",
         translatedUrl: "https://www.bilibili.com/video/BV1Uqo8YEEGr",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/33.jpg",
+        thumbnail: "cover/33.jpg",
         dateAdded: "2024-08-18"
     },
     {
@@ -472,7 +472,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=6KldaHy1u0I",
         translatedUrl: "https://space.bilibili.com/87123918/lists/5409881",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/34.jpg",
+        thumbnail: "cover/34.jpg",
         dateAdded: "2025-03-03"
     },
     {
@@ -486,7 +486,7 @@ const dramas = [
         originalUrl: "https://www.nicovideo.jp/watch/sm28681278",
         translatedUrl: "https://space.bilibili.com/87123918/lists/5224003",
         description: "莫问来生伴谁侧，樱花落处即相逢。",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/35.jpg",
+        thumbnail: "cover/35.jpg",
         dateAdded: "2016-04-23"
     },
     {
@@ -500,7 +500,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL3rAsEOjJPkNOjHdzZr77LpCrL1C69gKP",
         translatedUrl: "https://space.bilibili.com/87123918/lists/6936080",
         description: "想起了…",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/36.jpg",
+        thumbnail: "cover/36.jpg",
         dateAdded: "2020-10-01"
     },
     {
@@ -514,7 +514,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL5Ezg2qezOuyorGr52XSbjp9DQbJQ3mBS",
         translatedUrl: "https://www.bilibili.com/video/BV1mxdSYeE62",
         description: "恋恋可爱捏（",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/37.jpg",
+        thumbnail: "cover/37.jpg",
         dateAdded: "2020-05-14"
     },
     {
@@ -528,7 +528,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/shorts/S7oAsAhm0NU",
         translatedUrl: "https://www.bilibili.com/video/BV1jDdbYoEca",
         description: "蕾米可爱捏",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/38.jpg",
+        thumbnail: "cover/38.jpg",
         dateAdded: "2024-03-10"
     },
     {
@@ -542,7 +542,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL5Ezg2qezOux8cq6dLe9S47gQJkk_uuZz",
         translatedUrl: "https://www.bilibili.com/video/BV1emAseZEwa",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/39.jpg",
+        thumbnail: "cover/39.jpg",
         dateAdded: "2020-06-14"
     },
     {
@@ -556,7 +556,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL5Ezg2qezOuzcuFHQqi6LQQpGDJUGiTPz",
         translatedUrl: "https://www.bilibili.com/video/BV1wFRVYXE9m",
         description: "以baka小队为主角的系列~",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/40.jpg",
+        thumbnail: "cover/40.jpg",
         dateAdded: "2024-03-02"
     },
     {
@@ -570,7 +570,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL5Ezg2qezOuxc9DJkmjOcEkTYfUehOCXb",
         translatedUrl: "https://www.bilibili.com/video/BV1mtPveLEjJ",
         description: "在无数重复的时间线中，我的声音定能再度围绕你左右。",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/41.jpg",
+        thumbnail: "cover/41.jpg",
         dateAdded: "2024-08-30"
     },
     {
@@ -584,7 +584,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL5Ezg2qezOuwb0u1PD_ipY9UREG6ig5fJ",
         translatedUrl: "https://www.bilibili.com/video/BV1ZEdZY3ERs",
         description: "可以看到蕾米花式破防的一集（",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/42.jpg",
+        thumbnail: "cover/42.jpg",
         dateAdded: "2024-09-21"
     },
     {
@@ -598,7 +598,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=LqAzlj1yJGA",
         translatedUrl: "https://space.bilibili.com/109338384/lists/6835169",
         description: "留学回来之后，青梅竹马的帕露西居然退学了，还当了家里蹲？！",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/43.jpg",
+        thumbnail: "cover/43.jpg",
         dateAdded: "2020-05-14"
     },
     {
@@ -612,7 +612,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=6H-RJpUbXbE",
         translatedUrl: "https://space.bilibili.com/109338384/lists/6859688",
         description: "。我重生了，回到了我初中一年级入学的时候，这次，我要改变我的命运，不再成为一个40岁一事无成碌碌无为的社畜",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/44.jpg",
+        thumbnail: "cover/44.jpg",
         dateAdded: "2019-03-15"
     },
     {
@@ -626,7 +626,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLkbhAsj-moQyC4JME0vR2_OrKR2r8GNFt",
         translatedUrl: "https://space.bilibili.com/109338384/lists/7099795",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/45.jpg",
+        thumbnail: "cover/45.jpg",
         dateAdded: "2021-06-18"
     },
     {
@@ -640,7 +640,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLsU0BZFJZhxU18cReRmpsGDqJD8AwDL9D",
         translatedUrl: "https://space.bilibili.com/109338384/lists/6834497",
         description: "与可爱的奴隶少女觉开启了同居生活……",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/46.jpg",
+        thumbnail: "cover/46.jpg",
         dateAdded: "2022-07-01"
     },
     {
@@ -654,7 +654,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL3YhIU0YsQWPDaRyBdd1Owi4Fidnj6n3L",
         translatedUrl: "https://space.bilibili.com/109338384/lists/6829056",
         description: "为了防止新的义妹进入到我家，我对自己的家进行了要塞计划，可惜被老爹直接叫停，然而当我一打开门，遇到的却是……",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/47.jpg",
+        thumbnail: "cover/47.jpg",
         dateAdded: "2023-05-15"
     },
     {
@@ -668,7 +668,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL15bNp6jPcclXhofki7-qmExJa24NPwia",
         translatedUrl: "https://space.bilibili.com/109338384/lists/7238326",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/48.jpg",
+        thumbnail: "cover/48.jpg",
         dateAdded: "2018-05-30"
     },
     {
@@ -682,7 +682,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLPIDlOi7aH3Fk5iGBIjN_iBSQFUWHOrsd",
         translatedUrl: "https://space.bilibili.com/109338384/lists/7150145",
         description: "幻想乡……真是厉害啊",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/49.jpg",
+        thumbnail: "cover/49.jpg",
         dateAdded: "2021-10-19"
     },
     {
@@ -696,7 +696,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=oooMSfHdcbY",
         translatedUrl: "https://www.bilibili.com/video/BV1b3U7BUEpY",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/50.jpg",
+        thumbnail: "cover/50.jpg",
         dateAdded: "2023-11-04"
     },
     {
@@ -710,7 +710,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLIbahIQ3NnZtSsbNwlFXr5a3RsEgfuwhX",
         translatedUrl: "https://www.bilibili.com/video/BV1J6i3BHEV6",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/51.jpg",
+        thumbnail: "cover/51.jpg",
         dateAdded: "2023-12-10"
     },
     {
@@ -724,7 +724,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/@TouhouYandere8901",
         translatedUrl: "https://space.bilibili.com/2065248047/lists/1619296",
         description: "入坑东方必看作",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/52.jpg",
+        thumbnail: "cover/52.jpg",
         dateAdded: "2021-08-17"
     },
     {
@@ -738,7 +738,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLMqWBRhqHwItIaeEd64Ym8kld9AxB--Q5",
         translatedUrl: "https://space.bilibili.com/2065248047/lists/1885948",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/53.jpg",
+        thumbnail: "cover/53.jpg",
         dateAdded: "2021-11-02"
     },
     {
@@ -752,7 +752,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLwVn04n1IKXuNrDa7luvafJtZqJLrS6VP",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/6831118",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/54.jpg",
+        thumbnail: "cover/54.jpg",
         dateAdded: "2023-04-18"
     },
     {
@@ -766,7 +766,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL0y_WAo04qpoPSPJzyG5e00ZDK7zDROfT",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/6831140",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/55.jpg",
+        thumbnail: "cover/55.jpg",
         dateAdded: "2020-06-24"
     },
     {
@@ -780,7 +780,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLueexuf60TEYtkvqS3kpCtfUwY31zpDmu",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/6831143",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/56.jpg",
+        thumbnail: "cover/56.jpg",
         dateAdded: "2022-07-10"
     },
     {
@@ -794,7 +794,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLpSzC1-Y_uEF1Ru4IDjPXeXD_N-ZuHwO8",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/6837350",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/57.jpg",
+        thumbnail: "cover/57.jpg",
         dateAdded: "2020-12-29"
     },
     {
@@ -808,7 +808,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLDnwQpBnibfJtE-9aDJK6gW4IyH9GeAJi",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/6847416?type=season",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/58.jpg",
+        thumbnail: "cover/58.jpg",
         dateAdded: "2025-08-24"
     },
     {
@@ -822,7 +822,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLAhdzhAf7V75BY4JESOW4ApKBdL3xhObR",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/6866081",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/59.jpg",
+        thumbnail: "cover/59.jpg",
         dateAdded: "2024-09-14"
     },
     {
@@ -836,7 +836,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL2X7X36J6V_7ejg7TDX983ZPYfpT7oDNf",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/6884763",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/60.jpg",
+        thumbnail: "cover/60.jpg",
         dateAdded: "2024-12-18"
     },
     {
@@ -850,7 +850,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL15bNp6jPcckBBa2XYhkNyAgF4UXgWVUQ",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/6886121",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/61.jpg",
+        thumbnail: "cover/61.jpg",
         dateAdded: "2019-08-07"
     },
     {
@@ -864,7 +864,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL2X7X36J6V_5mB4A0gda1yms9PZatnShM",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/6894045?type=season",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/62.jpg",
+        thumbnail: "cover/62.jpg",
         dateAdded: "2024-06-14"
     },
     {
@@ -878,7 +878,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLEitLOfPT9XvigVfXwqKqT4avo7BmjJ_8",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/6904781",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/63.jpg",
+        thumbnail: "cover/63.jpg",
         dateAdded: "2023-08-22"
     },
     {
@@ -892,7 +892,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL2X7X36J6V_6RiAuIEo_IbTHSMGAhkhKS",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/6910538",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/64.jpg",
+        thumbnail: "cover/64.jpg",
         dateAdded: "2025-06-11"
     },
     {
@@ -906,7 +906,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL2X7X36J6V_43iJW3K6PYwomcyjuCJI0N",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/7229554",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/65.jpg",
+        thumbnail: "cover/65.jpg",
         dateAdded: "2025-07-19"
     },
     {
@@ -920,7 +920,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL2X7X36J6V_5MZ8j-gDJYsVoMTrUsaYDk",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/7296370",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/66.jpg",
+        thumbnail: "cover/66.jpg",
         dateAdded: "2025-11-18"
     },
     {
@@ -934,7 +934,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL0y_WAo04qppy-nGEFpoU3jOCL7YcmPUk",
         translatedUrl: "https://www.bilibili.com/video/BV1suU1B9EtN",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/67.jpg",
+        thumbnail: "cover/67.jpg",
         dateAdded: "2021-06-03"
     },
     {
@@ -948,7 +948,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLAhdzhAf7V75gG27SRl0pDGPlgbzcVICh",
         translatedUrl: "https://www.bilibili.com/video/BV1FjUpBDEhK",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/68.jpg",
+        thumbnail: "cover/68.jpg",
         dateAdded: "2020-11-13"
     },
     {
@@ -962,7 +962,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL0y_WAo04qpqB__1sa_Lfg_fpDrJr713j",
         translatedUrl: "https://www.bilibili.com/video/BV1t7U9BnEXb",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/69.jpg",
+        thumbnail: "cover/69.jpg",
         dateAdded: "2021-04-26"
     },
     {
@@ -976,7 +976,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL0y_WAo04qpoZV7cdhvAm1uvHwpWon7OM",
         translatedUrl: "https://www.bilibili.com/video/BV17MSnBGEMy",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/70.jpg",
+        thumbnail: "cover/70.jpg",
         dateAdded: "2022-03-08"
     },
     {
@@ -990,7 +990,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=71RQTEyXIJM",
         translatedUrl: "https://www.bilibili.com/video/BV1ifrDBgEsk",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/71.jpg",
+        thumbnail: "cover/71.jpg",
         dateAdded: "2024-09-20"
     },
     {
@@ -1004,7 +1004,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLuabzLomQRYWTM81MwVOowDWlPl35BQA3",
         translatedUrl: "https://space.bilibili.com/269144656/lists/5691537",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/72.jpg",
+        thumbnail: "cover/72.jpg",
         dateAdded: "2024-12-30"
     },
     {
@@ -1018,7 +1018,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLVBIKA03FhZNMTGMmoiNvd2Z-0lndVwEu",
         translatedUrl: "https://space.bilibili.com/269144656/lists/6185918",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/73.jpg",
+        thumbnail: "cover/73.jpg",
         dateAdded: "2025-05-12"
     },
     {
@@ -1032,7 +1032,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLbHQ_4GWYYBw_GstrSRD3iXeb2Xm8OALM",
         translatedUrl: "https://space.bilibili.com/269144656/lists/5792751",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/74.jpg",
+        thumbnail: "cover/74.jpg",
         dateAdded: "2023-07-09"
     },
     {
@@ -1046,7 +1046,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLsGwA474Pdf4LA6ffmdi1GhrPmwpYFynZ",
         translatedUrl: "https://space.bilibili.com/269144656/lists/6726286",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/75.jpg",
+        thumbnail: "cover/75.jpg",
         dateAdded: "2020-09-26"
     },
     {
@@ -1060,7 +1060,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLwR9AUMdH1nDqjotGxbAEisUuxkmdiEfr",
         translatedUrl: "https://space.bilibili.com/269144656/lists/6498268",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/76.jpg",
+        thumbnail: "cover/76.jpg",
         dateAdded: "2023-03-25"
     },
     {
@@ -1074,7 +1074,7 @@ const dramas = [
         originalUrl: "https://space.bilibili.com/269144656/lists/6217334",
         translatedUrl: "https://space.bilibili.com/269144656/lists/6217334",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/77.jpg",
+        thumbnail: "cover/77.jpg",
         dateAdded: "2025-08-01"
     },
     {
@@ -1088,7 +1088,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL37r3qKBltuH0reW86oBsOVtlebXY5qTz",
         translatedUrl: "https://space.bilibili.com/276595758/lists/4759701",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/78.jpg",
+        thumbnail: "cover/78.jpg",
         dateAdded: "2022-08-24"
     },
     {
@@ -1102,7 +1102,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLGFnsUX9c-tbjY1S8aogQ_wpKxx_k6MeF",
         translatedUrl: "https://space.bilibili.com/276595758/lists/4942139",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/79.jpg",
+        thumbnail: "cover/79.jpg",
         dateAdded: "2020-07-17"
     },
     {
@@ -1116,7 +1116,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=kMTCyHAIAAg",
         translatedUrl: "https://space.bilibili.com/276595758/lists/4922279",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/80.jpg",
+        thumbnail: "cover/80.jpg",
         dateAdded: "2019-12-10"
     },
     {
@@ -1130,7 +1130,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLGFnsUX9c-taNHCTET0vw55T7Rg7Ahs49",
         translatedUrl: "https://space.bilibili.com/276595758/lists/5468957",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/81.jpg",
+        thumbnail: "cover/81.jpg",
         dateAdded: "2020-05-06"
     },
     {
@@ -1144,7 +1144,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL15bNp6jPcclhR1wbagSiZEPY8vDI5K5I",
         translatedUrl: "https://space.bilibili.com/69111014/lists/6782814",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/82.jpg",
+        thumbnail: "cover/82.jpg",
         dateAdded: "2018-08-03"
     },
     {
@@ -1158,7 +1158,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLwVn04n1IKXsCPUltmvPHDbZN27u0GF7c",
         translatedUrl: "https://space.bilibili.com/69111014/lists/6736921",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/83.jpg",
+        thumbnail: "cover/83.jpg",
         dateAdded: "2022-10-13"
     },
     {
@@ -1172,7 +1172,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL15bNp6jPcclhR1wbagSiZEPY8vDI5K5I",
         translatedUrl: "https://space.bilibili.com/69111014/lists/6759493",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/84.jpg",
+        thumbnail: "cover/84.jpg",
         dateAdded: "2018-09-09"
     },
     {
@@ -1186,7 +1186,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL2X7X36J6V_5MZ8j-gDJYsVoMTrUsaYDk",
         translatedUrl: "https://space.bilibili.com/69111014/lists/6780769",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/85.jpg",
+        thumbnail: "cover/85.jpg",
         dateAdded: "2025-11-07"
     },
     {
@@ -1200,7 +1200,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL2X7X36J6V_6rQYUJdeW78ERQPC-0v6YK",
         translatedUrl: "https://space.bilibili.com/69111014/lists/6780758",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/86.jpg",
+        thumbnail: "cover/86.jpg",
         dateAdded: "2024-12-27"
     },
     {
@@ -1214,7 +1214,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL2X7X36J6V_5mB4A0gda1yms9PZatnShM",
         translatedUrl: "https://space.bilibili.com/69111014/lists/6781571",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/87.jpg",
+        thumbnail: "cover/87.jpg",
         dateAdded: "2025-05-11"
     },
     {
@@ -1228,7 +1228,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL2X7X36J6V_5MZ8j-gDJYsVoMTrUsaYDk",
         translatedUrl: "https://space.bilibili.com/69111014/lists/6792287",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/88.jpg",
+        thumbnail: "cover/88.jpg",
         dateAdded: "2019-07-04"
     },
     {
@@ -1242,7 +1242,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=k_LE2xS6DO8",
         translatedUrl: "https://space.bilibili.com/3546752504302024/lists/6948568",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770358552/touhou/thumbnails/89.jpg",
+        thumbnail: "cover/89.jpg",
         dateAdded: "2024-11-09"
     },
     {
@@ -1256,7 +1256,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLrY1wPAyDmtPTUfWzUY_P8nIjdLYEEOwC",
         translatedUrl: "https://space.bilibili.com/3546752504302024/lists/6954186",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770358553/touhou/thumbnails/90.jpg",
+        thumbnail: "cover/90.jpg",
         dateAdded: "2021-04-03"
     },
     {
@@ -1270,7 +1270,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLHXOmf4JXBjvWHWnEijdrJMoW35Bx0rAH",
         translatedUrl: "https://space.bilibili.com/3546752504302024/lists/6989330",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770358554/touhou/thumbnails/91.jpg",
+        thumbnail: "cover/91.jpg",
         dateAdded: "2025-10-07"
     },
     {
@@ -1284,7 +1284,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=p3np4Czz2aI",
         translatedUrl: "https://space.bilibili.com/3546752504302024/lists/7321196",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770358555/touhou/thumbnails/92.jpg",
+        thumbnail: "cover/92.jpg",
         dateAdded: "2025-12-19"
     },
     {
@@ -1298,7 +1298,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=IciLDKyBWPg",
         translatedUrl: "https://space.bilibili.com/3546752504302024/lists/7330978",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770358555/touhou/thumbnails/93.jpg",
+        thumbnail: "cover/93.jpg",
         dateAdded: "2025-09-10"
     },
     {
@@ -1312,7 +1312,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLsfDuT-j_dJ4n48XIiNjlPkA-wRBCezP3",
         translatedUrl: "https://space.bilibili.com/109338384/lists/7394791",
         description: "爱丽丝妈妈",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770978235/touhou/thumbnails/94.jpg",
+        thumbnail: "cover/94.jpg",
         dateAdded: "2025-01-13"
     },
     {
@@ -1326,7 +1326,7 @@ const dramas = [
         originalUrl: "https://space.bilibili.com/478979846/lists/5762210",
         translatedUrl: "",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770980258/touhou/thumbnails/95.webp",
+        thumbnail: "cover/95.jpg",
         dateAdded: "2025-07-02"
     },
     {
@@ -1340,7 +1340,7 @@ const dramas = [
         originalUrl: "https://space.bilibili.com/478979846/lists/6415865",
         translatedUrl: "",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770980258/touhou/thumbnails/96.webp",
+        thumbnail: "cover/96.jpg",
         dateAdded: "2025-09-25"
     },
     {
@@ -1354,7 +1354,7 @@ const dramas = [
         originalUrl: "https://space.bilibili.com/80249082/lists/3720523",
         translatedUrl: "",
         description: "震撼来袭",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/touhou/thumbnails/97.jpg",
+        thumbnail: "cover/97.jpg",
         dateAdded: "2024-08-26"
     },
     {
@@ -1368,7 +1368,7 @@ const dramas = [
         originalUrl: "https://space.bilibili.com/20713352/lists/6631848",
         translatedUrl: "",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770980258/touhou/thumbnails/98.jpg",
+        thumbnail: "cover/98.jpg",
         dateAdded: "2025-10-19"
     },
     {
@@ -1382,7 +1382,7 @@ const dramas = [
         originalUrl: "https://www.bilibili.com/video/BV1cN89zyEDw",
         translatedUrl: "",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770980258/touhou/thumbnails/99.jpg",
+        thumbnail: "cover/99.jpg",
         dateAdded: "2025-07-29"
     },
     {
@@ -1396,7 +1396,7 @@ const dramas = [
         originalUrl: "https://space.bilibili.com/87123918/lists/5678896",
         translatedUrl: "",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770980258/touhou/thumbnails/100.jpg",
+        thumbnail: "cover/100.jpg",
         dateAdded: "2025-06-17"
     },
     {
@@ -1410,7 +1410,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/shorts/nNAkrSU1Ot8",
         translatedUrl: "https://space.bilibili.com/1650223739/lists/6055955",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/101.jpg",
+        thumbnail: "cover/101.jpg",
         dateAdded: "2024-12-30"
     },
     {
@@ -1424,7 +1424,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=ySfxHPVSC88",
         translatedUrl: "https://www.bilibili.com/video/BV192dpYKEGM",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/102.jpg",
+        thumbnail: "cover/102.jpg",
         dateAdded: "2023-09-03"
     },
     {
@@ -1438,7 +1438,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLtbLg09TfEKpRAVdk1W7AmkquMHd5kr9P",
         translatedUrl: "https://www.bilibili.com/video/BV1aqCBY5Er7",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/103.jpg",
+        thumbnail: "cover/103.jpg",
         dateAdded: "2023-04-08"
     },
     {
@@ -1452,7 +1452,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=oTyt4zDiVUs",
         translatedUrl: "https://www.bilibili.com/video/BV1HoJXzQEw1",
         description: "——活下去",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/104.jpg",
+        thumbnail: "cover/104.jpg",
         dateAdded: "2025-09-21"
     },
     {
@@ -1466,7 +1466,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLkbhAsj-moQyfsoSE3orNw3tilwVfVEL7",
         translatedUrl: "https://www.bilibili.com/video/BV1uAunz5E3q",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/105.jpg",
+        thumbnail: "cover/105.jpg",
         dateAdded: "2021-03-20"
     },
     {
@@ -1480,7 +1480,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLSySOhc57uZY2zl7ffHvGfW6eIbWx1_Cb",
         translatedUrl: "https://www.bilibili.com/video/BV1kdVVzbEfY",
         description: "结婚系灵梦，梦里啥都有.jpg",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/106.jpg",
+        thumbnail: "cover/106.jpg",
         dateAdded: "2023-04-30"
     },
     {
@@ -1494,7 +1494,7 @@ const dramas = [
         originalUrl: "https://space.bilibili.com/12621850/lists/5264242",
         translatedUrl: "https://space.bilibili.com/12621850/lists/5264242",
         description: "油管上一些作者做的恋爱短篇茶番剧",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/107.jpg",
+        thumbnail: "cover/107.jpg",
         dateAdded: "2025-03-08"
     },
     {
@@ -1508,7 +1508,7 @@ const dramas = [
         originalUrl: "https://space.bilibili.com/3493276539685348/lists/5804379",
         translatedUrl: "",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/108.jpg",
+        thumbnail: "cover/108.jpg",
         dateAdded: "2025-06-07"
     },
     {
@@ -1522,7 +1522,7 @@ const dramas = [
         originalUrl: "https://space.bilibili.com/521628660/lists/6025206",
         translatedUrl: "",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/109.jpg",
+        thumbnail: "cover/109.jpg",
         dateAdded: "2025-07-04"
     },
     {
@@ -1536,7 +1536,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLuabzLomQRYUsFGKUThPnEMJ-zT2dxdBj",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/7438204",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/110.jpg",
+        thumbnail: "cover/110.jpg",
         dateAdded: "2025-05-07"
     },
     {
@@ -1550,7 +1550,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLsfDuT-j_dJ7ZiG7V_a4828RPerwHFc7q",
         translatedUrl: "https://space.bilibili.com/109338384/lists/7466744",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/111.jpg",
+        thumbnail: "cover/111.jpg",
         dateAdded: "2025-05-30"
     },
     {
@@ -1564,7 +1564,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL-1f8SJ_NruyUAAguD3t5Kxc0BwapRHaa",
         translatedUrl: "https://space.bilibili.com/1359356041/lists/4387144",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/112.jpg",
+        thumbnail: "cover/112.jpg",
         dateAdded: "2023-07-11"
     },
     {
@@ -1578,7 +1578,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL-1f8SJ_NruxsGgyZaefxrA96z8HxBERv",
         translatedUrl: "https://www.bilibili.com/video/BV1172tBqEjR",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/113.jpg",
+        thumbnail: "cover/113.jpg",
         dateAdded: "2024-05-21"
     },
     {
@@ -1592,7 +1592,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLcVm5ie8VPeX4qRXt-TNzoGamNIPJjYYP",
         translatedUrl: "https://space.bilibili.com/109338384/lists/7466039",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/114.jpg",
+        thumbnail: "cover/114.jpg",
         dateAdded: "2023-07-01"
     },
     {
@@ -1606,7 +1606,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=DTZSb_4gkPU",
         translatedUrl: "https://www.bilibili.com/video/BV19VZPBGEgQ/",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/115.jpg",
+        thumbnail: "cover/115.jpg",
         dateAdded: "2024-05-25"
     },
     {
@@ -1620,7 +1620,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLkbhAsj-moQxa4Q2Cs3pAbcTKYy7cSf6i",
         translatedUrl: "https://space.bilibili.com/109338384/lists/7520962",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/116.jpg",
+        thumbnail: "cover/116.jpg",
         dateAdded: "2021-11-01"
     },
     {
@@ -1634,7 +1634,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLPIDlOi7aH3HB7suRaFmtiSYZToWh8ZXg",
         translatedUrl: "https://space.bilibili.com/109338384/lists/7757680",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/117.jpg",
+        thumbnail: "cover/117.jpg",
         dateAdded: "2023-12-26"
     },
     {
@@ -1648,7 +1648,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLJFn_LriRbKF_y1YaQAJV57QqRAjind4T",
         translatedUrl: "https://space.bilibili.com/3546752504302024/lists/7626835",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/118.jpg",
+        thumbnail: "cover/118.jpg",
         dateAdded: "2025-03-01"
     },
     {
@@ -1662,7 +1662,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=xq5AEEruqf8",
         translatedUrl: "https://www.bilibili.com/video/BV1aQw4zJE8o",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/119.jpg",
+        thumbnail: "cover/119.jpg",
         dateAdded: "2025-12-28"
     },
     {
@@ -1676,7 +1676,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=MCS8fHO4hgc",
         translatedUrl: "https://www.bilibili.com/video/BV1MdXyBMEKt",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/120.jpg",
+        thumbnail: "cover/120.jpg",
         dateAdded: "2026-02-12"
     },
     {
@@ -1690,7 +1690,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLOTcjB4jF8DiOSeG1O7HKfWoux0vdxPS5",
         translatedUrl: "https://space.bilibili.com/109338384/lists/7844798",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/121.jpg",
+        thumbnail: "cover/121.jpg",
         dateAdded: "2021-01-09"
     },
     {
@@ -1704,7 +1704,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLz4ADywDGAbRlXhDkbxNdrvwXR2maG97-",
         translatedUrl: "https://space.bilibili.com/3546752504302024/lists/7986364",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/122.jpg",
+        thumbnail: "cover/122.jpg",
         dateAdded: "2026-03-03"
     },
     {
@@ -1718,7 +1718,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLCPkyZ4DMXEk3-oyfJRIPkpwiRC0f83V9",
         translatedUrl: "https://space.bilibili.com/3546752504302024/lists/8033742",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/123.jpg",
+        thumbnail: "cover/123.jpg",
         dateAdded: "2026-04-25"
     },
     {
@@ -1732,7 +1732,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLDnwQpBnibfJt5dVafAksjOSYviWo2hDC",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/8015723",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/124.jpg",
+        thumbnail: "cover/124.jpg",
         dateAdded: "2026-03-01"
     },
     {
@@ -1746,7 +1746,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLobmr1SIOMx1j05QlRgQK4OQEAClTYfAo",
         translatedUrl: "https://space.bilibili.com/109338384/lists/7787927",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/125.jpg",
+        thumbnail: "cover/125.jpg",
         dateAdded: "2023-06-25"
     },
     {
@@ -1760,7 +1760,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLGrlwBSJhaEFx-navtpSz_KJWWDUcNtgS",
         translatedUrl: "https://space.bilibili.com/109338384/lists/8011256",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/126.jpg",
+        thumbnail: "cover/126.jpg",
         dateAdded: "2021-05-17"
     },
     {
@@ -1774,7 +1774,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLyW401MWd8416rJXMNVXbZ0dcnX6yb9ze",
         translatedUrl: "https://space.bilibili.com/109338384/lists/8024108",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/127.jpg",
+        thumbnail: "cover/127.jpg",
         dateAdded: "2021-03-14"
     },
     {
@@ -1788,7 +1788,7 @@ const dramas = [
         originalUrl: "https://space.bilibili.com/2127486445/lists/8092983",
         translatedUrl: "",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1781336080/128.webp",
+        thumbnail: "cover/128.jpg",
         dateAdded: "2026-05-10"
     },
     {
@@ -1802,7 +1802,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/@arukaikyou",
         translatedUrl: "https://space.bilibili.com/355345896/lists/8330071",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1781336080/129.webp",
+        thumbnail: "cover/129.jpg",
         dateAdded: "2026-05-09"
     },
     {
@@ -1816,7 +1816,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLFU-QWGTBq-5nPBq2wROx4MClksDO0oyd",
         translatedUrl: "https://space.bilibili.com/109338384/lists/8296370",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1781336080/130.webp",
+        thumbnail: "cover/130.jpg",
         dateAdded: "2023-10-16"
     },
     {
@@ -1830,7 +1830,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLyW401MWd840VUy_dGrINnQqV50efWVby",
         translatedUrl: "https://space.bilibili.com/109338384/lists/8202862",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1781336080/131.webp",
+        thumbnail: "cover/131.jpg",
         dateAdded: "2018-07-07"
     },
     {
@@ -1844,7 +1844,7 @@ const dramas = [
         originalUrl: "https://space.bilibili.com/499929312/lists/8416274",
         translatedUrl: "",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1784983152/touhou/thumbnails/128.png",
+        thumbnail: "cover/132.jpg",
         dateAdded: "2026-07-08"
     },
     {
@@ -1858,7 +1858,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLyW401MWd842p5NsjxQzh2KOV6PDAU53q",
         translatedUrl: "https://space.bilibili.com/109338384/lists/8559908",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1784983153/touhou/thumbnails/129.jpg",
+        thumbnail: "cover/133.jpg",
         dateAdded: "2018-11-17"
     },
     {
@@ -1872,7 +1872,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/@Kamisiro_kairi/shorts",
         translatedUrl: "https://space.bilibili.com/87123918/lists/8613222",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/134.jpg",
+        thumbnail: "cover/134.jpg",
         dateAdded: "2026-07-09"
     },
     {
@@ -1886,7 +1886,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLwnprYHAfPHaawkD_PgY2kABfRbLncDbB",
         translatedUrl: "https://space.bilibili.com/87123918/lists/8634194",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/135.jpg",
+        thumbnail: "cover/135.jpg",
         dateAdded: "2025-07-18"
     },
     {
@@ -1900,7 +1900,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLbruIUFE_xfE",
         translatedUrl: "https://space.bilibili.com/87123918/lists/8793045",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/136.jpg",
+        thumbnail: "cover/136.jpg",
         dateAdded: "2026-06-10"
     },
     {
@@ -1914,7 +1914,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLsfDuT-j_dJ5-K3YlW_nIIQ8_I0N-OCQh",
         translatedUrl: "https://space.bilibili.com/109338384/lists/8827943",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/137.jpg",
+        thumbnail: "cover/137.jpg",
         dateAdded: "2026-02-06"
     },
     {
@@ -1928,7 +1928,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLsGwA474Pdf7gdHduUCSO1dRbE2te-sbw",
         translatedUrl: "https://space.bilibili.com/109338384/lists/8776889",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/138.jpg",
+        thumbnail: "cover/138.jpg",
         dateAdded: "2020-05-08"
     },
     {
@@ -1942,7 +1942,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLeR-6EKHxVnrx8NPfNaR-FagoJtFwJVCM",
         translatedUrl: "https://space.bilibili.com/109338384/lists/8666560",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/139.jpg",
+        thumbnail: "cover/139.jpg",
         dateAdded: "2025-08-08"
     },
     {
@@ -1956,7 +1956,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLMrjBa9iYruo",
         translatedUrl: "https://space.bilibili.com/3546748681194187/lists/8705095",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/140.jpg",
+        thumbnail: "cover/140.jpg",
         dateAdded: "2026-07-21"
     },
     {
@@ -1970,7 +1970,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLTLNHlVKdZ-U36sQ5a0I6q-f9FZ3rX2s-",
         translatedUrl: "https://space.bilibili.com/3493271907076968/lists/8753782",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/141.jpg",
+        thumbnail: "cover/141.jpg",
         dateAdded: "2024-04-10"
     },
     {
@@ -1984,7 +1984,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLjEPxTyMuUJtatPB0VdHhtOMMuJZL39eb",
         translatedUrl: "https://space.bilibili.com/3493271907076968/lists/8805901",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/142.jpg",
+        thumbnail: "cover/142.jpg",
         dateAdded: "2020-05-19"
     },
     {
@@ -1998,7 +1998,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=vRh9xLizDuo",
         translatedUrl: "https://space.bilibili.com/294151079/lists/8632069",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/143.jpg",
+        thumbnail: "cover/143.jpg",
         dateAdded: "2025-12-30"
     },
     {
@@ -2012,7 +2012,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLpSzC1-Y_uEH-wVDBb0y9VLdM9W9smy3F",
         translatedUrl: "https://space.bilibili.com/294151079/lists/8638136",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/144.jpg",
+        thumbnail: "cover/144.jpg",
         dateAdded: "2025-04-24"
     },
     {
@@ -2026,7 +2026,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL15bNp6jPccnqS34Ke8aG-IwA6on2PDvR",
         translatedUrl: "https://space.bilibili.com/294151079/lists/8716424",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/145.jpg",
+        thumbnail: "cover/145.jpg",
         dateAdded: "2018-07-23"
     },
     {
@@ -2040,7 +2040,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLpSzC1-Y_uEGzZJ3OMll3Ud0T9ibULymD",
         translatedUrl: "https://space.bilibili.com/294151079/lists/8679885",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/146.jpg",
+        thumbnail: "cover/146.jpg",
         dateAdded: "2021-05-24"
     },
     {
@@ -2054,7 +2054,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLJjBjBvua5Vc",
         translatedUrl: "https://space.bilibili.com/294151079/lists/8793706",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/147.jpg",
+        thumbnail: "cover/147.jpg",
         dateAdded: "2026-08-01"
     },
     {
@@ -2068,7 +2068,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLwnprYHAfPHamsFtaNmXSNEpsI257fQJ3",
         translatedUrl: "https://space.bilibili.com/294151079/lists/8808390",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/148.jpg",
+        thumbnail: "cover/148.jpg",
         dateAdded: "2026-07-04"
     },
     {
@@ -2082,7 +2082,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=H-N6AV3kiT4",
         translatedUrl: "https://space.bilibili.com/294151079/lists/8768744",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/149.jpg",
+        thumbnail: "cover/149.jpg",
         dateAdded: "2018-12-23"
     },
     {
@@ -2096,7 +2096,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLZPgfJqQkUwI",
         translatedUrl: "https://space.bilibili.com/687075442/lists/8709299?",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/150.jpg",
+        thumbnail: "cover/150.jpg",
         dateAdded: "2026-06-23"
     },
     {
@@ -2110,7 +2110,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/@yuki_harusaki",
         translatedUrl: "https://space.bilibili.com/687075442/lists/8741206",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/151.jpg",
+        thumbnail: "cover/151.jpg",
         dateAdded: "2026-07-18"
     },
     {
@@ -2124,7 +2124,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/@skretostorychannel",
         translatedUrl: "https://space.bilibili.com/687075442/lists/8767284",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/152.jpg",
+        thumbnail: "cover/152.jpg",
         dateAdded: "2024-06-23"
     },
     {
@@ -2138,7 +2138,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/@%E3%82%B5%E3%82%AF%E3%82%B5%E3%82%AF-b2m",
         translatedUrl: "https://space.bilibili.com/687075442/lists/8775885",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/153.jpg",
+        thumbnail: "cover/153.jpg",
         dateAdded: "2021-09-06"
     },
     {
@@ -2152,7 +2152,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/@%E9%82%A3%E8%BE%BAPRC",
         translatedUrl: "https://space.bilibili.com/687075442/lists/8783850",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/154.jpg",
+        thumbnail: "cover/154.jpg",
         dateAdded: "2023-07-23"
     },
     {
@@ -2166,7 +2166,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/@Toq%E3%81%95%E3%82%93",
         translatedUrl: "https://space.bilibili.com/687075442/lists/8709318",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/155.jpg",
+        thumbnail: "cover/155.jpg",
         dateAdded: "2026-07-24"
     },
     {
@@ -2180,7 +2180,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/@yukkuri.topology",
         translatedUrl: "https://space.bilibili.com/687075442/lists/8827125",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/156.jpg",
+        thumbnail: "cover/156.jpg",
         dateAdded: "2026-07-12"
     },
     {
@@ -2194,7 +2194,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLz4ADywDGAbSaCwBX-64fNlBi5RHYcj9I",
         translatedUrl: "https://space.bilibili.com/296510606/lists/8806963",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/157.jpg",
+        thumbnail: "cover/157.jpg",
         dateAdded: "2026-06-16"
     },
     {
@@ -2208,7 +2208,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLz4ADywDGAbSr9EXipA_Dcwg0qWjOpQl2",
         translatedUrl: "https://space.bilibili.com/296510606/lists/8820069",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/158.jpg",
+        thumbnail: "cover/158.jpg",
         dateAdded: "2023-12-17"
     },
     {
@@ -2222,7 +2222,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL0S4LJbwhJyybjxjGzuenBjBzzQoOJ0rV",
         translatedUrl: "https://space.bilibili.com/535027120/lists/8822684",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/159.jpg",
+        thumbnail: "cover/159.jpg",
         dateAdded: "2020-02-06"
     },
     {
@@ -2236,7 +2236,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLE4w61Z_girG1L4fcVTP5aHr2INeK3lQL",
         translatedUrl: "https://space.bilibili.com/390233364/lists/8738657",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/160.jpg",
+        thumbnail: "cover/160.jpg",
         dateAdded: "2025-03-14"
     },
     {
@@ -2250,7 +2250,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLmiQUWaS0AbckRhQF-TejJq31LHWyaQqE",
         translatedUrl: "https://space.bilibili.com/390233364/lists/8770849",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/161.jpg",
+        thumbnail: "cover/161.jpg",
         dateAdded: "2025-08-08"
     },
     {
@@ -2264,7 +2264,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLGQKohyO1iBU-aoWvr58LSxMzogk3QsG2",
         translatedUrl: "https://space.bilibili.com/390233364/lists/8769938",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/162.jpg",
+        thumbnail: "cover/162.jpg",
         dateAdded: "2025-11-22"
     },
     {
@@ -2278,7 +2278,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PLpSzC1-Y_uEGHKwPyyQGukc5RcR28Leig",
         translatedUrl: "https://space.bilibili.com/269144656/lists/8657776",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/163.jpg",
+        thumbnail: "cover/163.jpg",
         dateAdded: "2023-09-29"
     },
     {
@@ -2292,7 +2292,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/@hazakurach",
         translatedUrl: "https://space.bilibili.com/269144656/lists/8225364",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/164.jpg",
+        thumbnail: "cover/164.jpg",
         dateAdded: "2026-05-02"
     },
     {
@@ -2306,7 +2306,7 @@ const dramas = [
         originalUrl: "https://www.youtube.com/playlist?list=PL15bNp6jPccmHnnCI3vPA5MND6SqfwI4v",
         translatedUrl: "https://space.bilibili.com/269144656/lists/8707951",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/165.jpg",
+        thumbnail: "cover/165.jpg",
         dateAdded: "2018-09-09"
     },
     {
@@ -2320,12 +2320,26 @@ const dramas = [
         originalUrl: "https://www.youtube.com/watch?v=iQ4QRBkGMZU",
         translatedUrl: "https://space.bilibili.com/1359356041/lists/8763869",
         description: "",
-        thumbnail: "https://res.cloudinary.com/do6rggmy6/image/upload/v1770352189/touhou/thumbnails/166.jpg",
+        thumbnail: "cover/166.jpg",
         dateAdded: "2022-07-17"
+    },
+    {
+        id: 167,
+        title: "魔法使的秘法",
+        author: "0号魔法使",
+        translator: "",
+        tags: ["博丽灵梦", "雾雨魔理沙", "爱丽丝", "帕秋莉"],
+        isTranslated: false,
+        isDomestic: true,
+        originalUrl: "https://www.bilibili.com/video/BV1mPbb6PE97",
+        translatedUrl: "",
+        description: "也可以说是「魔法使们的日常」",
+        thumbnail: "cover/167.jpg",
+        dateAdded: "2026-08-17"
     }
 ];
 
-const authorLinks = {
+export const authorLinks = {
     "OKOME": "https://www.youtube.com/@OKOME-j4z",
     "ささきの茶釜": "https://www.youtube.com/@%E3%81%95%E3%81%95%E3%81%8D%E3%81%AE%E8%8C%B6%E9%87%9C",
     "ラングリィ": "https://www.youtube.com/@LANGULY",
@@ -2435,5 +2449,6 @@ const authorLinks = {
     "秋yee": "https://space.bilibili.com/390233364",
     "ゆっくりナル": "https://www.youtube.com/@%E3%82%86%E3%81%A3%E3%81%8F%E3%82%8A%E3%83%8A%E3%83%AB-p1i",
     "茅崎都【ゆっくり茶番劇】": "https://www.youtube.com/@Miyako210",
-    "葉桜チャンネル": "https://www.youtube.com/@hazakurach"
+    "葉桜チャンネル": "https://www.youtube.com/@hazakurach",
+    "0号魔法使": "https://space.bilibili.com/628083795"
 };
