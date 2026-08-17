@@ -213,6 +213,10 @@
     background: var(--surface);
 }
 
+.mobile-menu.open {
+    display: block;
+}
+
 .mobile-menu button {
     width: 100%;
     display: flex;
@@ -1717,6 +1721,7 @@ a.person-name:hover { color: var(--red); text-decoration: underline; }
     .brand-text { display: none; }
     .searchbox-kbd { display: none; }
     .searchbox input { padding-right: 36px; }
+    .drama-grid { grid-template-columns: 1fr; }
     .hero-stats { gap: 8px; }
     .stat-chip { min-width: 76px; padding: 8px 12px; }
     .stat-value { font-size: 18px; }
