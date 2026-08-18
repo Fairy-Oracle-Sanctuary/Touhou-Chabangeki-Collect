@@ -2336,6 +2336,48 @@ export const dramas = [
         description: "也可以说是「魔法使们的日常」",
         thumbnail: "cover/167.jpg",
         dateAdded: "2026-08-17"
+    },
+    {
+        id: 168,
+        title: "不会忘却的初恋",
+        author: "あるふぁるふぁ。@ゆっくり茶番劇",
+        translator: "花椒蛛",
+        tags: ["芙兰朵露"],
+        isTranslated: true,
+        isDomestic: false,
+        originalUrl: "https://www.youtube.com/watch?v=qTbAu4g1x7c",
+        translatedUrl: "https://www.bilibili.com/video/BV1nLuD6qE9V",
+        description: "",
+        thumbnail: "cover/168.jpg",
+        dateAdded: "2025-03-02"
+    },
+    {
+        id: 169,
+        title: "梦幻与现实",
+        author: "あるふぁるふぁ。@ゆっくり茶番劇",
+        translator: "花椒蛛",
+        tags: ["古明地恋", "芙兰朵露"],
+        isTranslated: true,
+        isDomestic: false,
+        originalUrl: "https://www.bilibili.com/video/BV1nLuD6qE9V",
+        translatedUrl: "https://www.youtube.com/watch?v=4Lsdrc0l60Q",
+        description: "",
+        thumbnail: "cover/169.jpg",
+        dateAdded: "2026-12-01"
+    },
+    {
+        id: 170,
+        title: "一周的单恋",
+        author: "あるふぁるふぁ。ゆっくり茶番劇",
+        translator: "花椒蛛",
+        tags: ["古明地恋", "古明地觉"],
+        isTranslated: true,
+        isDomestic: false,
+        originalUrl: "https://www.youtube.com/watch?v=IiYNUDjfZsw",
+        translatedUrl: "https://www.bilibili.com/video/BV1wfKp69E9V",
+        description: "",
+        thumbnail: "cover/170.jpg",
+        dateAdded: "2025-04-19"
     }
 ];
 
@@ -2450,5 +2492,7 @@ export const authorLinks = {
     "ゆっくりナル": "https://www.youtube.com/@%E3%82%86%E3%81%A3%E3%81%8F%E3%82%8A%E3%83%8A%E3%83%AB-p1i",
     "茅崎都【ゆっくり茶番劇】": "https://www.youtube.com/@Miyako210",
     "葉桜チャンネル": "https://www.youtube.com/@hazakurach",
-    "0号魔法使": "https://space.bilibili.com/628083795"
+    "0号魔法使": "https://space.bilibili.com/628083795",
+    "花椒蛛": "https://space.bilibili.com/521750326",
+    "あるふぁるふぁ。ゆっくり茶番劇": ""
 };
