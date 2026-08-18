@@ -9,7 +9,7 @@ const ROLE_OPTIONS = [
     { value: "creator", label: "汉化者/作者" },
     { value: "user", label: "普通用户" },
 ];
-const STATUS_LABEL = { pending: "待审核", approved: "已通过", rejected: "已拒绝" };
+const STATUS_LABEL = { pending: "待审核", approved: "已通过", rejected: "已拒绝", approved_no_publish: "已通过（未上线）" };
 
 function SubInfo({ sub, emailMap }) {
     return (
@@ -74,6 +74,8 @@ export function AdminPage({ user, dramas, onToast, onReloadDramas, onBack }) {
     const [editingDrama, setEditingDrama] = useState(null);
     // 审核编辑
     const [editingSub, setEditingSub] = useState(null);
+    // 通过审核的选择弹窗（上线 / 仅通知）
+    const [approveTarget, setApproveTarget] = useState(null);
 
     const loadAll = useCallback(async () => {
         setLoading(true);
@@ -104,11 +106,13 @@ export function AdminPage({ user, dramas, onToast, onReloadDramas, onBack }) {
     const notifyReviewResult = async (sub, status, note) => {
         const payload = {
             user_id: sub.submitted_by,
-            type: status, // approved / rejected
-            title: status === "approved" ? "作品审核通过" : "作品审核未通过",
-            body: status === "approved"
-                ? `你的提交《${sub.title}》已通过审核并上线`
-                : `你的提交《${sub.title}》未通过审核${note ? `，原因：${note}` : ""}`,
+            type: status, // approved / approved_no_publish / rejected
+            title: status === "rejected" ? "作品审核未通过" : "作品审核通过",
+            body: status === "rejected"
+                ? `你的提交《${sub.title}》未通过审核${note ? `，原因：${note}` : ""}`
+                : status === "approved"
+                    ? `你的提交《${sub.title}》已通过审核并上线`
+                    : `你的提交《${sub.title}》已通过审核${note ? `（备注：${note}）` : ""}`,
             drama_id: sub.edit_drama_id ?? null,
         };
         const { error } = await supabase.from("notifications").insert(payload);
@@ -131,7 +135,7 @@ export function AdminPage({ user, dramas, onToast, onReloadDramas, onBack }) {
             return;
         }
         await notifyReviewResult(sub, status, note);
-        onToast(status === "approved" ? "已通过，作品已上线" : "已拒绝");
+        onToast(status === "approved" ? "已通过，作品已上线" : status === "approved_no_publish" ? "已通过（未上线），作者已收到通知" : "已拒绝");
         loadAll();
         onReloadDramas();
     };
@@ -230,6 +234,22 @@ export function AdminPage({ user, dramas, onToast, onReloadDramas, onBack }) {
                     onSubmitted={() => { onReloadDramas(); }}
                 />
             )}
+            {approveTarget && (
+                <Modal title="审核通过" onClose={() => setApproveTarget(null)}>
+                    <div className="review-approve-body">
+                        <p>「{approveTarget.title}」已通过审核，请选择处理方式：</p>
+                        <div className="review-approve-actions">
+                            <button className="btn-primary" onClick={() => { review(approveTarget, "approved"); setApproveTarget(null); }}>
+                                <Icon name="check" size={14} /> 通过并上线
+                            </button>
+                            <button className="btn-ghost" onClick={() => { review(approveTarget, "approved_no_publish"); setApproveTarget(null); }}>
+                                仅通过（不上线）
+                            </button>
+                        </div>
+                        <p className="review-approve-hint">「仅通过」会通知作者审核已通过，但不会把作品合并到站点（适合已在本地 data.js 中维护的情况）。</p>
+                    </div>
+                </Modal>
+            )}
             <div className="admin-tabs">
                 <button className={`admin-tab ${tab === "review" ? "active" : ""}`} onClick={() => setTab("review")}>
                     审核 {pending.length > 0 && <span className="admin-badge">{pending.length}</span>}
@@ -265,7 +285,7 @@ export function AdminPage({ user, dramas, onToast, onReloadDramas, onBack }) {
                                     <button className="btn-ghost" onClick={() => setEditingSub(sub)}>
                                         <Icon name="edit" size={14} /> 编辑
                                     </button>
-                                    <button className="btn-primary" onClick={() => review(sub, "approved")}>
+                                    <button className="btn-primary" onClick={() => setApproveTarget(sub)}>
                                         <Icon name="check" size={14} /> 通过
                                     </button>
                                     <button className="btn-ghost btn-danger" onClick={() => review(sub, "rejected")}>
