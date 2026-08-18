@@ -2,11 +2,9 @@
   东方 Project 茶番剧收藏
 </h1>
 
-> 收集与展示东方 Project 二次创作茶番剧的社区网站。代码由 AI 编写，团队负责维护与更新数据；如果 UI 实在让你感到不适，欢迎发 issue。
-
 <p align="center">
   <a style="text-decoration:none">
-    <img src="https://img.shields.io/badge/LICENSE-MIT-green" alt="LICENSE MIT License"/>
+    <img src="https://img.shields.io/badge/LICENSE-Apache%202.0-blue" alt="LICENSE Apache 2.0"/>
   </a>
 </p>
 
