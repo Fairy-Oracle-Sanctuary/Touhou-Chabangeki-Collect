@@ -3,6 +3,7 @@ import { Modal, Icon, LazyImage } from "./ui.jsx";
 import { getTranslators } from "../utils.js";
 import { newcomerList } from "../data.js";
 import { DEFAULT_SETTINGS } from "../hooks.js";
+import { supabase } from "../lib/supabaseClient.js";
 
 /* ---------------- 新人推荐 ---------------- */
 export function NewcomerModal({ dramas, onClose, onOpenDetail, onToggleFilter }) {
@@ -143,12 +144,13 @@ export function SettingsModal({ settings, onUpdate, onReset, onClose }) {
     );
 }
 
-/* ---------------- 提交作品（生成 JSON） ---------------- */
+/* ---------------- 提交作品（登录用户提交到数据库，待管理员审核） ---------------- */
 const EMPTY = { title: "", author: "", translator: "", tags: "", isTranslated: "false", isDomestic: false, originalUrl: "", translatedUrl: "", thumbnail: "", description: "", dateAdded: "" };
 
-export function SubmitModal({ dramas, onClose, onToast }) {
+export function SubmitModal({ dramas, user, onOpenAuth, onClose, onToast }) {
     const [form, setForm] = useState(EMPTY);
-    const [json, setJson] = useState(null);
+    const [done, setDone] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
     const set = (patch) => setForm((f) => ({ ...f, ...patch }));
 
     const suggestions = useMemo(() => ({
@@ -157,7 +159,40 @@ export function SubmitModal({ dramas, onClose, onToast }) {
         tags: [...new Set(dramas.flatMap((d) => d.tags))].sort(),
     }), [dramas]);
 
-    const submit = (e) => {
+    // 未登录：先引导登录
+    if (!user) {
+        return (
+            <Modal title="提交茶番剧" icon="upload" onClose={onClose}>
+                <div className="auth-notice">
+                    <div className="auth-notice-icon"><Icon name="user" size={28} /></div>
+                    <p>登录后才能提交茶番剧作品。</p>
+                    <p className="auth-notice-sub">提交后将进入管理员审核队列。</p>
+                    <div className="auth-actions">
+                        <button className="btn-primary" onClick={onOpenAuth}>去登录 / 注册</button>
+                        <button className="btn-ghost" onClick={onClose}>取消</button>
+                    </div>
+                </div>
+            </Modal>
+        );
+    }
+
+    // 提交成功
+    if (done) {
+        return (
+            <Modal title="提交茶番剧" icon="upload" onClose={onClose}>
+                <div className="auth-notice">
+                    <div className="auth-notice-icon"><Icon name="check" size={28} /></div>
+                    <p>提交成功！作品已进入管理员审核队列。</p>
+                    <p className="auth-notice-sub">审核通过后会在本站展示。</p>
+                    <div className="auth-actions">
+                        <button className="btn-primary" onClick={onClose}>完成</button>
+                    </div>
+                </div>
+            </Modal>
+        );
+    }
+
+    const submit = async (e) => {
         e.preventDefault();
         const errors = [];
         if (!form.title.trim()) errors.push("请输入标题");
@@ -168,29 +203,29 @@ export function SubmitModal({ dramas, onClose, onToast }) {
             alert("请修正以下错误：\n" + errors.join("\n"));
             return;
         }
-        const tags = form.tags.split(/[,，、]/).map((t) => t.trim()).filter(Boolean);
-        setJson({
-            id: "（自动分配）",
-            title: form.title.trim(),
-            author: form.author.trim(),
-            translator: form.translator.trim(),
-            tags,
-            isTranslated: form.isTranslated === "true",
-            isDomestic: form.isDomestic,
-            originalUrl: form.originalUrl.trim(),
-            translatedUrl: form.translatedUrl.trim(),
-            description: form.description.trim(),
-            thumbnail: form.thumbnail.trim() || `cover/（新ID）.jpg`,
-            dateAdded: form.dateAdded,
-        });
-    };
-
-    const copy = async () => {
+        setSubmitting(true);
         try {
-            await navigator.clipboard.writeText(JSON.stringify(json, null, 4));
-            onToast("JSON 已复制到剪贴板");
-        } catch {
-            onToast("复制失败，请手动复制");
+            const { error } = await supabase.from("submissions").insert({
+                title: form.title.trim(),
+                author: form.author.trim(),
+                translator: form.translator.trim(),
+                tags: form.tags.split(/[,，、]/).map((t) => t.trim()).filter(Boolean),
+                is_translated: form.isTranslated === "true",
+                is_domestic: form.isDomestic,
+                original_url: form.originalUrl.trim(),
+                translated_url: form.translatedUrl.trim(),
+                thumbnail: form.thumbnail.trim(),
+                description: form.description.trim(),
+                date_added: form.dateAdded,
+                submitted_by: user.id,
+            });
+            if (error) throw error;
+            setDone(true);
+            onToast("提交成功，等待审核");
+        } catch (err) {
+            onToast("提交失败：" + (err?.message || "未知错误"));
+        } finally {
+            setSubmitting(false);
         }
     };
 
@@ -241,7 +276,7 @@ export function SubmitModal({ dramas, onClose, onToast }) {
                     </label>
                     <label className="field">
                         <span>封面图链接</span>
-                        <input value={form.thumbnail} onChange={(e) => set({ thumbnail: e.target.value })} placeholder="留空则按封面规则生成" />
+                        <input value={form.thumbnail} onChange={(e) => set({ thumbnail: e.target.value })} placeholder="图片直链（可选）" />
                     </label>
                     <label className="field">
                         <span>收录日期 *</span>
@@ -253,19 +288,13 @@ export function SubmitModal({ dramas, onClose, onToast }) {
                     </label>
                 </div>
                 <div className="form-actions">
-                    <button type="submit" className="btn-primary">生成 JSON</button>
-                    <button type="button" className="btn-ghost" onClick={() => { setForm(EMPTY); setJson(null); }}>重置</button>
+                    <button type="submit" className="btn-primary" disabled={submitting}>
+                        {submitting ? "提交中…" : "提交待审核"}
+                    </button>
+                    <button type="button" className="btn-ghost" onClick={() => setForm(EMPTY)}>重置</button>
                 </div>
+                <p className="submit-hint">提交后由管理员审核，审核通过后展示在站点。</p>
             </form>
-            {json && (
-                <div className="json-output">
-                    <div className="json-head">
-                        <span>生成的条目 JSON（复制后交给 data_manage_gui.py 添加）</span>
-                        <button className="btn-primary" onClick={copy}><Icon name="copy" size={14} /> 复制</button>
-                    </div>
-                    <pre>{JSON.stringify(json, null, 4)}</pre>
-                </div>
-            )}
         </Modal>
     );
 }

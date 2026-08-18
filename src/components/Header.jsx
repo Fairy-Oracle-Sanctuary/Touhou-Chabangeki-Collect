@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Icon } from "./ui.jsx";
 import { getTranslators } from "../utils.js";
+import { isAuthConfigured } from "../lib/supabaseClient.js";
 
 // 搜索自动补全：标题/作者/译者/标签
 function buildSuggestions(dramas, input) {
@@ -44,6 +45,17 @@ function buildSuggestions(dramas, input) {
 const TYPE_LABEL = { title: "作品", artist: "作者", translator: "译者", tag: "标签" };
 const TYPE_PREFIX = { title: "", artist: 'artist="', translator: 'translator="', tag: 'tag="' };
 const TYPE_SUFFIX = { title: "", artist: '"', translator: '"', tag: '"' };
+const ROLE_LABEL = { admin: "管理员", creator: "汉化者 · 作者", user: "会员" };
+
+function fmtNotifTime(iso) {
+    const d = new Date(iso);
+    const diff = Date.now() - d.getTime();
+    if (diff < 60000) return "刚刚";
+    if (diff < 3600000) return `${Math.floor(diff / 60000)} 分钟前`;
+    if (diff < 86400000) return `${Math.floor(diff / 3600000)} 小时前`;
+    if (diff < 7 * 86400000) return `${Math.floor(diff / 86400000)} 天前`;
+    return d.toLocaleDateString();
+}
 
 export default function Header({
     dramas,
@@ -52,12 +64,54 @@ export default function Header({
     theme,
     onToggleTheme,
     onOpen,
+    user,
+    displayName,
+    initials,
+    avatarUrl,
+    role,
+    onOpenAuth,
+    onSignOut,
+    onOpenProfile,
+    onOpenMyWorks,
+    onOpenAdmin,
+    onOpenUsers,
+    notifications,
+    unreadCount,
+    onMarkRead,
+    onMarkAllRead,
+    onRemoveNotify,
+    onOpenNotify,
+    pendingReviews,
 }) {
     const inputRef = useRef(null);
     const boxRef = useRef(null);
     const [focused, setFocused] = useState(false);
     const [activeIndex, setActiveIndex] = useState(-1);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [userMenuOpen, setUserMenuOpen] = useState(false);
+    const [notifOpen, setNotifOpen] = useState(false);
+    const userMenuRef = useRef(null);
+    const notifRef = useRef(null);
+
+    // 点外关闭用户菜单
+    useEffect(() => {
+        if (!userMenuOpen) return;
+        const onClick = (e) => {
+            if (userMenuRef.current && !userMenuRef.current.contains(e.target)) setUserMenuOpen(false);
+        };
+        document.addEventListener("mousedown", onClick);
+        return () => document.removeEventListener("mousedown", onClick);
+    }, [userMenuOpen]);
+
+    // 点外关闭通知面板
+    useEffect(() => {
+        if (!notifOpen) return;
+        const onClick = (e) => {
+            if (notifRef.current && !notifRef.current.contains(e.target)) setNotifOpen(false);
+        };
+        document.addEventListener("mousedown", onClick);
+        return () => document.removeEventListener("mousedown", onClick);
+    }, [notifOpen]);
 
     const suggestions = useMemo(() => buildSuggestions(dramas, search.trim()), [dramas, search]);
 
@@ -171,10 +225,100 @@ export default function Header({
                             <Icon name={a.icon} />
                         </button>
                     ))}
+                    <button className="icon-btn navbar-action" onClick={onOpenUsers}
+                        title="用户列表" aria-label="用户列表">
+                        <Icon name="users" />
+                    </button>
+
+                    {isAuthConfigured && user && (
+                        <div className="bell-wrap" ref={notifRef}>
+                            <button className="icon-btn bell-btn" onClick={() => setNotifOpen((v) => !v)}
+                                title="通知" aria-label="通知">
+                                <Icon name="bell" />
+                                {unreadCount > 0 && <span className="bell-badge">{unreadCount > 99 ? "99+" : unreadCount}</span>}
+                            </button>
+                            {notifOpen && (
+                                <div className="notif-panel">
+                                    <div className="notif-head">
+                                        <span>通知</span>
+                                        {unreadCount > 0 && (
+                                            <button className="notif-action" onClick={onMarkAllRead}>全部已读</button>
+                                        )}
+                                    </div>
+                                    <div className="notif-list">
+                                        {notifications.length === 0 ? (
+                                            <p className="notif-empty">暂无通知</p>
+                                        ) : (
+                                            notifications.map((n) => (
+                                                <div key={n.id} className={`notif-item ${n.read ? "" : "notif-unread"}`}
+                                                    onClick={() => { if (!n.read) onMarkRead(n.id); onOpenNotify(n); setNotifOpen(false); }}>
+                                                    <div className="notif-title">{n.title}</div>
+                                                    {n.body && <div className="notif-body">{n.body}</div>}
+                                                    <div className="notif-meta">{fmtNotifTime(n.created_at)}</div>
+                                                    <button className="notif-del" onClick={(e) => { e.stopPropagation(); onRemoveNotify(n.id); }} aria-label="删除通知">
+                                                        <Icon name="x" size={12} />
+                                                    </button>
+                                                </div>
+                                            ))
+                                        )}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
                     <button className="icon-btn navbar-action" onClick={onToggleTheme}
                         title="切换主题" aria-label="切换主题">
                         <Icon name={theme === "dark" ? "sun" : "moon"} />
                     </button>
+
+                    {isAuthConfigured && !user && (
+                        <button className="auth-login-btn" onClick={onOpenAuth} title="登录 / 注册">
+                            <Icon name="user" size={15} />
+                            <span>登录</span>
+                        </button>
+                    )}
+                    {isAuthConfigured && user && (
+                        <div className="user-menu-wrap" ref={userMenuRef}>
+                            <button className="user-avatar" onClick={() => setUserMenuOpen((v) => !v)}
+                                title={user.email} aria-label="用户菜单">
+                                {avatarUrl ? <img className="user-avatar-img" src={avatarUrl} alt="" /> : initials}
+                                {pendingReviews > 0 && (
+                                    <span className="avatar-badge" title={`${pendingReviews} 条待审核`} />
+                                )}
+                            </button>
+                            {userMenuOpen && (
+                                <div className="user-dropdown" role="menu">
+                                    <div className="user-info">
+                                        <span className="user-info-name">{displayName}</span>
+                                        {role && <span className={`user-role user-role-${role}`}>{ROLE_LABEL[role] || role}</span>}
+                                        <span className="user-info-email">{user.email}</span>
+                                    </div>
+                                    <button className="user-dropdown-item" onClick={() => { setUserMenuOpen(false); onOpenProfile(); }}>
+                                        <Icon name="user" size={15} />
+                                        个人资料
+                                    </button>
+                                    {(role === "creator" || role === "admin") && (
+                                        <button className="user-dropdown-item" onClick={() => { setUserMenuOpen(false); onOpenMyWorks(); }}>
+                                            <Icon name="edit" size={15} />
+                                            我的作品
+                                        </button>
+                                    )}
+                                    {role === "admin" && (
+                                        <button className="user-dropdown-item" onClick={() => { setUserMenuOpen(false); onOpenAdmin(); }}>
+                                            <Icon name="shield" size={15} />
+                                            管理后台
+                                        </button>
+                                    )}
+                                    <button className="user-dropdown-item" onClick={() => { onSignOut(); setUserMenuOpen(false); }}>
+                                        <Icon name="logout" size={15} />
+                                        退出登录
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
                     <button className="icon-btn navbar-menu-btn" onClick={() => setMobileMenuOpen((v) => !v)}
                         aria-label="菜单">
                         <Icon name="menu" />
@@ -194,6 +338,28 @@ export default function Header({
                         <Icon name={theme === "dark" ? "sun" : "moon"} size={16} />
                         切换主题
                     </button>
+                    <button onClick={() => { onOpenUsers(); setMobileMenuOpen(false); }}>
+                        <Icon name="users" size={16} />
+                        用户列表
+                    </button>
+                    {isAuthConfigured && !user && (
+                        <button onClick={() => { onOpenAuth(); setMobileMenuOpen(false); }}>
+                            <Icon name="user" size={16} />
+                            登录 / 注册
+                        </button>
+                    )}
+                    {isAuthConfigured && user && (
+                        <>
+                            <div className="mobile-user-info">
+                                <span className="user-info-name">{displayName}</span>
+                                <span className="user-info-email">{user.email}</span>
+                            </div>
+                            <button onClick={() => { onSignOut(); setMobileMenuOpen(false); }}>
+                                <Icon name="logout" size={16} />
+                                退出登录
+                            </button>
+                        </>
+                    )}
                 </div>
             )}
         </nav>

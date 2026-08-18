@@ -1,6 +1,10 @@
 node_modules/
 dist/
 *.local
+.env
+.env.*
+!.env.example
 .DS_Store
 *.exe
 __pycache__/
+信息.txt
