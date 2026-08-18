@@ -1,7 +1,7 @@
 import { Icon, LazyImage, StatusBadge } from "./ui.jsx";
 import { getDramaStatus, getTranslators } from "../utils.js";
 
-function DramaCard({ drama, isFavorite, onToggleFavorite, onOpenDetail, onToggleFilter, layout }) {
+function DramaCard({ drama, stats, isFavorite, onToggleFavorite, onOpenDetail, onToggleFilter, layout }) {
     const status = getDramaStatus(drama);
     const translators = getTranslators(drama);
     const hasTranslatedLink = drama.isTranslated && drama.translatedUrl && !drama.isDomestic;
@@ -19,6 +19,12 @@ function DramaCard({ drama, isFavorite, onToggleFavorite, onOpenDetail, onToggle
                 <div className="card-status">
                     <StatusBadge status={status} />
                 </div>
+                {stats && (
+                    <div className="card-stats">
+                        <span title="点赞数"><Icon name="thumbsUp" size={11} />{stats.likes}</span>
+                        <span title="收藏数"><Icon name="heart" size={11} />{stats.favorites}</span>
+                    </div>
+                )}
             </div>
             <div className="card-body">
                 <h3 className="card-title" title={drama.title}>{drama.title}</h3>
@@ -74,7 +80,7 @@ function DramaCard({ drama, isFavorite, onToggleFavorite, onOpenDetail, onToggle
     );
 }
 
-export default function DramaGrid({ dramas, layout, isFavorite, onToggleFavorite, onOpenDetail, onToggleFilter, noResultsTitle, noResultsText }) {
+export default function DramaGrid({ dramas, layout, isFavorite, onToggleFavorite, onOpenDetail, onToggleFilter, dramaStats, noResultsTitle, noResultsText }) {
     if (dramas.length === 0) {
         return (
             <div className="no-results">
@@ -90,6 +96,7 @@ export default function DramaGrid({ dramas, layout, isFavorite, onToggleFavorite
                 <DramaCard
                     key={drama.id}
                     drama={drama}
+                    stats={dramaStats?.[drama.id]}
                     layout={layout}
                     isFavorite={isFavorite(drama.id)}
                     onToggleFavorite={onToggleFavorite}
