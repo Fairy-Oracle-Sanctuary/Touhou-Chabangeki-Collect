@@ -160,8 +160,8 @@ export function AdminPage({ user, dramas, onToast, onReloadDramas, onBack }) {
 
     // 编辑任意用户的用户名/简介（管理员）
     const saveBasic = async (p) => {
-        const draft = basicDrafts[p.user_id] ?? { username: p.username || "", bio: p.bio || "" };
-        const username = draft.username.trim();
+        const draft = basicDrafts[p.user_id] ?? {};
+        const username = (draft.username ?? p.username ?? "").trim();
         if (!username) {
             onToast("用户名不能为空");
             return;
@@ -170,9 +170,10 @@ export function AdminPage({ user, dramas, onToast, onReloadDramas, onBack }) {
             onToast("用户名最长 20 个字符");
             return;
         }
+        const bio = (draft.bio ?? p.bio ?? "").trim();
         const { error } = await supabase
             .from("profiles")
-            .update({ username, bio: (draft.bio || "").trim() })
+            .update({ username, bio })
             .eq("user_id", p.user_id);
         if (error) {
             const msg = String(error.message || "").toLowerCase();
