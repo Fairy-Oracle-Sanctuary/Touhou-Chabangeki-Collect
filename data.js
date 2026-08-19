@@ -2378,6 +2378,20 @@ export const dramas = [
         description: "",
         thumbnail: "cover/170.jpg",
         dateAdded: "2025-04-19"
+    },
+    {
+        id: 171,
+        title: "秋yee烤制的总集篇",
+        author: "かめーーとあらら",
+        translator: "秋yee",
+        tags: ["魂魄妖忌"],
+        isTranslated: true,
+        isDomestic: false,
+        originalUrl: "https://space.bilibili.com/390233364/lists/8870995",
+        translatedUrl: "https://www.youtube.com/@kame--toarara",
+        description: "",
+        thumbnail: "cover/171.jpg",
+        dateAdded: "2026-07-06"
     }
 ];
 
