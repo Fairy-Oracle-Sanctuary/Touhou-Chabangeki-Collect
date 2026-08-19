@@ -26,7 +26,10 @@ function avatarManifest() {
 function securityCsp() {
     const csp = [
         "default-src 'self'",
-        "script-src 'self' https://js.hcaptcha.com https://hcaptcha.com https://*.hcaptcha.com https://static.cloudflareinsights.com",
+        // 'unsafe-inline'：Cloudflare 会在页面注入内联脚本（Web Analytics 等），
+        // 无法用固定 hash 放行；本站代码本身无内联脚本执行需求，风险可控。
+        // 若关闭 Cloudflare Web Analytics，可移除 'unsafe-inline'
+        "script-src 'self' 'unsafe-inline' https://js.hcaptcha.com https://hcaptcha.com https://*.hcaptcha.com https://static.cloudflareinsights.com",
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
         "font-src 'self' data: https://fonts.gstatic.com",
         "img-src 'self' data: blob: https: http:",
