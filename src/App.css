@@ -2878,7 +2878,26 @@ select.admin-note-input {
     color: var(--text-2);
 }
 
-.footer-sub { font-size: 11px; color: var(--text-3); margin-top: 4px; }
+.footer-links {
+    margin-top: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.footer-links a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
+.footer-sep {
+    opacity: 0.5;
+}
 
 /* ---------------- 动画开关 ---------------- */
 .no-anim *,

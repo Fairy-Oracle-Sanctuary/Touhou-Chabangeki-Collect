@@ -514,7 +514,11 @@ export default function App() {
             <footer className="footer">
                 <div className="container">
                     <p>东方 Project 茶番剧收藏馆 · 共收录 {dramas.length} 部作品</p>
-                    <p className="footer-sub">数据与图片来源见各条目链接 · 纯前端静态站点</p>
+                    <div className="footer-links">
+                        <a href="https://fairy.ora-san.org/" target="_blank" rel="noreferrer">团队官网</a>
+                        <span className="footer-sep">·</span>
+                        <a href="https://ifdian.net/a/Fairy_ora_san" target="_blank" rel="noreferrer">赞助我们</a>
+                    </div>
                 </div>
             </footer>
 
