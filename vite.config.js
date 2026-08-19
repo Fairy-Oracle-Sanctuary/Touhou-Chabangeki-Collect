@@ -22,10 +22,40 @@ function avatarManifest() {
     };
 }
 
-export default defineConfig({
-    plugins: [react(), avatarManifest()],
-    build: {
-        outDir: "dist",
-        chunkSizeWarningLimit: 600,
-    },
+// 仅生产构建时向 index.html 注入 CSP meta（dev 不注入，避免影响 HMR）
+function securityCsp() {
+    const csp = [
+        "default-src 'self'",
+        "script-src 'self' https://js.hcaptcha.com https://hcaptcha.com https://*.hcaptcha.com",
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+        "font-src 'self' data: https://fonts.gstatic.com",
+        "img-src 'self' data: blob: https: http:",
+        "connect-src 'self' https://xpjkecdxtfytgfpixtau.supabase.co https://hcaptcha.com https://*.hcaptcha.com https://api.hcaptcha.com",
+        "frame-src https://hcaptcha.com https://*.hcaptcha.com",
+        "frame-ancestors 'none'",
+        "base-uri 'self'",
+        "form-action 'self' https://hcaptcha.com",
+        "object-src 'none'",
+    ].join("; ");
+    return {
+        name: "security-csp",
+        transformIndexHtml(html) {
+            return html.replace(
+                '<meta charset="UTF-8">',
+                `<meta charset="UTF-8">\n    <meta http-equiv="Content-Security-Policy" content="${csp}">`
+            );
+        },
+    };
+}
+
+export default defineConfig(({ command }) => {
+    const plugins = [react(), avatarManifest()];
+    if (command === "build") plugins.push(securityCsp());
+    return {
+        plugins,
+        build: {
+            outDir: "dist",
+            chunkSizeWarningLimit: 600,
+        },
+    };
 });
