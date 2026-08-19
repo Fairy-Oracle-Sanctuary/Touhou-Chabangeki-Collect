@@ -8,3 +8,4 @@ dist/
 *.exe
 __pycache__/
 信息.txt
+public/avatar/index.json

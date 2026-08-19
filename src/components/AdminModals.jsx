@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Modal, Icon } from "./ui.jsx";
 import { supabase } from "../lib/supabaseClient.js";
 import { getTranslators } from "../utils.js";
+import { dramas as allDramas } from "../data.js";
 import { UserAvatar } from "./UsersPages.jsx";
 
 const ROLE_OPTIONS = [
@@ -76,6 +77,19 @@ export function AdminPage({ user, dramas, onToast, onReloadDramas, onBack }) {
     const [editingSub, setEditingSub] = useState(null);
     // 通过审核的选择弹窗（上线 / 仅通知）
     const [approveTarget, setApproveTarget] = useState(null);
+    // 头像选择面板当前展开的用户 id
+    const [avatarPicker, setAvatarPicker] = useState(null);
+    // public/avatar/ 头像清单（由 vite 插件在构建时生成 index.json）
+    const [avatarOptions, setAvatarOptions] = useState([]);
+
+    useEffect(() => {
+        let cancelled = false;
+        fetch("avatar/index.json")
+            .then((r) => (r.ok ? r.json() : []))
+            .then((list) => { if (!cancelled) setAvatarOptions(Array.isArray(list) ? list : []); })
+            .catch(() => {});
+        return () => { cancelled = true; };
+    }, []);
 
     const loadAll = useCallback(async () => {
         setLoading(true);
@@ -101,6 +115,16 @@ export function AdminPage({ user, dramas, onToast, onReloadDramas, onBack }) {
     }, [onToast]);
 
     useEffect(() => { loadAll(); }, [loadAll]);
+
+    // data.js 中现有的全部作者/译者名，供别名下拉选择
+    const allNames = useMemo(() => {
+        const s = new Set();
+        allDramas.forEach((d) => {
+            if (d.author) s.add(d.author);
+            getTranslators(d).forEach((t) => s.add(t));
+        });
+        return [...s].sort((a, b) => a.localeCompare(b, "zh"));
+    }, []);
 
     // 审核通过/拒绝后给提交人发站内通知
     const notifyReviewResult = async (sub, status, note) => {
@@ -381,6 +405,23 @@ export function AdminPage({ user, dramas, onToast, onReloadDramas, onBack }) {
                             <div className="admin-user-names">
                                 <span>作者/译者别名（用 、 分隔，用于匹配"我的作品"）：</span>
                                 <div className="admin-names-row">
+                                    <select
+                                        className="admin-note-input"
+                                        value=""
+                                        onChange={(e) => {
+                                            const name = e.target.value;
+                                            if (!name) return;
+                                            const cur = nameDrafts[p.user_id] ?? (p.creator_names || []).join("、");
+                                            const list = cur.split(/[,，、]/).map((s) => s.trim()).filter(Boolean);
+                                            if (!list.includes(name)) list.push(name);
+                                            setNameDrafts((d) => ({ ...d, [p.user_id]: list.join("、") }));
+                                        }}
+                                    >
+                                        <option value="">从现有作者/译者中选择…</option>
+                                        {allNames.map((n) => <option key={n} value={n}>{n}</option>)}
+                                    </select>
+                                </div>
+                                <div className="admin-names-row">
                                     <input
                                         className="admin-note-input"
                                         placeholder="如：ささきの茶釜、就是很一般"
@@ -393,15 +434,47 @@ export function AdminPage({ user, dramas, onToast, onReloadDramas, onBack }) {
                             <div className="admin-user-names">
                                 <span>头像链接（仅管理员可指定直链，建议只给创作者/管理员配置）：</span>
                                 <div className="admin-names-row">
-                                    <UserAvatar profile={p} size={32} />
+                                    <UserAvatar profile={{ ...p, avatar_url: avatarDrafts[p.user_id] ?? p.avatar_url ?? "" }} size={32} />
                                     <input
                                         className="admin-note-input"
-                                        placeholder="https://..."
+                                        placeholder="avatar/1.webp 或 https://..."
                                         value={avatarDrafts[p.user_id] ?? p.avatar_url ?? ""}
                                         onChange={(e) => setAvatarDrafts((d) => ({ ...d, [p.user_id]: e.target.value }))}
                                     />
                                     <button className="btn-ghost" onClick={() => saveAvatar(p)}>保存</button>
                                 </div>
+                                <div className="admin-names-row">
+                                    <button
+                                        type="button"
+                                        className="btn-ghost"
+                                        onClick={() => setAvatarPicker(avatarPicker === p.user_id ? null : p.user_id)}
+                                    >
+                                        选择本地头像 ▾
+                                    </button>
+                                </div>
+                                {avatarPicker === p.user_id && (
+                                    <div className="avatar-pick-grid">
+                                        {avatarOptions.length === 0 ? (
+                                            <p className="avatar-pick-empty">头像清单未生成，请重启开发服务器或重新构建</p>
+                                        ) : (
+                                            avatarOptions.map((a) => (
+                                                <button
+                                                    key={a}
+                                                    type="button"
+                                                    className={`avatar-pick-item ${(avatarDrafts[p.user_id] ?? p.avatar_url ?? "") === a ? "active" : ""}`}
+                                                    title={a}
+                                                    onClick={() => {
+                                                        setAvatarDrafts((d) => ({ ...d, [p.user_id]: a }));
+                                                        setAvatarPicker(null);
+                                                    }}
+                                                >
+                                                    <img src={a} alt="" loading="lazy" />
+                                                    <span>{a.replace("avatar/", "")}</span>
+                                                </button>
+                                            ))
+                                        )}
+                                    </div>
+                                )}
                             </div>
                             <div className="sub-info-meta">注册时间：{new Date(p.created_at).toLocaleString()}</div>
                         </div>

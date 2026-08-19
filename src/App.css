@@ -2317,6 +2317,66 @@ a.person-name:hover { color: var(--red); text-decoration: underline; }
     box-shadow: 0 0 0 3px var(--red-tint);
 }
 
+select.admin-note-input {
+    height: 36px;
+    cursor: pointer;
+}
+
+.avatar-pick-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+    gap: 8px;
+    width: 100%;
+    margin-top: 10px;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--r-sm);
+    background: var(--bg-soft);
+}
+
+.avatar-pick-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 4px;
+    border-radius: var(--r-sm);
+    border: 2px solid transparent;
+    background: var(--surface);
+    cursor: pointer;
+    transition: border-color var(--t-fast), transform var(--t-fast);
+}
+
+.avatar-pick-item:hover {
+    border-color: var(--border);
+    transform: translateY(-1px);
+}
+
+.avatar-pick-item.active {
+    border-color: var(--red);
+}
+
+.avatar-pick-item img {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: var(--bg-soft);
+}
+
+.avatar-pick-item span {
+    font-size: 10px;
+    color: var(--text-3);
+}
+
+.avatar-pick-empty {
+    grid-column: 1 / -1;
+    font-size: 12px;
+    color: var(--text-3);
+    text-align: center;
+    padding: 8px;
+}
+
 .review-approve-body p {
     font-size: 13px;
     color: var(--text);
