@@ -26,13 +26,12 @@ function avatarManifest() {
 function securityCsp() {
     const csp = [
         "default-src 'self'",
-        "script-src 'self' https://js.hcaptcha.com https://hcaptcha.com https://*.hcaptcha.com",
+        "script-src 'self' https://js.hcaptcha.com https://hcaptcha.com https://*.hcaptcha.com https://static.cloudflareinsights.com",
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
         "font-src 'self' data: https://fonts.gstatic.com",
         "img-src 'self' data: blob: https: http:",
-        "connect-src 'self' https://xpjkecdxtfytgfpixtau.supabase.co https://hcaptcha.com https://*.hcaptcha.com https://api.hcaptcha.com",
+        "connect-src 'self' https://xpjkecdxtfytgfpixtau.supabase.co https://hcaptcha.com https://*.hcaptcha.com https://api.hcaptcha.com https://cloudflareinsights.com https://static.cloudflareinsights.com",
         "frame-src https://hcaptcha.com https://*.hcaptcha.com",
-        "frame-ancestors 'none'",
         "base-uri 'self'",
         "form-action 'self' https://hcaptcha.com",
         "object-src 'none'",
