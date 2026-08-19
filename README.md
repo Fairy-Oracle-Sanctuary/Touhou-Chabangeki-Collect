@@ -83,7 +83,7 @@ npm install
 cp .env.example .env.local
 ```
 
-3. 启动开发服务器：
+3. 启动开发服务器（默认 http://localhost:5173）：
 
 ```bash
 npm run dev
@@ -94,6 +94,15 @@ npm run dev
 ```bash
 npm run build
 ```
+
+> **Windows 注意事项**：如果项目路径含 `&`（例如 `d:\CODE\html&css\...`），PowerShell 会把 `&` 当作命令分隔符，直接执行 `npm run dev` / `npm run build` 会报错，请改用 node 直调 Vite：
+>
+> ```powershell
+> node ".\node_modules\vite\bin\vite.js" --host   # 启动开发服务器
+> node ".\node_modules\vite\bin\vite.js" build     # 生产构建
+> ```
+>
+> 若需局域网访问，开发服务器可加 `--host` 参数（如上），通过 `http://<本机IP>:5173/` 访问。
 
 ## 部署（Cloudflare Pages）
 
