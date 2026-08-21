@@ -2392,6 +2392,20 @@ export const dramas = [
         description: "",
         thumbnail: "cover/171.jpg",
         dateAdded: "2026-07-06"
+    },
+    {
+        id: 172,
+        title: "落羽大人制作的东方病娇乡",
+        author: "羽が落ちたな",
+        translator: "",
+        tags: ["雾雨魔理沙"],
+        isTranslated: false,
+        isDomestic: true,
+        originalUrl: "https://space.bilibili.com/355345896/lists/8516790",
+        translatedUrl: "",
+        description: "",
+        thumbnail: "cover/172.jpg",
+        dateAdded: "2026-07-07"
     }
 ];
 
