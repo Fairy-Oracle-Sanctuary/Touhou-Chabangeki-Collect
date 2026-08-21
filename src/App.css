@@ -2377,6 +2377,41 @@ select.admin-note-input {
     padding: 8px;
 }
 
+.audit-card .audit-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    font-size: 12px;
+}
+
+.audit-action {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: var(--r-full);
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.audit-action-insert { background: #10b981; }
+.audit-action-update { background: #3b82f6; }
+.audit-action-delete { background: #ef4444; }
+
+.audit-json {
+    margin-top: 6px;
+    padding: 8px 10px;
+    border-radius: var(--r-sm);
+    background: var(--bg-soft);
+    font-size: 11px;
+    line-height: 1.5;
+    color: var(--text-2);
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
 .review-approve-body p {
     font-size: 13px;
     color: var(--text);

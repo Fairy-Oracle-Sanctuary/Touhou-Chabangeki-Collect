@@ -195,9 +195,13 @@ export function SubmitModal({ dramas, user, onOpenAuth, onClose, onToast }) {
     const submit = async (e) => {
         e.preventDefault();
         const errors = [];
+        const isHttpUrl = (v) => /^https?:\/\/\S+$/i.test(v.trim());
         if (!form.title.trim()) errors.push("请输入标题");
         if (!form.author.trim()) errors.push("请输入作者");
         if (!form.originalUrl.trim()) errors.push("请输入原版链接");
+        if (form.originalUrl.trim() && !isHttpUrl(form.originalUrl)) errors.push("原版链接必须是 http(s):// 开头的网址");
+        if (form.translatedUrl.trim() && !isHttpUrl(form.translatedUrl)) errors.push("汉化版链接必须是 http(s):// 开头的网址");
+        if (form.thumbnail.trim() && !isHttpUrl(form.thumbnail)) errors.push("封面链接必须是 http(s):// 开头的图片直链");
         if (!/^\d{4}-\d{2}-\d{2}$/.test(form.dateAdded)) errors.push("日期格式不正确，请使用 YYYY-MM-DD");
         if (errors.length) {
             alert("请修正以下错误：\n" + errors.join("\n"));
