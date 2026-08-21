@@ -11,9 +11,230 @@
 import json
 import os
 import re
+import subprocess
+import threading
 import tkinter as tk
+import urllib.request
 from datetime import datetime
 from tkinter import messagebox, ttk
+
+BILI_UA = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+)
+YTDLP_EXE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "yt-dlp.exe")
+
+
+def fetch_bilibili_series(url):
+    """从B站视频列表URL读取 up主/列表名/第一个视频信息。
+    返回 {uid, list_id, list_title, author, title, bvid, aid, pic}，失败抛异常。
+    URL 格式：https://space.bilibili.com/{uid}/lists/{list_id}
+    数据源：B 站公开接口 seasons_archives_list + 列表页 title（取 up 主昵称）。
+    """
+    m = re.search(r"space\.bilibili\.com/(\d+)/lists/(\d+)", url)
+    if not m:
+        raise ValueError("URL 格式不对，应为 space.bilibili.com/{up主ID}/lists/{列表ID}")
+    uid, list_id = m.group(1), m.group(2)
+
+    UA = (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    )
+    headers = {"User-Agent": UA, "Referer": "https://space.bilibili.com/"}
+
+    # 列表内视频（取前 5 条，只需要第一个）
+    api = (
+        "https://api.bilibili.com/x/polymer/web-space/seasons_archives_list"
+        f"?mid={uid}&season_id={list_id}&page_num=1&page_size=5"
+    )
+    with urllib.request.urlopen(urllib.request.Request(api, headers=headers), timeout=15) as resp:
+        payload = json.loads(resp.read().decode("utf-8", errors="ignore"))
+    if payload.get("code") != 0:
+        raise ValueError(
+            "B 站接口返回异常：" + str(payload.get("message") or payload.get("code"))
+        )
+    d = payload.get("data") or {}
+    meta = d.get("meta") or {}
+    archives = d.get("archives") or []
+    if not archives:
+        raise ValueError("列表中未找到视频")
+
+    first = archives[0]
+
+    # 第一个视频详情（view 接口：简介 + 视频上传者昵称即 up 主）
+    desc = ""
+    desc_first_line = ""
+    up_name = ""
+    if first.get("bvid"):
+        try:
+            with urllib.request.urlopen(
+                urllib.request.Request(
+                    f"https://api.bilibili.com/x/web-interface/view?bvid={first['bvid']}",
+                    headers=headers,
+                ),
+                timeout=15,
+            ) as resp:
+                view = json.loads(resp.read().decode("utf-8", errors="ignore"))
+            if view.get("code") == 0:
+                vdata = view.get("data") or {}
+                desc = vdata.get("desc") or ""
+                desc_first_line = desc.strip().splitlines()[0] if desc.strip() else ""
+                up_name = (vdata.get("owner") or {}).get("name") or ""
+        except Exception:
+            desc = ""
+    # up 主昵称兜底：acc/info 接口
+    if not up_name:
+        try:
+            with urllib.request.urlopen(
+                urllib.request.Request(
+                    f"https://api.bilibili.com/x/space/acc/info?mid={uid}",
+                    headers=headers,
+                ),
+                timeout=15,
+            ) as resp:
+                acc = json.loads(resp.read().decode("utf-8", errors="ignore"))
+            if acc.get("code") == 0:
+                up_name = (acc.get("data") or {}).get("name") or ""
+        except Exception:
+            up_name = ""
+    yt_url = extract_youtube_url(desc) or extract_youtube_url(desc_first_line)
+    author = extract_desc_field(desc, "原作者", "作者") or up_name
+
+    pic = (first.get("pic") or "").replace("http://", "https://")
+    # 发布时间（Unix 时间戳 → YYYY-MM-DD）
+    date_added = ""
+    ts = first.get("pubdate") or first.get("ctime") or 0
+    if ts:
+        try:
+            date_added = datetime.fromtimestamp(ts).strftime("%Y-%m-%d")
+        except Exception:
+            date_added = ""
+
+    return {
+        "uid": uid,
+        "list_id": list_id,
+        "list_title": meta.get("name") or meta.get("title") or "",
+        "author": author,
+        "up_name": up_name,
+        "title": first.get("title") or "",
+        "bvid": first.get("bvid") or "",
+        "aid": first.get("aid") or first.get("id") or "",
+        "pic": pic,
+        "date_added": date_added,
+        "desc_first_line": desc_first_line,
+        "yt_url": yt_url,
+        "yt_playlist": yt_playlist_url(yt_url),
+        "translator": extract_desc_field(desc, "翻译", "汉化", "译者"),
+    }
+
+
+def extract_youtube_url(text):
+    """从文本中提取 YouTube 链接，兼容 watch?v= 与 watchv=（缺 ? 的笔误）两种写法"""
+    if not text:
+        return ""
+    for m in re.finditer(r"https?://[^\s，。；、）】\]\"']+", text):
+        url = m.group(0).rstrip(",.;")
+        if re.search(r"youtube\.com/(watch\?v=|watchv=)|youtu\.be/", url):
+            return url
+    return ""
+
+
+def extract_desc_field(text, *labels):
+    """从简介中提取「标签：内容」或「【标签】内容」形式的字段，标签按顺序尝试"""
+    if not text:
+        return ""
+    for label in labels:
+        for pattern in (
+            rf"{re.escape(label)}\s*[：:]\s*([^\n]+)",
+            rf"【{re.escape(label)}】\s*([^\n]+)",
+        ):
+            m = re.search(pattern, text)
+            if m:
+                val = m.group(1).strip().strip("，。；;、")
+                if val:
+                    return val
+    return ""
+
+
+def yt_playlist_url(url):
+    """将 watch 链接转换为播放列表链接；无 list 参数或已是播放列表则原样返回"""
+    if not url:
+        return ""
+    m = re.search(r"[?&]list=([^&]+)", url)
+    if m:
+        return f"https://www.youtube.com/playlist?list={m.group(1)}"
+    return url
+
+
+def run_ytdlp(args):
+    """调用项目根目录的 yt-dlp.exe，返回 (stdout, stderr)"""
+    proc = subprocess.run(
+        [YTDLP_EXE] + args,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="ignore",
+        timeout=180,
+    )
+    return proc.stdout, proc.stderr
+
+
+def strip_list_param(url):
+    """去掉 URL 里的 list 参数，避免 yt-dlp 把单个视频当播放列表处理"""
+    return re.sub(r"[?&]list=[^&]+", "", url).replace("&&", "&").rstrip("?&")
+
+
+def fetch_yt_upload_date(url):
+    """用 yt-dlp 读取油管视频上传日期，返回 YYYY-MM-DD，失败返回空串"""
+    try:
+        out, _ = run_ytdlp(
+            ["--no-playlist", "--print", "upload_date", strip_list_param(url)]
+        )
+        d = out.strip()
+        return f"{d[:4]}-{d[4:6]}-{d[6:8]}" if len(d) == 8 else ""
+    except Exception:
+        return ""
+
+
+def download_yt_cover(url, item_id):
+    """用 yt-dlp 直接下载油管封面到 public/cover/{item_id}.jpg，成功返回绝对路径，失败返回 None"""
+    try:
+        from PIL import Image
+    except Exception:
+        return None
+    try:
+        cover_dir = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "public", "cover"
+        )
+        os.makedirs(cover_dir, exist_ok=True)
+        tmp_tpl = os.path.join(cover_dir, f"_yt_tmp_{item_id}.%(ext)s")
+        dest = os.path.join(cover_dir, f"{item_id}.jpg")
+        run_ytdlp(
+            [
+                "--no-playlist",
+                "--no-simulate",
+                "--skip-download",
+                "--write-thumbnail",
+                "-o",
+                tmp_tpl,
+                strip_list_param(url),
+            ]
+        )
+        matches = [
+            f
+            for f in os.listdir(cover_dir)
+            if f.startswith(f"_yt_tmp_{item_id}.")
+        ]
+        if not matches:
+            return None
+        thumb = os.path.join(cover_dir, matches[0])
+        # yt-dlp 落盘的多为 webp，统一转成 jpg
+        img = Image.open(thumb).convert("RGB")
+        img.save(dest, "JPEG", quality=92)
+        os.remove(thumb)
+        return dest
+    except Exception:
+        return None
 
 
 class DataManagerGUI:
@@ -534,7 +755,10 @@ class DataManagerGUI:
 
     # --- 弹窗触发 ---
     def add_item(self):
-        d = AddEditDialog(self.root, "新增条目", {}, self.get_suggestions())
+        d = AddEditDialog(
+            self.root, "新增条目", {}, self.get_suggestions(),
+            next_id=len(self.data) + 1,
+        )
         if d.result:
             self.data.append(d.result)
             self._update_ids_and_refresh(silent=True)
@@ -545,7 +769,10 @@ class DataManagerGUI:
             messagebox.showwarning("提示", "请先选择一个条目")
             return
         idx = self.tree.index(sel[0])
-        d = AddEditDialog(self.root, "修改条目", self.data[idx], self.get_suggestions())
+        d = AddEditDialog(
+            self.root, "修改条目", self.data[idx], self.get_suggestions(),
+            next_id=self.data[idx]["id"],
+        )
         if d.result:
             d.result["id"] = self.data[idx]["id"]  # 保持原 ID 不变
             self.data[idx] = d.result
@@ -776,13 +1003,14 @@ class JsonImportDialog(tk.Toplevel):
 
 
 class AddEditDialog(tk.Toplevel):
-    def __init__(self, parent, title, item, suggestions):
+    def __init__(self, parent, title, item, suggestions, next_id=None):
         super().__init__(parent)
         self.title(title)
         self.item = item
         self.suggestions = suggestions
+        self.next_id = next_id
         self.result = None
-        self.geometry("650x700")
+        self.geometry("650x800")
         # self.grab_set()  # 模态锁定
 
         # 整体布局
@@ -857,6 +1085,32 @@ class AddEditDialog(tk.Toplevel):
         widget.bind("<Leave>", on_leave)
 
     def init_form(self):
+        # ===== B站视频列表导入（独立分区，置于表单上方） =====
+        imp = ttk.LabelFrame(
+            self.scrollable_frame, text="从 B 站视频列表导入", padding=10
+        )
+        imp.pack(fill=tk.X, padx=20, pady=(15, 0))
+
+        row1 = ttk.Frame(imp)
+        row1.pack(fill=tk.X)
+        ttk.Label(row1, text="列表URL:").pack(side=tk.LEFT)
+        self.bili_url_var = tk.StringVar()
+        ttk.Entry(row1, textvariable=self.bili_url_var).pack(
+            side=tk.LEFT, fill=tk.X, expand=True, padx=5
+        )
+        self.fetch_btn = ttk.Button(
+            row1, text="读取并填充", command=self.on_fetch_bilibili
+        )
+        self.fetch_btn.pack(side=tk.LEFT)
+
+        ttk.Label(
+            imp,
+            text="格式：https://space.bilibili.com/{up主ID}/lists/{列表ID}　·　",
+            foreground="#888",
+            font=("Microsoft YaHei", 8),
+            wraplength= 500,
+        ).pack(anchor=tk.W, pady=(4, 0))
+
         f = ttk.Frame(self.scrollable_frame, padding=20)
         f.pack(fill=tk.BOTH, expand=True)
         f.columnconfigure(1, weight=1)
@@ -971,6 +1225,125 @@ class AddEditDialog(tk.Toplevel):
         ttk.Entry(f, textvariable=self.vars["dateAdded"]).grid(
             row=14, column=1, sticky=tk.W, pady=5
         )
+
+    def download_cover(self, url, item_id):
+        """下载封面到 public/cover/{item_id}.jpg，成功返回绝对路径，失败返回 None"""
+        try:
+            cover_dir = os.path.join(
+                os.path.dirname(os.path.abspath(__file__)), "public", "cover"
+            )
+            os.makedirs(cover_dir, exist_ok=True)
+            dest = os.path.join(cover_dir, f"{item_id}.jpg")
+            req = urllib.request.Request(
+                url,
+                headers={
+                    "User-Agent": (
+                        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                        "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+                    ),
+                    "Referer": "https://www.bilibili.com/",
+                },
+            )
+            with urllib.request.urlopen(req, timeout=20) as resp, open(dest, "wb") as f:
+                f.write(resp.read())
+            return dest
+        except Exception:
+            return None
+
+    def on_fetch_bilibili(self):
+        """点击「读取并填充」：后台线程抓取 B 站列表数据"""
+        url = self.bili_url_var.get().strip()
+        if not url:
+            messagebox.showwarning("提示", "请先粘贴 B 站列表 URL")
+            return
+        status = self.status_var.get()
+        self.fetch_btn.config(state="disabled", text="读取中…")
+        threading.Thread(
+            target=self._fetch_worker, args=(url, status), daemon=True
+        ).start()
+
+    def _fetch_worker(self, url, status):
+        try:
+            info = fetch_bilibili_series(url)
+            info["cover_path"] = None
+            if status == "国产":
+                # 国产：下载列表第一个视频封面到 public/cover/{id}.jpg
+                if info.get("pic") and self.next_id:
+                    info["cover_path"] = self.download_cover(info["pic"], self.next_id)
+            elif status == "已汉化" and info.get("yt_url") and self.next_id:
+                # 已汉化：从简介首行提取油管链接，yt-dlp 直接读上传日期并下封面
+                yt = info["yt_url"]
+                info["cover_path"] = download_yt_cover(yt, self.next_id)
+                upload_date = fetch_yt_upload_date(yt)
+                if upload_date:
+                    info["date_added"] = upload_date
+                    info["yt_date_added"] = True
+            self.after(0, lambda: self._apply_bili(info))
+        except Exception as e:
+            # 注意：except as e 的 e 在块结束后会被回收，需先拷贝到普通变量
+            err_msg = str(e)
+            self.after(0, lambda: self._fetch_error(err_msg))
+
+    def _apply_bili(self, info):
+        self.fetch_btn.config(state="normal", text="读取并填充")
+        status = self.status_var.get()
+        is_domestic = status == "国产"
+        # 标题取合集名（去掉「合集·」前缀）；取不到时回退为第一个视频标题
+        title = re.sub(r"^合集·", "", info.get("list_title") or info["title"])
+        if title:
+            self.vars["title"].set(title)
+        if info["author"]:
+            self.vars["author"].set(info["author"])
+        # 译者：简介里的「翻译/汉化/译者」优先，已汉化时兜底用 up 主昵称
+        translator = info.get("translator") or (
+            info.get("up_name") if status == "已汉化" else ""
+        )
+        if translator:
+            self.vars["translator"].set(translator)
+        bili_list_url = self.bili_url_var.get().strip()
+        # 原版地址：国产填列表链接；已汉化填油管播放列表链接、汉化链接复制 B 站列表链接；其余填列表首个视频链接
+        if is_domestic:
+            if bili_list_url:
+                self.vars["originalUrl"].set(bili_list_url)
+        elif status == "已汉化" and info.get("yt_url"):
+            if info.get("yt_playlist"):
+                self.vars["originalUrl"].set(info["yt_playlist"])
+            if bili_list_url:
+                self.vars["translatedUrl"].set(bili_list_url)
+        elif info["bvid"]:
+            self.vars["originalUrl"].set(f"https://www.bilibili.com/video/{info['bvid']}")
+        if info.get("cover_path"):
+            self.vars["thumbnail"].set(f"cover/{self.next_id}.jpg")
+        if info.get("date_added"):
+            self.vars["dateAdded"].set(info["date_added"])
+        msg = f"已填充标题（合集名）：{title or '（无）'}"
+        if info.get("list_title"):
+            msg += f"\n列表：{info['list_title']}"
+        if info.get("author"):
+            msg += f"\n原作者：{info['author']}"
+        if translator:
+            msg += f"\n译者：{translator}"
+        if info.get("date_added"):
+            src = "油管上传时间" if info.get("yt_date_added") else "首个视频发布时间"
+            msg += f"\n收录日期（{src}）：{info['date_added']}"
+        if is_domestic:
+            msg += "\n原版地址：列表链接"
+        elif status == "已汉化" and info.get("yt_url"):
+            msg += f"\n原版地址（油管播放列表）：{info.get('yt_playlist') or info['yt_url']}"
+            msg += f"\n汉化链接（B站列表）：{bili_list_url or '（无）'}"
+        elif info.get("title"):
+            msg += f"\n原版地址：列表内首个视频\n列表内首个视频：{info['title']}"
+        if info.get("cover_path"):
+            msg += f"\n封面：已下载到 public/cover/{self.next_id}.jpg"
+        elif status == "国产" and info.get("pic"):
+            msg += "\n封面：下载失败，请手动下载图片到 public/cover/"
+        elif status == "已汉化" and info.get("yt_url"):
+            msg += "\n封面：yt-dlp 下载失败，请手动下载图片到 public/cover/"
+        messagebox.showinfo("读取成功", msg)
+
+    def _fetch_error(self, msg):
+        self.fetch_btn.config(state="normal", text="读取并填充")
+        messagebox.showerror("读取失败", msg)
 
     def _fill_tag_pool(self):
         self.tag_pool.configure(state="normal")
