@@ -147,10 +147,11 @@ export function useProfile(user) {
                 .maybeSingle();
             if (!data) {
                 // 懒创建：注册时填的用户名存在 user_metadata，否则用邮箱前缀
+                // email 不写入（视图无此列，由数据库触发器从 auth.users 同步）
                 const username = user.user_metadata?.username || user.email?.split("@")[0] || "用户";
                 const { data: inserted, error: insErr } = await supabase
                     .from("profiles")
-                    .insert({ user_id: user.id, username, email: user.email, role: "user" })
+                    .insert({ user_id: user.id, username, role: "user" })
                     .select("user_id, username, bio, avatar_url, role, creator_names, created_at")
                     .single();
                 if (!insErr) data = inserted;
