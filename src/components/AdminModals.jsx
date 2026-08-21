@@ -11,6 +11,7 @@ const ROLE_OPTIONS = [
     { value: "user", label: "普通用户" },
 ];
 const STATUS_LABEL = { pending: "待审核", approved: "已通过", rejected: "已拒绝", approved_no_publish: "已通过（未上线）" };
+const ACTION_LABEL = { insert: "插入", update: "更新", delete: "删除" };
 
 function SubInfo({ sub, emailMap }) {
     return (
@@ -79,6 +80,8 @@ export function AdminPage({ user, dramas, onToast, onReloadDramas, onBack }) {
     const [approveTarget, setApproveTarget] = useState(null);
     // 头像选择面板当前展开的用户 id
     const [avatarPicker, setAvatarPicker] = useState(null);
+    // 审计日志
+    const [auditLog, setAuditLog] = useState([]);
     // public/avatar/ 头像清单（由 vite 插件在构建时生成 index.json）
     const [avatarOptions, setAvatarOptions] = useState([]);
 
@@ -106,6 +109,17 @@ export function AdminPage({ user, dramas, onToast, onReloadDramas, onBack }) {
             (emails || []).forEach((e) => { map[e.user_id] = e.email; });
             (profs || []).forEach((p) => { if (!map[p.user_id]) map[p.user_id] = p.username || "未知"; });
             setEmailMap(map);
+            // 审计日志单独加载（未建审计表时静默跳过，不影响其他功能）
+            try {
+                const { data: logs } = await supabase
+                    .from("audit_log")
+                    .select("*")
+                    .order("created_at", { ascending: false })
+                    .limit(100);
+                setAuditLog(logs || []);
+            } catch (e) {
+                setAuditLog([]);
+            }
         } catch (e) {
             console.error("[admin] 加载失败:", e);
             onToast("后台加载失败，请确认已执行数据库 SQL（profiles/submissions 表）");
@@ -287,6 +301,9 @@ export function AdminPage({ user, dramas, onToast, onReloadDramas, onBack }) {
                 <button className={`admin-tab ${tab === "history" ? "active" : ""}`} onClick={() => setTab("history")}>
                     已处理
                 </button>
+                <button className={`admin-tab ${tab === "audit" ? "active" : ""}`} onClick={() => setTab("audit")}>
+                    审计
+                </button>
             </div>
 
             {loading && <p className="admin-empty">加载中…</p>}
@@ -330,6 +347,28 @@ export function AdminPage({ user, dramas, onToast, onReloadDramas, onBack }) {
                         {handled.map((sub) => (
                             <div key={sub.id} className="admin-card">
                                 <SubInfo sub={sub} emailMap={emailMap} />
+                            </div>
+                        ))}
+                    </div>
+                )
+            )}
+
+            {tab === "audit" && !loading && (
+                auditLog.length === 0 ? (
+                    <p className="admin-empty">暂无审计记录（需先在数据库中创建 audit_log 表与触发器）</p>
+                ) : (
+                    <div className="admin-list">
+                        {auditLog.map((log) => (
+                            <div key={log.id} className="admin-card audit-card">
+                                <div className="audit-head">
+                                    <span className={`audit-action audit-action-${log.action}`}>{ACTION_LABEL[log.action] || log.action}</span>
+                                    <strong>{log.table_name}</strong>
+                                    {log.record_id != null && <span className="user-info-email">记录 #{log.record_id}</span>}
+                                    <span className="user-info-email">操作者：{emailMap[log.changed_by] || "未知"}</span>
+                                    <span className="comment-time">{new Date(log.created_at).toLocaleString()}</span>
+                                </div>
+                                {log.new_data && <pre className="audit-json">新：{JSON.stringify(log.new_data)}</pre>}
+                                {log.old_data && <pre className="audit-json">旧：{JSON.stringify(log.old_data)}</pre>}
                             </div>
                         ))}
                     </div>
