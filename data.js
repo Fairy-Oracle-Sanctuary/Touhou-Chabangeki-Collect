@@ -2368,7 +2368,7 @@ export const dramas = [
     {
         id: 170,
         title: "一周的单恋",
-        author: "あるふぁるふぁ。ゆっくり茶番劇",
+        author: "あるふぁるふぁ。@ゆっくり茶番劇",
         translator: "花椒蛛",
         tags: ["古明地恋", "古明地觉"],
         isTranslated: true,
@@ -2406,6 +2406,20 @@ export const dramas = [
         description: "",
         thumbnail: "cover/172.jpg",
         dateAdded: "2026-07-07"
+    },
+    {
+        id: 173,
+        title: "ヨシヨのゆっくり老师视频合集",
+        author: "ヨシヨのゆっくり",
+        translator: "HAERproject",
+        tags: ["博丽灵梦", "雾雨魔理沙", "魂魄妖梦", "帕秋莉"],
+        isTranslated: true,
+        isDomestic: false,
+        originalUrl: "https://www.youtube.com/@YUKKURIyoshiwo",
+        translatedUrl: "https://space.bilibili.com/3546673592666844/lists/8567713",
+        description: "",
+        thumbnail: "cover/173.jpg",
+        dateAdded: "2025-06-12"
     }
 ];
 
@@ -2522,5 +2536,6 @@ export const authorLinks = {
     "葉桜チャンネル": "https://www.youtube.com/@hazakurach",
     "0号魔法使": "https://space.bilibili.com/628083795",
     "花椒蛛": "https://space.bilibili.com/521750326",
-    "あるふぁるふぁ。ゆっくり茶番劇": ""
+    "ヨシヨのゆっくり": "https://www.youtube.com/@YUKKURIyoshiwo",
+    "HAERproject": "https://space.bilibili.com/3546673592666844",
 };
