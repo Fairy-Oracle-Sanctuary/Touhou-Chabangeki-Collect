@@ -2359,11 +2359,11 @@ export const dramas = [
         tags: ["古明地恋", "芙兰朵露"],
         isTranslated: true,
         isDomestic: false,
-        originalUrl: "https://www.bilibili.com/video/BV1nLuD6qE9V",
-        translatedUrl: "https://www.youtube.com/watch?v=4Lsdrc0l60Q",
+        originalUrl: "https://www.youtube.com/watch?v=4Lsdrc0l60Q",
+        translatedUrl: "https://www.bilibili.com/video/BV1nLuD6qE9V",
         description: "",
         thumbnail: "cover/169.jpg",
-        dateAdded: "2026-12-01"
+        dateAdded: "2025-12-01"
     },
     {
         id: 170,
