@@ -62,7 +62,9 @@ export function useDramas() {
     return { dramas, ready, reload };
 }
 
-// 邮箱注册/登录/登出/找回密码
+// 登录：Supabase Auth 的 Custom OIDC Provider（Logto SSO）
+// 前端仍用 supabase-js，登录时跳转 Logto（custom:logto），Supabase 签发会话
+const LOGTO_PROVIDER = "custom:logto";
 export function useAuth() {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -84,44 +86,24 @@ export function useAuth() {
         return () => sub.subscription.unsubscribe();
     }, []);
 
-    const signIn = useCallback(async (email, password, captchaToken) => {
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-            options: captchaToken ? { captchaToken } : undefined,
+    // 跳转统一登录（Logto 托管页，含注册入口）
+    const signIn = useCallback(async () => {
+        const { error } = await supabase.auth.signInWithOAuth({
+            provider: LOGTO_PROVIDER,
+            options: { redirectTo: window.location.origin },
         });
         if (error) throw error;
-        return data;
     }, []);
-
-    const signUp = useCallback(async (email, password, username, captchaToken) => {
-        const { data, error } = await supabase.auth.signUp({
-            email,
-            password,
-            options: {
-                emailRedirectTo: window.location.origin,
-                data: username ? { username } : undefined,
-                ...(captchaToken ? { captchaToken } : {}),
-            },
-        });
-        if (error) throw error;
-        return data;
-    }, []);
-
+    const signUp = signIn;
     const signOut = useCallback(async () => {
         await supabase.auth.signOut();
     }, []);
-
-    const resetPassword = useCallback(async (email, captchaToken) => {
-        const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-            redirectTo: window.location.origin,
-            ...(captchaToken ? { captchaToken } : {}),
-        });
-        if (error) throw error;
-        return data;
+    // 密码重置：密码托管在 Logto，跳转统一登录页找回
+    const resetPassword = useCallback(async () => {
+        window.open("https://sso.sofurry.cloud/oidc", "_blank", "noopener");
     }, []);
 
-    const displayName = user?.email?.split("@")[0] ?? "用户";
+    const displayName = user?.email?.split("@")[0] ?? user?.user_metadata?.username ?? "用户";
     const initials = displayName.slice(0, 2).toUpperCase();
 
     return { user, loading, isAuthConfigured, signIn, signUp, signOut, resetPassword, displayName, initials };

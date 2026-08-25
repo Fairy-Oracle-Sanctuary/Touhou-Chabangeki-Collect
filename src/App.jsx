@@ -599,11 +599,9 @@ export default function App() {
             )}
             {authModalOpen && (
                 <AuthModal
-                    mode="signin"
                     onClose={() => setAuthModalOpen(false)}
                     onSignIn={auth.signIn}
                     onSignUp={auth.signUp}
-                    onReset={auth.resetPassword}
                 />
             )}
             {profileModalOpen && auth.user && (
