@@ -602,6 +602,8 @@ export default function App() {
                     onClose={() => setAuthModalOpen(false)}
                     onSignIn={auth.signIn}
                     onSignUp={auth.signUp}
+                    onReset={auth.resetPassword}
+                    onSSO={auth.ssoSignIn}
                 />
             )}
             {profileModalOpen && auth.user && (

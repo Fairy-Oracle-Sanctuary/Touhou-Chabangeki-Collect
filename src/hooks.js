@@ -86,27 +86,57 @@ export function useAuth() {
         return () => sub.subscription.unsubscribe();
     }, []);
 
-    // 跳转统一登录（Logto 托管页，含注册入口）
-    const signIn = useCallback(async () => {
+    // 普通账号登录：Supabase 原生邮箱密码
+    const signIn = useCallback(async (email, password, captchaToken) => {
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+            options: captchaToken ? { captchaToken } : undefined,
+        });
+        if (error) throw error;
+        return data;
+    }, []);
+
+    const signUp = useCallback(async (email, password, username, captchaToken) => {
+        const { data, error } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+                emailRedirectTo: window.location.origin,
+                data: username ? { username } : undefined,
+                ...(captchaToken ? { captchaToken } : {}),
+            },
+        });
+        if (error) throw error;
+        return data;
+    }, []);
+
+    const signOut = useCallback(async () => {
+        await supabase.auth.signOut();
+    }, []);
+
+    const resetPassword = useCallback(async (email, captchaToken) => {
+        const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: window.location.origin,
+            ...(captchaToken ? { captchaToken } : {}),
+        });
+        if (error) throw error;
+        return data;
+    }, []);
+
+    // 天机阁通行证：跳转统一登录页（sso.sofurry.cloud，Logto SSO）
+    const ssoSignIn = useCallback(async () => {
         const { error } = await supabase.auth.signInWithOAuth({
             provider: LOGTO_PROVIDER,
             options: { redirectTo: window.location.origin },
         });
         if (error) throw error;
     }, []);
-    const signUp = signIn;
-    const signOut = useCallback(async () => {
-        await supabase.auth.signOut();
-    }, []);
-    // 密码重置：密码托管在 Logto，跳转统一登录页找回
-    const resetPassword = useCallback(async () => {
-        window.open("https://sso.sofurry.cloud/oidc", "_blank", "noopener");
-    }, []);
 
     const displayName = user?.email?.split("@")[0] ?? user?.user_metadata?.username ?? "用户";
     const initials = displayName.slice(0, 2).toUpperCase();
 
-    return { user, loading, isAuthConfigured, signIn, signUp, signOut, resetPassword, displayName, initials };
+    return { user, loading, isAuthConfigured, signIn, signUp, signOut, resetPassword, ssoSignIn, displayName, initials };
 }
 
 // 用户角色信息（profiles 表）。首次登录且无 profile 时自动创建（默认 user 角色）
