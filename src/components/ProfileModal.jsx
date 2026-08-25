@@ -4,14 +4,12 @@ import { supabase } from "../lib/supabaseClient.js";
 
 const ROLE_LABEL = { admin: "管理员", creator: "汉化者 · 作者", user: "会员" };
 
-// 个人资料弹窗：修改用户名 + 修改密码（密码托管在 Logto 统一账号系统）
+// 个人资料弹窗：修改用户名 + 修改密码
 export default function ProfileModal({ user, profile, onClose, onToast, onSaved }) {
     const [username, setUsername] = useState(profile?.username || user?.email?.split("@")[0] || "");
     const [bio, setBio] = useState(profile?.bio || "");
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState("");
-
-    const [pwdBusy, setPwdBusy] = useState(false);
 
     const saveProfile = async (e) => {
         e.preventDefault();
@@ -46,14 +44,34 @@ export default function ProfileModal({ user, profile, onClose, onToast, onSaved 
         }
     };
 
-    // 修改密码：跳转统一登录页（Logto），走忘记密码邮件流程
-    const goResetPassword = async () => {
-        if (pwdBusy) return;
-        setPwdBusy(true);
+    // 修改密码：Supabase 原生（登录会话内直接改）
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [changingPwd, setChangingPwd] = useState(false);
+    const [pwdError, setPwdError] = useState("");
+
+    const changePassword = async (e) => {
+        e.preventDefault();
+        if (password.length < 6) {
+            setPwdError("新密码至少 6 位");
+            return;
+        }
+        if (password !== confirmPassword) {
+            setPwdError("两次输入的新密码不一致");
+            return;
+        }
+        setChangingPwd(true);
         try {
-            window.open("https://sso.sofurry.cloud/oidc", "_blank", "noopener");
+            const { error: err } = await supabase.auth.updateUser({ password });
+            if (err) throw err;
+            onToast("密码已修改");
+            setPassword("");
+            setConfirmPassword("");
+            setPwdError("");
+        } catch (err) {
+            setPwdError(err?.message || "修改失败，请重试");
         } finally {
-            setPwdBusy(false);
+            setChangingPwd(false);
         }
     };
 
@@ -97,18 +115,35 @@ export default function ProfileModal({ user, profile, onClose, onToast, onSaved 
                 </div>
             </form>
 
-            <div className="auth-form">
+            <form className="auth-form" onSubmit={changePassword}>
                 <h3 className="profile-section-title">修改密码</h3>
-                <p className="auth-hint">
-                    密码由统一账号系统管理。点击下方按钮将跳转到重置密码页面，
-                    通过邮箱验证后即可设置新密码。
-                </p>
+                <label className="field">
+                    <span>新密码</span>
+                    <input
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="至少 6 位"
+                        autoComplete="new-password"
+                    />
+                </label>
+                <label className="field">
+                    <span>确认新密码</span>
+                    <input
+                        type="password"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        placeholder="再次输入新密码"
+                        autoComplete="new-password"
+                    />
+                </label>
+                {pwdError && <p className="auth-error">{pwdError}</p>}
                 <div className="auth-actions">
-                    <button type="button" className="btn-primary" disabled={pwdBusy} onClick={goResetPassword}>
-                        {pwdBusy ? "跳转中…" : "通过邮箱重置密码"}
+                    <button type="submit" className="btn-primary" disabled={changingPwd}>
+                        {changingPwd ? "修改中…" : "修改密码"}
                     </button>
                 </div>
-            </div>
+            </form>
         </Modal>
     );
 }
